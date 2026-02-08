@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3418f49adba8e2843af42634ca499fb9, type: 3}
+  m_Name: Lene
+  m_EditorClassIdentifier: 
+  characterName: Lene
+  description: "Party Master - Tactical defense with psychological pressure"
+  ability1Type: 2
+  ability1Name: Trash Talk
+  ability1Description: Speech bubble appears and opponent gets 25% slowdown for 2 seconds. Get in their head!
+  ability1Cooldown: 16
+  ability1Duration: 2
+  ability2Type: 3
+  ability2Name: Shield
+  ability2Description: Block the next ability used against you. Perfect defense!
+  ability2Cooldown: 22
+  ability2Duration: 0
+  characterPortrait: {fileID: 0}
+  characterSprite: {fileID: 0}
+  characterColor: {r: 0.5411765, g: 0.16862746, b: 0.8862745, a: 1}
+  characterAnimator: {fileID: 0}
+  selectVoiceLines: []
+  ability1VoiceLines: []
+  ability2VoiceLines: []
+  victoryVoiceLines: []
+  defeatVoiceLines: []
+  trashTalkLines: []
+  ability1SFX: {fileID: 0}
+  ability2SFX: {fileID: 0}

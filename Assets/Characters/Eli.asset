@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3418f49adba8e2843af42634ca499fb9, type: 3}
+  m_Name: Eli
+  m_EditorClassIdentifier: 
+  characterName: Eli
+  description: "Birthday Wish - Overwhelming offensive power with high aggression"
+  ability1Type: 0
+  ability1Name: Power Surge
+  ability1Description: Your button mashing counts 2x for 3 seconds. Pure dominance!
+  ability1Cooldown: 15
+  ability1Duration: 3
+  ability2Type: 1
+  ability2Name: Flash
+  ability2Description: Screen flash and shake to break your opponent's concentration
+  ability2Cooldown: 10
+  ability2Duration: 0.5
+  characterPortrait: {fileID: 0}
+  characterSprite: {fileID: 0}
+  characterColor: {r: 1, g: 0.84313726, b: 0, a: 1}
+  characterAnimator: {fileID: 0}
+  selectVoiceLines: []
+  ability1VoiceLines: []
+  ability2VoiceLines: []
+  victoryVoiceLines: []
+  defeatVoiceLines: []
+  trashTalkLines: []
+  ability1SFX: {fileID: 0}
+  ability2SFX: {fileID: 0}

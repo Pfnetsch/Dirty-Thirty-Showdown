@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3418f49adba8e2843af42634ca499fb9, type: 3}
+  m_Name: Sabi
+  m_EditorClassIdentifier: 
+  characterName: Sabi
+  description: "Cake Boss - Defensive and unpredictable counter-play specialist"
+  ability1Type: 6
+  ability1Name: Cake Toss
+  ability1Description: Bar can only move toward your side for 2 seconds. Stop their momentum!
+  ability1Cooldown: 20
+  ability1Duration: 2
+  ability2Type: 7
+  ability2Name: Fake Out
+  ability2Description: Reverse controls/momentum briefly for 2 seconds. Total chaos!
+  ability2Cooldown: 24
+  ability2Duration: 2
+  characterPortrait: {fileID: 0}
+  characterSprite: {fileID: 0}
+  characterColor: {r: 1, g: 0.64705884, b: 0.0, a: 1}
+  characterAnimator: {fileID: 0}
+  selectVoiceLines: []
+  ability1VoiceLines: []
+  ability2VoiceLines: []
+  victoryVoiceLines: []
+  defeatVoiceLines: []
+  trashTalkLines: []
+  ability1SFX: {fileID: 0}
+  ability2SFX: {fileID: 0}
