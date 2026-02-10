@@ -36,9 +36,12 @@
 - [ ] Animations/transitions between panels (fade in/out)
 
 ### Rematch / Return Flow
-- [ ] Rematch button → `GameManager.RestartMatch()`
-- [ ] Character Select button → `GameManager.ReturnToCharacterSelect()`
-- [ ] Keyboard shortcuts for rematch (e.g., Space/Enter to rematch from MatchEnd)
+- [x] Rematch button → `GameManager.RestartMatch()`
+- [x] Character Select button → `GameManager.ReturnToCharacterSelect()`
+- [x] Keyboard shortcuts: Space/Enter = rematch, Esc/Backspace = character select (from MatchEnd)
+- [x] CharacterSelectManager auto-resets when returning to character select state
+- [x] Both-ready keyboard start: Space or Enter starts match when both confirmed
+- [x] Match end instructions text field added to UIManager
 
 ---
 
@@ -204,7 +207,7 @@ Each character needs voice lines for these categories (stored in `CharacterData`
 - [ ] Test edge cases: both abilities at once, shield vs each ability, etc.
 
 ### Balance Simulation (Automated)
-- [ ] Create `BalanceSimulator` script (Editor-only or standalone)
+- [x] Create `BalanceSimulator` script (Editor-only EditorWindow)
 - [ ] Simulate matches with AI players using different strategies:
   - Random masher (constant random input)
   - Optimal masher (max speed input)

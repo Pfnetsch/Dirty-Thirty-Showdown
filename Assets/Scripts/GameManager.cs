@@ -62,6 +62,24 @@ namespace DirtyThirtyShowdown
             {
                 UpdateRoundTimer();
             }
+            else if (CurrentState == GameState.MatchEnd)
+            {
+                HandleMatchEndInput();
+            }
+        }
+
+        private void HandleMatchEndInput()
+        {
+            // Space or Enter = Rematch
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+            {
+                RestartMatch();
+            }
+            // Escape or Backspace = Return to character select
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
+            {
+                ReturnToCharacterSelect();
+            }
         }
 
         private void UpdateRoundTimer()

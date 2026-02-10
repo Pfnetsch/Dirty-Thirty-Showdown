@@ -31,6 +31,8 @@ namespace DirtyThirtyShowdown
         [SerializeField] private Image p1Ability2Cooldown;
         [SerializeField] private TextMeshProUGUI p1Ability1KeyText;
         [SerializeField] private TextMeshProUGUI p1Ability2KeyText;
+        [SerializeField] private TextMeshProUGUI p1Ability1NameText;
+        [SerializeField] private TextMeshProUGUI p1Ability2NameText;
         [SerializeField] private GameObject p1ShieldIndicator;
 
         [Header("Player 2 UI")]
@@ -40,6 +42,8 @@ namespace DirtyThirtyShowdown
         [SerializeField] private Image p2Ability2Cooldown;
         [SerializeField] private TextMeshProUGUI p2Ability1KeyText;
         [SerializeField] private TextMeshProUGUI p2Ability2KeyText;
+        [SerializeField] private TextMeshProUGUI p2Ability1NameText;
+        [SerializeField] private TextMeshProUGUI p2Ability2NameText;
         [SerializeField] private GameObject p2ShieldIndicator;
 
         [Header("State Panels")]
@@ -53,6 +57,7 @@ namespace DirtyThirtyShowdown
         [SerializeField] private TextMeshProUGUI roundStartText;
         [SerializeField] private TextMeshProUGUI roundEndText;
         [SerializeField] private TextMeshProUGUI matchWinnerText;
+        [SerializeField] private TextMeshProUGUI matchEndInstructionsText;
 
         [Header("Ability Effect Indicators")]
         [SerializeField] private GameObject p1PowerSurgeIndicator;
@@ -228,6 +233,11 @@ namespace DirtyThirtyShowdown
                     (gameManager.Player2Character?.characterName ?? "Player 2");
                 matchWinnerText.text = $"{winnerName} WINS!";
             }
+
+            if (matchEndInstructionsText != null)
+            {
+                matchEndInstructionsText.text = "SPACE / ENTER = Rematch\nESC / BACKSPACE = Character Select";
+            }
         }
 
         private void UpdateRoundStartText()
@@ -312,6 +322,8 @@ namespace DirtyThirtyShowdown
                 if (p1NameText != null) p1NameText.text = character.characterName;
                 if (p1Ability1KeyText != null) p1Ability1KeyText.text = "Q";
                 if (p1Ability2KeyText != null) p1Ability2KeyText.text = "E";
+                if (p1Ability1NameText != null) p1Ability1NameText.text = character.ability1Name;
+                if (p1Ability2NameText != null) p1Ability2NameText.text = character.ability2Name;
             }
             else
             {
@@ -319,6 +331,8 @@ namespace DirtyThirtyShowdown
                 if (p2NameText != null) p2NameText.text = character.characterName;
                 if (p2Ability1KeyText != null) p2Ability1KeyText.text = "O";
                 if (p2Ability2KeyText != null) p2Ability2KeyText.text = "P";
+                if (p2Ability1NameText != null) p2Ability1NameText.text = character.ability1Name;
+                if (p2Ability2NameText != null) p2Ability2NameText.text = character.ability2Name;
             }
         }
 

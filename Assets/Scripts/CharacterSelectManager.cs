@@ -69,12 +69,43 @@ namespace DirtyThirtyShowdown
                 startMatchButton.onClick.AddListener(TryStartMatch);
                 startMatchButton.interactable = false;
             }
+
+            // Listen for state changes to auto-reset when returning to character select
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.OnStateChanged += HandleStateChanged;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.OnStateChanged -= HandleStateChanged;
+            }
+        }
+
+        private void HandleStateChanged(GameState newState)
+        {
+            if (newState == GameState.CharacterSelect)
+            {
+                ResetSelection();
+            }
         }
 
         private void Update()
         {
             HandlePlayer1Input();
             HandlePlayer2Input();
+
+            // When both ready, any confirm key starts the match
+            if (p1Ready && p2Ready)
+            {
+                if (Input.GetKeyDown(p1SelectKey) || Input.GetKeyDown(p2SelectKey))
+                {
+                    TryStartMatch();
+                }
+            }
         }
 
         private void SetupCharacterGrid()
