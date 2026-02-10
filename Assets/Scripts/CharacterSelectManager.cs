@@ -10,6 +10,9 @@ namespace DirtyThirtyShowdown
         [Header("Character Data")]
         [SerializeField] private CharacterData[] availableCharacters;
 
+        [Header("Easter Egg")]
+        [SerializeField] private CharacterData patzCharacter;
+
         [Header("Player 1 Selection UI")]
         [SerializeField] private Image p1SelectedPortrait;
         [SerializeField] private TextMeshProUGUI p1SelectedName;
@@ -75,6 +78,15 @@ namespace DirtyThirtyShowdown
             {
                 GameManager.Instance.OnStateChanged += HandleStateChanged;
             }
+
+            // Listen for cheat code activation
+            if (CheatManager.Instance != null)
+            {
+                CheatManager.Instance.OnPatzUnlocked += UnlockPatz;
+                // Re-unlock if already unlocked from a previous visit to this scene
+                if (CheatManager.Instance.PatzUnlocked)
+                    UnlockPatz();
+            }
         }
 
         private void OnDestroy()
@@ -82,6 +94,10 @@ namespace DirtyThirtyShowdown
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.OnStateChanged -= HandleStateChanged;
+            }
+            if (CheatManager.Instance != null)
+            {
+                CheatManager.Instance.OnPatzUnlocked -= UnlockPatz;
             }
         }
 
@@ -328,6 +344,29 @@ namespace DirtyThirtyShowdown
             GameManager.Instance?.StartMatch();
 
             OnBothPlayersReady?.Invoke(p1Character, p2Character);
+        }
+
+        private void UnlockPatz()
+        {
+            if (patzCharacter == null) return;
+
+            // Check if already in the roster
+            foreach (var c in availableCharacters)
+            {
+                if (c == patzCharacter) return;
+            }
+
+            // Append Patz to the available characters array
+            var newArray = new CharacterData[availableCharacters.Length + 1];
+            availableCharacters.CopyTo(newArray, 0);
+            newArray[newArray.Length - 1] = patzCharacter;
+            availableCharacters = newArray;
+
+            // Rebuild the grid to show the new character
+            SetupCharacterGrid();
+            UpdateSelectionUI();
+
+            Debug.Log("[CharacterSelectManager] Patz has entered the arena!");
         }
 
         public void ResetSelection()

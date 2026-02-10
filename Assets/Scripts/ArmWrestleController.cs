@@ -131,6 +131,13 @@ namespace DirtyThirtyShowdown
             barIndicator.anchoredPosition = new Vector2(xPosition, barIndicator.anchoredPosition.y);
         }
 
+        public void ForceBarPosition(float position)
+        {
+            BarPosition = Mathf.Clamp(position, -winThreshold, winThreshold);
+            BarVelocity = 0f;
+            OnBarPositionChanged?.Invoke(BarPosition);
+        }
+
         public void ResetBar()
         {
             BarPosition = 0f;

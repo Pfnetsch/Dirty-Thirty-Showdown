@@ -18,7 +18,11 @@ namespace DirtyThirtyShowdown
 
         // Sabi abilities
         CakeToss,       // Bar can only move toward user
-        FakeOut         // Reverse controls/momentum
+        FakeOut,        // Reverse controls/momentum
+
+        // Patz abilities (Easter Egg)
+        DivineSmash,    // Instantly slams bar to win position
+        Flex            // Massive power multiplier
     }
 
     [CreateAssetMenu(fileName = "New Character", menuName = "Dirty Thirty Showdown/Character Data")]

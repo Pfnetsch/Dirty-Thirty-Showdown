@@ -82,6 +82,12 @@ namespace DirtyThirtyShowdown
                 case AbilityType.FakeOut:
                     ExecuteFakeOut(duration);
                     break;
+                case AbilityType.DivineSmash:
+                    ExecuteDivineSmash(playerNumber);
+                    break;
+                case AbilityType.Flex:
+                    ExecuteFlex(playerNumber, duration);
+                    break;
             }
         }
 
@@ -204,6 +210,29 @@ namespace DirtyThirtyShowdown
             // Reverse controls/momentum for both players
             armWrestleController.SetControlsReversed(true, duration);
             StartCoroutine(AbilityDurationCoroutine(AbilityType.FakeOut, 0, duration));
+        }
+
+        #endregion
+
+        #region Patz Abilities (Easter Egg)
+
+        private void ExecuteDivineSmash(int playerNumber)
+        {
+            // Instantly slam the bar to win position
+            float winPosition = playerNumber == 1 ? -1f : 1f;
+            armWrestleController.ForceBarPosition(winPosition);
+
+            if (ScreenShake.Instance != null)
+                ScreenShake.Instance.Shake(0.5f, 0.3f);
+
+            OnAbilityActivated?.Invoke(AbilityType.DivineSmash, playerNumber);
+        }
+
+        private void ExecuteFlex(int playerNumber, float duration)
+        {
+            // 10x mashing power — completely overpowered
+            armWrestleController.SetMashMultiplier(playerNumber, 10f, duration);
+            StartCoroutine(AbilityDurationCoroutine(AbilityType.Flex, playerNumber, duration));
         }
 
         #endregion

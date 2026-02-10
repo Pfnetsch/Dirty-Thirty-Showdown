@@ -90,6 +90,19 @@ Phases 1-3 (core mechanics, character system, ability system) are complete.
 ### Detailed TODO
 See `.claude/TODO.md` for comprehensive task breakdown including UI layouts, pixel art asset list, audio file inventory, and balance parameters.
 
+## Pixel Art Generation (PixelLab MCP)
+
+A PixelLab MCP server is connected for AI-powered pixel art asset generation. All operations are async (return job IDs, poll with `get_*` tools).
+
+**Available tools**: `create_character`, `animate_character`, `get_character`, `create_isometric_tile`, `create_topdown_tileset`, `create_sidescroller_tileset` + list/delete variants.
+
+**Style guidelines for this project**:
+- Use **side** view for character sprites (arm-wrestling is viewed from the side)
+- Keep outline, shading, and detail settings consistent across all characters
+- Recommended starting style: `single color black outline`, `basic shading`, `medium detail`, 48px canvas
+- Useful animation templates: `fight-stance-idle-8-frames`, `breathing-idle`, `cross-punch`, `lead-jab`, `taking-punch`
+- Characters: Eli, Lene, Nati, Sabi — each needs a distinct visual description
+
 ### Reference Documents
 - `Assets/Docu/game-design-document.md` — Full design document
 - `.claude/TODO.md` — Detailed phase-by-phase task list

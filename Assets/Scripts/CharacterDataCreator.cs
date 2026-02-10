@@ -99,6 +99,26 @@ namespace DirtyThirtyShowdown
             SaveCharacterAsset(sabi, "Sabi");
         }
 
+        [UnityEditor.MenuItem("Assets/Create/Dirty Thirty Showdown/Character - Patz (Easter Egg)")]
+        public static void CreatePatz()
+        {
+            CharacterData patz = ScriptableObject.CreateInstance<CharacterData>();
+            patz.characterName = "Patz";
+            patz.description = "The birthday king. Too powerful for mere mortals.";
+            patz.ability1Type = AbilityType.DivineSmash;
+            patz.ability1Name = "Divine Smash";
+            patz.ability1Description = "Instantly wins the round. Because he can.";
+            patz.ability1Cooldown = 5f;
+            patz.ability1Duration = 0f;
+            patz.ability2Type = AbilityType.Flex;
+            patz.ability2Name = "Flex";
+            patz.ability2Description = "10x mashing power for 5 seconds. Overkill.";
+            patz.ability2Cooldown = 3f;
+            patz.ability2Duration = 5f;
+            patz.characterColor = new Color(0.25f, 0.41f, 0.88f); // Royal Blue
+            SaveCharacterAsset(patz, "Patz");
+        }
+
         private static void SaveCharacterAsset(CharacterData data, string name)
         {
             string folderPath = "Assets/ScriptableObjects/Characters";

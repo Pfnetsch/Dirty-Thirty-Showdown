@@ -15,6 +15,7 @@ namespace DirtyThirtyShowdown
         [SerializeField] private UIManager uiManager;
         [SerializeField] private AudioManager audioManager;
         [SerializeField] private CharacterSelectManager characterSelectManager;
+        [SerializeField] private CheatManager cheatManager;
 
         [Header("Players")]
         [SerializeField] private PlayerController player1;
@@ -44,6 +45,12 @@ namespace DirtyThirtyShowdown
                 audioObj.AddComponent<AudioSource>();
                 audioObj.AddComponent<AudioSource>();
                 audioObj.AddComponent<AudioSource>();
+            }
+
+            if (cheatManager == null)
+            {
+                GameObject cheatObj = new GameObject("CheatManager");
+                cheatManager = cheatObj.AddComponent<CheatManager>();
             }
         }
 
