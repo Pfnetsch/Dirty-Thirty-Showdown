@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-namespace PartyArmWrestling
+namespace DirtyThirtyShowdown
 {
     public class AbilitySystem : MonoBehaviour
     {

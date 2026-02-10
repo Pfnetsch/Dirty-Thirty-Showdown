@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-namespace PartyArmWrestling
+namespace DirtyThirtyShowdown
 {
     public class PlayerController : MonoBehaviour
     {

@@ -1,15 +1,15 @@
 using UnityEngine;
 
-namespace PartyArmWrestling
+namespace DirtyThirtyShowdown
 {
 #if UNITY_EDITOR
     /// <summary>
     /// Editor utility to create pre-configured character data assets.
-    /// Use menu: Assets > Create > Party Arm Wrestling > All Characters
+    /// Use menu: Assets > Create > Dirty Thirty Showdown > All Characters
     /// </summary>
     public static class CharacterDataCreator
     {
-        [UnityEditor.MenuItem("Assets/Create/Party Arm Wrestling/All Characters")]
+        [UnityEditor.MenuItem("Assets/Create/Dirty Thirty Showdown/All Characters")]
         public static void CreateAllCharacters()
         {
             CreateEli();
@@ -19,7 +19,7 @@ namespace PartyArmWrestling
             Debug.Log("Created all 4 character data assets in Assets/ScriptableObjects/Characters/");
         }
 
-        [UnityEditor.MenuItem("Assets/Create/Party Arm Wrestling/Character - Eli")]
+        [UnityEditor.MenuItem("Assets/Create/Dirty Thirty Showdown/Character - Eli")]
         public static void CreateEli()
         {
             CharacterData eli = ScriptableObject.CreateInstance<CharacterData>();
@@ -39,7 +39,7 @@ namespace PartyArmWrestling
             SaveCharacterAsset(eli, "Eli");
         }
 
-        [UnityEditor.MenuItem("Assets/Create/Party Arm Wrestling/Character - Lene")]
+        [UnityEditor.MenuItem("Assets/Create/Dirty Thirty Showdown/Character - Lene")]
         public static void CreateLene()
         {
             CharacterData lene = ScriptableObject.CreateInstance<CharacterData>();
@@ -59,7 +59,7 @@ namespace PartyArmWrestling
             SaveCharacterAsset(lene, "Lene");
         }
 
-        [UnityEditor.MenuItem("Assets/Create/Party Arm Wrestling/Character - Nati")]
+        [UnityEditor.MenuItem("Assets/Create/Dirty Thirty Showdown/Character - Nati")]
         public static void CreateNati()
         {
             CharacterData nati = ScriptableObject.CreateInstance<CharacterData>();
@@ -79,7 +79,7 @@ namespace PartyArmWrestling
             SaveCharacterAsset(nati, "Nati");
         }
 
-        [UnityEditor.MenuItem("Assets/Create/Party Arm Wrestling/Character - Sabi")]
+        [UnityEditor.MenuItem("Assets/Create/Dirty Thirty Showdown/Character - Sabi")]
         public static void CreateSabi()
         {
             CharacterData sabi = ScriptableObject.CreateInstance<CharacterData>();

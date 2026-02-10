@@ -1,4 +1,4 @@
-# Party Arm Wrestling
+# Dirty Thirty Showdown
 
 A competitive 2-player arm wrestling party game built in Unity 6.
 
@@ -10,7 +10,7 @@ A competitive 2-player arm wrestling party game built in Unity 6.
 2. **Copy the Assets folder** into your Unity project
 3. **Install TextMeshPro** if prompted (Window > TextMeshPro > Import TMP Essential Resources)
 4. **Create Character Data Assets**:
-   - In Unity, go to `Assets > Create > Party Arm Wrestling > All Characters`
+   - In Unity, go to `Assets > Create > Dirty Thirty Showdown > All Characters`
    - This creates 4 character ScriptableObjects (Eli, Lene, Nati, Sabi)
 
 ### Scene Setup
@@ -114,7 +114,7 @@ This project is set up to work well with Claude Code for iterative development:
 cd /path/to/your/unity/project
 
 # Copy the scripts
-cp -r PartyArmWrestling/Assets/Scripts/* Assets/Scripts/
+cp -r DirtyThirtyShowdown/Assets/Scripts/* Assets/Scripts/
 
 # Open Unity and let it compile
 ```

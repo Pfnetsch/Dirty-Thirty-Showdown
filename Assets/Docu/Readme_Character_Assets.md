@@ -18,7 +18,7 @@ The `.asset` files reference the `CharacterData` script. You need to update the 
 **OR** (Easier Method):
 1. Delete all 4 `.asset` files
 2. In Unity Editor: Right-click in Project window
-3. Create → Party Arm Wrestling → Character Data
+3. Create → Dirty Thirty Showdown → Character Data
 4. Create 4 new assets and manually configure them using the values below
 
 ---

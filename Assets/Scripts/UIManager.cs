@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-namespace PartyArmWrestling
+namespace DirtyThirtyShowdown
 {
     public class UIManager : MonoBehaviour
     {

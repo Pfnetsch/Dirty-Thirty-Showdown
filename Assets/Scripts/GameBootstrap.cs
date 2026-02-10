@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace PartyArmWrestling
+namespace DirtyThirtyShowdown
 {
     /// <summary>
     /// Bootstraps the game scene with all necessary references.

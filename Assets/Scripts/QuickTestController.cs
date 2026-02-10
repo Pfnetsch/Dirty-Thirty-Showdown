@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace PartyArmWrestling
+namespace DirtyThirtyShowdown
 {
     /// <summary>
     /// Simple test controller for quickly testing the core mechanics

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
 
-namespace PartyArmWrestling
+namespace DirtyThirtyShowdown
 {
     public enum GameState
     {

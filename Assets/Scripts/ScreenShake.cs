@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace PartyArmWrestling
+namespace DirtyThirtyShowdown
 {
     public class ScreenShake : MonoBehaviour
     {

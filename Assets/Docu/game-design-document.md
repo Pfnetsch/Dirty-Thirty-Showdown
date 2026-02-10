@@ -1,4 +1,4 @@
-# Party Arm Wrestling Game - Design Document
+# Dirty Thirty Showdown - Design Document
 
 ## Game Concept
 

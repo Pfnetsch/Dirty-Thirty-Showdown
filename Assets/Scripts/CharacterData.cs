@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace PartyArmWrestling
+namespace DirtyThirtyShowdown
 {
     public enum AbilityType
     {
@@ -21,7 +21,7 @@ namespace PartyArmWrestling
         FakeOut         // Reverse controls/momentum
     }
 
-    [CreateAssetMenu(fileName = "New Character", menuName = "Party Arm Wrestling/Character Data")]
+    [CreateAssetMenu(fileName = "New Character", menuName = "Dirty Thirty Showdown/Character Data")]
     public class CharacterData : ScriptableObject
     {
         [Header("Basic Info")]

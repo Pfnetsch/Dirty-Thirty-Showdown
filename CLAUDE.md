@@ -12,7 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Rendering**: URP (Universal Render Pipeline 17.3.0)
 - **UI text**: TextMeshPro (import TMP Essential Resources if prompted)
 - **Input**: Legacy `Input.GetKeyDown` (not the new Input System, despite the package being installed)
-- **Character data**: ScriptableObject assets in `Assets/Characters/` — create via menu `Assets > Create > Party Arm Wrestling > All Characters`
+- **Character data**: ScriptableObject assets in `Assets/Characters/` — create via menu `Assets > Create > Dirty Thirty Showdown > All Characters`
 
 ## Architecture
 
@@ -79,4 +79,17 @@ To add a new ability: add to `AbilityType` enum, implement in `AbilitySystem.Exe
 
 ## Development Status
 
-Phases 1-3 (core mechanics, character system, ability system) are complete. Phases 4-7 (match flow UI, pixel art, audio integration, testing/balance) are in progress. See `Assets/Docu/game-design-document.md` for the full design document.
+Phases 1-3 (core mechanics, character system, ability system) are complete.
+
+### Open Phases
+- [ ] **Phase 4: Match Flow UI** — Build all UI panels (character select, gameplay HUD, round transitions, match end). Priority 1.
+- [ ] **Phase 5: Visual Polish (Pixel Art)** — Character portraits exist. Need arm-wrestling pose variants, ability effects, UI elements.
+- [ ] **Phase 6: Audio Integration** — Generic SFX/music from free libraries. Voice lines recorded by the 4 girls. Audio is data-driven via ScriptableObjects (drag & drop in Inspector).
+- [ ] **Phase 7: Testing & Balance** — Playtesting + automated balance simulation with AI players.
+
+### Detailed TODO
+See `.claude/TODO.md` for comprehensive task breakdown including UI layouts, pixel art asset list, audio file inventory, and balance parameters.
+
+### Reference Documents
+- `Assets/Docu/game-design-document.md` — Full design document
+- `.claude/TODO.md` — Detailed phase-by-phase task list
