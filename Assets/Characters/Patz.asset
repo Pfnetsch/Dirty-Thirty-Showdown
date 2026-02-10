@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3418f49adba8e2843af42634ca499fb9, type: 3}
+  m_Name: Patz
+  m_EditorClassIdentifier: Assembly-CSharp::DirtyThirtyShowdown.CharacterData
+  characterName: Patz
+  description: The birthday king. Too powerful for mere mortals.
+  ability1Type: 8
+  ability1Name: Divine Smash
+  ability1Description: Instantly wins the round. Because he can.
+  ability1Cooldown: 5
+  ability1Duration: 0
+  ability2Type: 9
+  ability2Name: Flex
+  ability2Description: 10x mashing power for 5 seconds. Overkill.
+  ability2Cooldown: 3
+  ability2Duration: 5
+  characterPortrait: {fileID: 0}
+  characterSprite: {fileID: 0}
+  characterColor: {r: 0.25, g: 0.41, b: 0.88, a: 1}
+  characterAnimator: {fileID: 0}
+  selectVoiceLines: []
+  ability1VoiceLines: []
+  ability2VoiceLines: []
+  victoryVoiceLines: []
+  defeatVoiceLines: []
+  trashTalkLines: []
+  ability1SFX: {fileID: 0}
+  ability2SFX: {fileID: 0}
