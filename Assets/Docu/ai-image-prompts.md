@@ -17,7 +17,7 @@ All gameplay images: **Pixel art style, vibrant colors, side view. Two character
 ## UI Screens (7 images)
 
 ### 1. Title Screen
-`Pixel art title screen for "Dirty Thirty Showdown". Arm wrestling table in center, party decorations, balloons, confetti, birthday theme. All 5 characters (3 women and 1 man and 1 woman) visible around the table cheering. Vibrant colors, energetic party atmosphere.`
+`Pixel art title screen for "Dirty Thirty Showdown". Arm wrestling table in center, party decorations, balloons, confetti, birthday theme. All 5 characters (4 women and 1 man) visible around the table cheering. Vibrant colors, energetic party atmosphere.`
 
 ### 2. Character Select Screen Background
 `Pixel art character select screen background. Party stage with spotlights, 5 empty character slots/pedestals, festive decorations, arm wrestling table visible in background. Clean layout with space for UI elements.`
