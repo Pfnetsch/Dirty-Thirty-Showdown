@@ -58,7 +58,7 @@ namespace DirtyThirtyShowdown
 
         // Character button references
         private Button[] characterButtons;
-        private Image[] characterButtonHighlights;
+        private Transform[] characterButtonHighlights;
 
         public event Action<CharacterData, CharacterData> OnBothPlayersReady;
 
@@ -136,7 +136,7 @@ namespace DirtyThirtyShowdown
             }
 
             characterButtons = new Button[availableCharacters.Length];
-            characterButtonHighlights = new Image[availableCharacters.Length];
+            characterButtonHighlights = new Transform[availableCharacters.Length];
 
             for (int i = 0; i < availableCharacters.Length; i++)
             {
@@ -161,8 +161,8 @@ namespace DirtyThirtyShowdown
                     nameText.text = availableCharacters[i].characterName;
                 }
 
-                // Setup highlight for selection indication
-                Image highlight = buttonObj.transform.Find("Highlight")?.GetComponent<Image>();
+                // Setup highlight for selection indication (border-style)
+                Transform highlight = buttonObj.transform.Find("Highlight");
                 characterButtonHighlights[i] = highlight;
                 if (highlight != null)
                 {
@@ -252,7 +252,12 @@ namespace DirtyThirtyShowdown
             if (p1Ability2Text != null)
                 p1Ability2Text.text = $"E: {p1Character.ability2Name}";
             if (p1ReadyIndicator != null)
-                p1ReadyIndicator.color = p1Ready ? Color.green : Color.gray;
+            {
+                p1ReadyIndicator.color = p1Ready ? new Color(0.2f, 0.8f, 0.2f) : new Color(0.25f, 0.25f, 0.3f, 0.8f);
+                var p1ReadyText = p1ReadyIndicator.GetComponentInChildren<TextMeshProUGUI>();
+                if (p1ReadyText != null)
+                    p1ReadyText.color = p1Ready ? Color.white : new Color(0.5f, 0.5f, 0.5f);
+            }
 
             // Update P2 selection display
             CharacterData p2Character = availableCharacters[p2SelectionIndex];
@@ -265,9 +270,14 @@ namespace DirtyThirtyShowdown
             if (p2Ability2Text != null)
                 p2Ability2Text.text = $"P: {p2Character.ability2Name}";
             if (p2ReadyIndicator != null)
-                p2ReadyIndicator.color = p2Ready ? Color.green : Color.gray;
+            {
+                p2ReadyIndicator.color = p2Ready ? new Color(0.2f, 0.8f, 0.2f) : new Color(0.25f, 0.25f, 0.3f, 0.8f);
+                var p2ReadyText = p2ReadyIndicator.GetComponentInChildren<TextMeshProUGUI>();
+                if (p2ReadyText != null)
+                    p2ReadyText.color = p2Ready ? Color.white : new Color(0.5f, 0.5f, 0.5f);
+            }
 
-            // Update character grid highlights
+            // Update character grid highlights (border-style)
             for (int i = 0; i < characterButtonHighlights.Length; i++)
             {
                 if (characterButtonHighlights[i] == null) continue;
@@ -275,20 +285,19 @@ namespace DirtyThirtyShowdown
                 bool isP1Selection = i == p1SelectionIndex;
                 bool isP2Selection = i == p2SelectionIndex;
 
-                if (isP1Selection && isP2Selection)
+                if (isP1Selection || isP2Selection)
                 {
                     characterButtonHighlights[i].gameObject.SetActive(true);
-                    characterButtonHighlights[i].color = Color.Lerp(p1HighlightColor, p2HighlightColor, 0.5f);
-                }
-                else if (isP1Selection)
-                {
-                    characterButtonHighlights[i].gameObject.SetActive(true);
-                    characterButtonHighlights[i].color = p1HighlightColor;
-                }
-                else if (isP2Selection)
-                {
-                    characterButtonHighlights[i].gameObject.SetActive(true);
-                    characterButtonHighlights[i].color = p2HighlightColor;
+                    Color borderColor;
+                    if (isP1Selection && isP2Selection)
+                        borderColor = Color.Lerp(p1HighlightColor, p2HighlightColor, 0.5f);
+                    else if (isP1Selection)
+                        borderColor = p1HighlightColor;
+                    else
+                        borderColor = p2HighlightColor;
+
+                    foreach (var img in characterButtonHighlights[i].GetComponentsInChildren<Image>())
+                        img.color = borderColor;
                 }
                 else
                 {
@@ -305,15 +314,15 @@ namespace DirtyThirtyShowdown
 
             if (!p1Ready && !p2Ready)
             {
-                instructionsText.text = "P1: A/D to select, SPACE to confirm\nP2: Arrows to select, ENTER to confirm";
+                instructionsText.text = "P1: A/D to select, SPACE to ready up\nP2: Arrows to select, ENTER to ready up";
             }
             else if (!p1Ready)
             {
-                instructionsText.text = "P1: A/D to select, SPACE to confirm\nP2: READY!";
+                instructionsText.text = "P1: A/D to select, SPACE to ready up\nP2: READY!";
             }
             else if (!p2Ready)
             {
-                instructionsText.text = "P1: READY!\nP2: Arrows to select, ENTER to confirm";
+                instructionsText.text = "P1: READY!\nP2: Arrows to select, ENTER to ready up";
             }
             else
             {

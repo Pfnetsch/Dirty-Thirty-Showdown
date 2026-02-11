@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Sabi
   m_EditorClassIdentifier: 
   characterName: Sabi
-  description: "Cake Boss - Defensive and unpredictable counter-play specialist"
+  description: Cake Boss - Defensive and unpredictable counter-play specialist
   ability1Type: 6
   ability1Name: Cake Toss
-  ability1Description: Bar can only move toward your side for 2 seconds. Stop their momentum!
+  ability1Description: Bar can only move toward your side for 2 seconds. Stop their
+    momentum!
   ability1Cooldown: 20
   ability1Duration: 2
   ability2Type: 7
@@ -24,9 +25,9 @@ MonoBehaviour:
   ability2Description: Reverse controls/momentum briefly for 2 seconds. Total chaos!
   ability2Cooldown: 24
   ability2Duration: 2
-  characterPortrait: {fileID: 0}
+  characterPortrait: {fileID: 6559922821160736126, guid: 68d18efd8a6188e4a8c50f0258a44af5, type: 3}
   characterSprite: {fileID: 0}
-  characterColor: {r: 1, g: 0.64705884, b: 0.0, a: 1}
+  characterColor: {r: 1, g: 0.64705884, b: 0, a: 1}
   characterAnimator: {fileID: 0}
   selectVoiceLines: []
   ability1VoiceLines: []

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Eli
   m_EditorClassIdentifier: 
   characterName: Eli
-  description: "Birthday Wish - Overwhelming offensive power with high aggression"
+  description: Birthday Wish - Overwhelming offensive power with high aggression
   ability1Type: 0
   ability1Name: Power Surge
   ability1Description: Your button mashing counts 2x for 3 seconds. Pure dominance!
@@ -24,7 +24,7 @@ MonoBehaviour:
   ability2Description: Screen flash and shake to break your opponent's concentration
   ability2Cooldown: 10
   ability2Duration: 0.5
-  characterPortrait: {fileID: 0}
+  characterPortrait: {fileID: 7399648493245821728, guid: 1af2c99c932bfa34cb023482cee1eaef, type: 3}
   characterSprite: {fileID: 0}
   characterColor: {r: 1, g: 0.84313726, b: 0, a: 1}
   characterAnimator: {fileID: 0}

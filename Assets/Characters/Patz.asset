@@ -24,7 +24,7 @@ MonoBehaviour:
   ability2Description: 10x mashing power for 5 seconds. Overkill.
   ability2Cooldown: 3
   ability2Duration: 5
-  characterPortrait: {fileID: 0}
+  characterPortrait: {fileID: 4849933608208126003, guid: 3d6b01538bac9504e90534d56306dd53, type: 3}
   characterSprite: {fileID: 0}
   characterColor: {r: 0.25, g: 0.41, b: 0.88, a: 1}
   characterAnimator: {fileID: 0}

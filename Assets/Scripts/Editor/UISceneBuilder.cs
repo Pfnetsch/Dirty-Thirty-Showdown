@@ -244,7 +244,7 @@ namespace DirtyThirtyShowdown
 
             // Instructions
             var instr = CreateTMP(panel.transform, "InstructionsText",
-                "P1: A/D to select, SPACE to confirm\nP2: Arrows to select, ENTER to confirm", 24);
+                "P1: A/D to select, SPACE to ready up\nP2: Arrows to select, ENTER to ready up", 24);
             var instrRT = instr.GetComponent<RectTransform>();
             instrRT.anchorMin = new Vector2(0.1f, 0.02f);
             instrRT.anchorMax = new Vector2(0.9f, 0.12f);
@@ -310,6 +310,7 @@ namespace DirtyThirtyShowdown
             portraitObj.transform.SetParent(panel.transform, false);
             var portraitImg = portraitObj.AddComponent<Image>();
             portraitImg.color = Color.gray;
+            portraitImg.preserveAspect = true;
             var portraitLE = portraitObj.AddComponent<LayoutElement>();
             portraitLE.preferredHeight = 128;
             portraitLE.preferredWidth = 128;
@@ -337,10 +338,13 @@ namespace DirtyThirtyShowdown
             var readyObj = new GameObject("ReadyIndicator");
             readyObj.transform.SetParent(panel.transform, false);
             var readyImg = readyObj.AddComponent<Image>();
-            readyImg.color = Color.gray;
+            readyImg.color = new Color(0.25f, 0.25f, 0.3f, 0.8f);
             var readyLE = readyObj.AddComponent<LayoutElement>();
-            readyLE.preferredHeight = 30;
-            readyLE.preferredWidth = 30;
+            readyLE.preferredHeight = 36;
+            var readyText = CreateTMP(readyObj.transform, "Text", "READY", 18, FontStyles.Bold);
+            StretchFill(readyText.gameObject);
+            readyText.alignment = TextAlignmentOptions.Center;
+            readyText.color = new Color(0.5f, 0.5f, 0.5f);
 
             return panel;
         }
@@ -570,6 +574,7 @@ namespace DirtyThirtyShowdown
             portraitObj.transform.SetParent(hud.transform, false);
             portrait = portraitObj.AddComponent<Image>();
             portrait.color = Color.gray;
+            portrait.preserveAspect = true;
             var portraitLE = portraitObj.AddComponent<LayoutElement>();
             portraitLE.preferredHeight = 80;
 
@@ -771,6 +776,7 @@ namespace DirtyThirtyShowdown
             portraitObj.transform.SetParent(btnObj.transform, false);
             var portraitImg = portraitObj.AddComponent<Image>();
             portraitImg.color = Color.gray;
+            portraitImg.preserveAspect = true;
             var portraitLE = portraitObj.AddComponent<LayoutElement>();
             portraitLE.preferredHeight = 120;
 
@@ -787,18 +793,15 @@ namespace DirtyThirtyShowdown
             var nameLE = nameObj.AddComponent<LayoutElement>();
             nameLE.preferredHeight = 30;
 
-            // Highlight — must be named "Highlight"
+            // Highlight — border-style selection indicator (named "Highlight")
             var highlightObj = new GameObject("Highlight");
             highlightObj.transform.SetParent(btnObj.transform, false);
             var highlightRT = highlightObj.AddComponent<RectTransform>();
-            // Stretch to fill parent as overlay
             highlightRT.anchorMin = Vector2.zero;
             highlightRT.anchorMax = Vector2.one;
             highlightRT.offsetMin = Vector2.zero;
             highlightRT.offsetMax = Vector2.zero;
-            var highlightImg = highlightObj.AddComponent<Image>();
-            highlightImg.color = new Color(1f, 1f, 1f, 0.3f);
-            highlightImg.raycastTarget = false;
+            CreateBorderImages(highlightObj.transform, 3f);
             highlightObj.SetActive(false);
             // Remove from layout
             var highlightLI = highlightObj.AddComponent<LayoutElement>();
@@ -1082,6 +1085,49 @@ namespace DirtyThirtyShowdown
             rt.anchorMax = Vector2.one;
             rt.offsetMin = Vector2.zero;
             rt.offsetMax = Vector2.zero;
+        }
+
+        private static void CreateBorderImages(Transform parent, float thickness)
+        {
+            // Top
+            var top = new GameObject("TopBorder");
+            top.transform.SetParent(parent, false);
+            var topRT = top.AddComponent<RectTransform>();
+            topRT.anchorMin = new Vector2(0, 1);
+            topRT.anchorMax = Vector2.one;
+            topRT.offsetMin = new Vector2(0, -thickness);
+            topRT.offsetMax = Vector2.zero;
+            top.AddComponent<Image>().raycastTarget = false;
+
+            // Bottom
+            var bottom = new GameObject("BottomBorder");
+            bottom.transform.SetParent(parent, false);
+            var bottomRT = bottom.AddComponent<RectTransform>();
+            bottomRT.anchorMin = Vector2.zero;
+            bottomRT.anchorMax = new Vector2(1, 0);
+            bottomRT.offsetMin = Vector2.zero;
+            bottomRT.offsetMax = new Vector2(0, thickness);
+            bottom.AddComponent<Image>().raycastTarget = false;
+
+            // Left
+            var left = new GameObject("LeftBorder");
+            left.transform.SetParent(parent, false);
+            var leftRT = left.AddComponent<RectTransform>();
+            leftRT.anchorMin = Vector2.zero;
+            leftRT.anchorMax = new Vector2(0, 1);
+            leftRT.offsetMin = Vector2.zero;
+            leftRT.offsetMax = new Vector2(thickness, 0);
+            left.AddComponent<Image>().raycastTarget = false;
+
+            // Right
+            var right = new GameObject("RightBorder");
+            right.transform.SetParent(parent, false);
+            var rightRT = right.AddComponent<RectTransform>();
+            rightRT.anchorMin = new Vector2(1, 0);
+            rightRT.anchorMax = Vector2.one;
+            rightRT.offsetMin = new Vector2(-thickness, 0);
+            rightRT.offsetMax = Vector2.zero;
+            right.AddComponent<Image>().raycastTarget = false;
         }
 
         private static void SetRef(SerializedObject so, string propertyName, Object value)

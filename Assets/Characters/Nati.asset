@@ -13,18 +13,20 @@ MonoBehaviour:
   m_Name: Nati
   m_EditorClassIdentifier: 
   characterName: Nati
-  description: "Dance Queen - Charm-based disruption with endurance advantage"
+  description: Dance Queen - Charm-based disruption with endurance advantage
   ability1Type: 4
   ability1Name: Wink/Flirt
-  ability1Description: Opponent's button becomes completely unresponsive for 1.5 seconds. Irresistible!
+  ability1Description: Opponent's button becomes completely unresponsive for 1.5
+    seconds. Irresistible!
   ability1Cooldown: 12
   ability1Duration: 1.5
   ability2Type: 5
   ability2Name: Celebration Dance
-  ability2Description: Opponent needs 50% more button mashing for same effect for 4 seconds
+  ability2Description: Opponent needs 50% more button mashing for same effect for
+    4 seconds
   ability2Cooldown: 18
   ability2Duration: 4
-  characterPortrait: {fileID: 0}
+  characterPortrait: {fileID: -2018453148139846161, guid: c11e403dc0e781748ad3aaf444c2789b, type: 3}
   characterSprite: {fileID: 0}
   characterColor: {r: 1, g: 0.41568628, b: 0.7058824, a: 1}
   characterAnimator: {fileID: 0}

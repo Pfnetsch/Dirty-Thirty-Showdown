@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Lene
   m_EditorClassIdentifier: 
   characterName: Lene
-  description: "Party Master - Tactical defense with psychological pressure"
+  description: Party Master - Tactical defense with psychological pressure
   ability1Type: 2
   ability1Name: Trash Talk
-  ability1Description: Speech bubble appears and opponent gets 25% slowdown for 2 seconds. Get in their head!
+  ability1Description: Speech bubble appears and opponent gets 25% slowdown for 2
+    seconds. Get in their head!
   ability1Cooldown: 16
   ability1Duration: 2
   ability2Type: 3
@@ -24,7 +25,7 @@ MonoBehaviour:
   ability2Description: Block the next ability used against you. Perfect defense!
   ability2Cooldown: 22
   ability2Duration: 0
-  characterPortrait: {fileID: 0}
+  characterPortrait: {fileID: 4194233823704116778, guid: 2700854ce19525e459317f75bacadb8e, type: 3}
   characterSprite: {fileID: 0}
   characterColor: {r: 0.5411765, g: 0.16862746, b: 0.8862745, a: 1}
   characterAnimator: {fileID: 0}
