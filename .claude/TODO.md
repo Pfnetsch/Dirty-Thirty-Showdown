@@ -47,13 +47,33 @@
 
 ## Phase 5: Visual Polish (Pixel Art)
 
+### Architecture: Modular Composable Sprites
+
+The arm wrestling scene uses **modular per-character sprites** composited at runtime, NOT pre-rendered per-matchup combinations. This avoids combinatorial explosion (6+ matchups × multiple states) and makes adding characters easy.
+
+**Scene Composition (layered back to front):**
+1. **Background / table** (shared)
+2. **Left-side character body** (Player 1)
+3. **Left-side arm** (Player 1, position driven by bar value)
+4. **Clasped hands** (shared, center, position driven by bar value)
+5. **Right-side arm** (Player 2, position driven by bar value)
+6. **Right-side character body** (Player 2)
+7. **Ability VFX overlays** (per ability, on top)
+
+**Bar-to-Sprite Mapping:**
+- Bar position `-1` to `+1` (from `ArmWrestleController`) maps to arm positions
+- 5 arm positions: far-winning, winning, neutral, losing, far-losing
+- Expression/head swaps for straining, winning, using ability
+
+---
+
 ### Pixel Art Assets Needed
 
 #### Character Portraits (for UI panels)
-- [ ] Eli - portrait icon (headshot/bust, ~64x64 or 128x128)
-- [ ] Lene - portrait icon
-- [ ] Nati - portrait icon
-- [ ] Sabi - portrait icon
+- [x] Eli - portrait icon
+- [x] Lene - portrait icon
+- [x] Nati - portrait icon
+- [x] Sabi - portrait icon
 > **Status**: Patrick has these already
 
 #### Character Select Icons (for grid buttons)
@@ -62,22 +82,70 @@
 - [ ] Nati - selectable icon
 - [ ] Sabi - selectable icon
 
-#### Arm Wrestling Sprites (gameplay scene)
-- [ ] Eli - arm wrestling pose (idle/neutral)
-- [ ] Eli - arm wrestling pose (pushing/winning)
-- [ ] Eli - arm wrestling pose (losing/strained)
-- [ ] Lene - arm wrestling pose (idle/neutral)
-- [ ] Lene - arm wrestling pose (pushing/winning)
-- [ ] Lene - arm wrestling pose (losing/strained)
-- [ ] Nati - arm wrestling pose (idle/neutral)
-- [ ] Nati - arm wrestling pose (pushing/winning)
-- [ ] Nati - arm wrestling pose (losing/strained)
-- [ ] Sabi - arm wrestling pose (idle/neutral)
-- [ ] Sabi - arm wrestling pose (pushing/winning)
-- [ ] Sabi - arm wrestling pose (losing/strained)
-> **Note**: Patrick will generate variants from existing character icons. 3 states per character = 12 sprites total.
+#### Arm Wrestling Body Sprites (per character, 128px)
+Each character needs a body sprite (torso + head, seated/standing at table) for both sides.
+The body stays mostly static — the arm and expression change.
 
-#### Victory / Defeat Poses
+**Eli:**
+- [ ] Body sprite — left side (facing right, for P1 position)
+- [ ] Body sprite — right side (facing left, for P2 position)
+- [ ] Expression: neutral/idle
+- [ ] Expression: straining/effort
+- [ ] Expression: winning/confident
+- [ ] Expression: losing/struggling
+- [ ] Expression: using ability (power-up glow)
+
+**Lene:**
+- [ ] Body sprite — left side
+- [ ] Body sprite — right side
+- [ ] Expression: neutral/idle
+- [ ] Expression: straining/effort
+- [ ] Expression: winning/confident
+- [ ] Expression: losing/struggling
+- [ ] Expression: using ability (trash talking / shielded)
+
+**Nati:**
+- [ ] Body sprite — left side
+- [ ] Body sprite — right side
+- [ ] Expression: neutral/idle
+- [ ] Expression: straining/effort
+- [ ] Expression: winning/confident
+- [ ] Expression: losing/struggling
+- [ ] Expression: using ability (winking / dancing)
+
+**Sabi:**
+- [ ] Body sprite — left side
+- [ ] Body sprite — right side
+- [ ] Expression: neutral/idle
+- [ ] Expression: straining/effort
+- [ ] Expression: winning/confident
+- [ ] Expression: losing/struggling
+- [ ] Expression: using ability (throwing cake / faking out)
+
+#### Arm Sprites (per character, connects to shared hand clasp)
+Each character needs arm sprites in 5 positions matching the bar value.
+
+**Per character (×4 characters = 20 arm sprites total):**
+- [ ] Arm position: far-winning (bar near ±1.0 in their favor)
+- [ ] Arm position: winning (bar ~±0.5 in their favor)
+- [ ] Arm position: neutral (bar ~0)
+- [ ] Arm position: losing (bar ~±0.5 against them)
+- [ ] Arm position: far-losing (bar near ±1.0 against them)
+
+**Progress:**
+- [ ] Eli arms (5 positions)
+- [ ] Lene arms (5 positions)
+- [ ] Nati arms (5 positions)
+- [ ] Sabi arms (5 positions)
+
+#### Shared / Center Sprites
+- [ ] Clasped hands — neutral position
+- [ ] Clasped hands — tilted left (P1 winning)
+- [ ] Clasped hands — tilted right (P2 winning)
+- [ ] Arm wrestling table / surface
+- [ ] Background / stage art
+
+#### Victory / Defeat Poses (full character, for match end screen)
 - [ ] Eli - victory celebration sprite
 - [ ] Eli - defeat sprite
 - [ ] Lene - victory celebration sprite
@@ -87,31 +155,40 @@
 - [ ] Sabi - victory celebration sprite
 - [ ] Sabi - defeat sprite
 
-#### Ability Effect Sprites/Animations
-- [ ] Power Surge - sparkle/glow effect (Eli)
-- [ ] Flash - screen flash overlay (Eli) — can be a simple white texture + CanvasGroup
-- [ ] Trash Talk - speech bubble with text (Lene)
-- [ ] Shield - protective bubble/aura (Lene)
-- [ ] Shield Break - shatter effect when consumed (Lene)
-- [ ] Wink/Flirt - hearts/sparkles (Nati)
-- [ ] Dance - music notes (Nati)
-- [ ] Cake Toss - cake splat (Sabi)
-- [ ] Fake Out - confusion/reverse arrows (Sabi)
+#### Ability Effect Sprites/Animations (overlays)
+- [ ] Power Surge — sparkle/glow effect around arm (Eli)
+- [ ] Flash — screen flash overlay (Eli) — simple white texture + CanvasGroup
+- [ ] Trash Talk — speech bubble with text/symbols (Lene)
+- [ ] Shield — protective bubble/aura around Lene (Lene)
+- [ ] Shield Break — shatter effect when consumed (Lene)
+- [ ] Wink/Flirt — hearts/sparkles floating (Nati)
+- [ ] Dance — music notes floating (Nati)
+- [ ] Cake Toss — cake projectile + splat on opponent (Sabi)
+- [ ] Fake Out — confusion/reverse arrows over opponent (Sabi)
 
 #### UI Elements
 - [ ] Tug-of-war bar background
 - [ ] Bar indicator/cursor
 - [ ] Cooldown radial overlay
 - [ ] Round win indicators (dots/stars)
-- [ ] Background / stage art
 - [ ] Title screen logo "Dirty Thirty Showdown"
 
 ### Sprite Specifications
 - **Style**: Pixel art, vibrant colors, readable at party distance
-- **Portrait size**: 128x128 recommended (scales well)
-- **Gameplay sprites**: 64x64 or 128x128 per character
-- **Effects**: Can be smaller, 32x32 to 64x64
+- **Canvas size**: 128×128px for body sprites (character is ~60% of canvas height)
+- **View**: Side view (arm wrestling viewed from the side)
+- **PixelLab settings**: `single color black outline`, `basic shading`, `medium detail`
+- **Arms/hands**: 64×64 or smaller, must align at connection points
+- **Effects**: 32×32 to 64×64
 - **Format**: PNG with transparency
+
+### Generation Order
+1. **Eli** (first — validate style and approach) ← CURRENT
+2. **Lene** (match Eli's style)
+3. **Nati** (match style)
+4. **Sabi** (match style)
+5. **Shared assets** (hands, table, background)
+6. **VFX overlays** (ability effects)
 
 ---
 

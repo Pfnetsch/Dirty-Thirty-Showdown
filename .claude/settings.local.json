@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "mcp__pixellab__get_character",
-      "mcp__pixellab__create_character"
+      "mcp__pixellab__create_character",
+      "mcp__pixellab__create_topdown_tileset",
+      "mcp__pixellab__create_isometric_tile",
+      "mcp__pixellab__get_isometric_tile",
+      "mcp__pixellab__get_topdown_tileset",
+      "mcp__pixellab__animate_character"
     ]
   }
 }
