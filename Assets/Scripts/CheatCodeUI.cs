@@ -41,7 +41,7 @@ namespace DirtyThirtyShowdown
                 feedbackText.gameObject.SetActive(false);
         }
 
-        private void OpenPanel()
+        public void OpenPanel()
         {
             if (cheatPanel != null)
             {

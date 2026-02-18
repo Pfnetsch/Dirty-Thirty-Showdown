@@ -47,6 +47,7 @@ namespace DirtyThirtyShowdown
         [SerializeField] private GameObject p2ShieldIndicator;
 
         [Header("State Panels")]
+        [SerializeField] private GameObject titleScreenPanel;
         [SerializeField] private GameObject characterSelectPanel;
         [SerializeField] private GameObject gameplayPanel;
         [SerializeField] private GameObject roundStartPanel;
@@ -58,6 +59,14 @@ namespace DirtyThirtyShowdown
         [SerializeField] private TextMeshProUGUI roundEndText;
         [SerializeField] private TextMeshProUGUI matchWinnerText;
         [SerializeField] private TextMeshProUGUI matchEndInstructionsText;
+
+        [Header("Victory Backgrounds")]
+        [SerializeField] private Image victoryBackgroundImage;
+        [SerializeField] private Sprite eliVictorySprite;
+        [SerializeField] private Sprite leneVictorySprite;
+        [SerializeField] private Sprite natiVictorySprite;
+        [SerializeField] private Sprite sabiVictorySprite;
+        [SerializeField] private Sprite patzVictorySprite;
 
         [Header("Ability Effect Indicators")]
         [SerializeField] private GameObject p1PowerSurgeIndicator;
@@ -106,8 +115,8 @@ namespace DirtyThirtyShowdown
 
             // Initialize UI
             SetAllPanelsInactive();
-            if (characterSelectPanel != null)
-                characterSelectPanel.SetActive(true);
+            if (titleScreenPanel != null)
+                titleScreenPanel.SetActive(true);
         }
 
         private void OnDestroy()
@@ -135,6 +144,9 @@ namespace DirtyThirtyShowdown
 
             switch (newState)
             {
+                case GameState.TitleScreen:
+                    titleScreenPanel?.SetActive(true);
+                    break;
                 case GameState.CharacterSelect:
                     characterSelectPanel?.SetActive(true);
                     break;
@@ -161,6 +173,7 @@ namespace DirtyThirtyShowdown
 
         private void SetAllPanelsInactive()
         {
+            titleScreenPanel?.SetActive(false);
             characterSelectPanel?.SetActive(false);
             gameplayPanel?.SetActive(false);
             roundStartPanel?.SetActive(false);
@@ -226,19 +239,37 @@ namespace DirtyThirtyShowdown
 
         private void HandleMatchEnd(int winner)
         {
+            CharacterData winnerCharacter = winner == 1 ? gameManager.Player1Character : gameManager.Player2Character;
+
             if (matchWinnerText != null)
             {
-                string winnerName = winner == 1 ?
-                    (gameManager.Player1Character?.characterName ?? "Player 1") :
-                    (gameManager.Player2Character?.characterName ?? "Player 2");
+                string winnerName = winnerCharacter?.characterName ?? (winner == 1 ? "Player 1" : "Player 2");
                 matchWinnerText.text = $"{winnerName} WINS!";
             }
 
             if (matchEndInstructionsText != null)
-            {
                 matchEndInstructionsText.text = "SPACE / ENTER = Rematch\nESC / BACKSPACE = Character Select";
+
+            if (victoryBackgroundImage != null && winnerCharacter != null)
+            {
+                Sprite victorySprite = GetVictorySprite(winnerCharacter.characterName);
+                if (victorySprite != null)
+                {
+                    victoryBackgroundImage.sprite = victorySprite;
+                    victoryBackgroundImage.gameObject.SetActive(true);
+                }
             }
         }
+
+        private Sprite GetVictorySprite(string characterName) => characterName switch
+        {
+            "Eli"  => eliVictorySprite,
+            "Lene" => leneVictorySprite,
+            "Nati" => natiVictorySprite,
+            "Sabi" => sabiVictorySprite,
+            "Patz" => patzVictorySprite,
+            _      => null
+        };
 
         private void UpdateRoundStartText()
         {

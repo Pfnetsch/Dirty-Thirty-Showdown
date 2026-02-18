@@ -371,8 +371,9 @@ namespace DirtyThirtyShowdown
             newArray[newArray.Length - 1] = patzCharacter;
             availableCharacters = newArray;
 
-            // Rebuild the grid to show the new character
+            // Auto-select Patz as P2's character and rebuild grid
             SetupCharacterGrid();
+            p2SelectionIndex = availableCharacters.Length - 1;
             UpdateSelectionUI();
 
             Debug.Log("[CharacterSelectManager] Patz has entered the arena!");

@@ -16,24 +16,24 @@ namespace DirtyThirtyShowdown
         private static readonly Color OverlayBg = new Color(0f, 0f, 0f, 0.7f);
         private static readonly Color BarTrackColor = new Color(0.2f, 0.2f, 0.25f);
 
-        private static TMP_FontAsset defaultFont;
+        private static TMP_FontAsset defaultFont;  // Pixel Operator Bold — general HUD text
+        private static TMP_FontAsset titleFont;    // Press Start 2P — titles, big numbers
+        private static TMP_FontAsset displayFont;  // Dogica Pixel Bold — buttons, headers, names
+        private static TMP_FontAsset smallFont;    // m5x7 — key hints, instructions, small labels
 
         [MenuItem("Dirty Thirty Showdown/Build Game UI")]
         public static void BuildGameUI()
         {
-            // Load default TMP font
-            defaultFont = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
-            if (defaultFont == null)
-            {
-                // Try alternative paths
-                string[] guids = AssetDatabase.FindAssets("LiberationSans SDF t:TMP_FontAsset");
-                if (guids.Length > 0)
-                    defaultFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(AssetDatabase.GUIDToAssetPath(guids[0]));
-            }
-            if (defaultFont == null)
-            {
-                Debug.LogWarning("[UISceneBuilder] Could not find LiberationSans SDF font. TMP fields will use default.");
-            }
+            // Load pixel art fonts
+            defaultFont  = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Fonts/PixelOperator-Bold.asset");
+            titleFont    = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Fonts/PressStart2P-Regular.asset");
+            displayFont  = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Fonts/dogicapixelbold.asset");
+            smallFont    = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Fonts/m5x7.asset");
+
+            if (defaultFont  == null) Debug.LogWarning("[UISceneBuilder] PixelOperator-Bold.asset not found.");
+            if (titleFont    == null) Debug.LogWarning("[UISceneBuilder] PressStart2P-Regular.asset not found.");
+            if (displayFont  == null) Debug.LogWarning("[UISceneBuilder] dogicapixelbold.asset not found.");
+            if (smallFont    == null) Debug.LogWarning("[UISceneBuilder] m5x7.asset not found.");
 
             // Create or find Canvas
             Canvas canvas = Object.FindFirstObjectByType<Canvas>();
@@ -77,6 +77,7 @@ namespace DirtyThirtyShowdown
             }
 
             // Build all panels
+            var titleScreenPanel = BuildTitleScreenPanel(canvasObj.transform);
             var charSelectPanel = BuildCharacterSelectPanel(canvasObj.transform);
             var gameplayPanel = BuildGameplayPanel(canvasObj.transform,
                 out var barTrack, out var barFillLeft, out var barFillRight, out var barIndicator,
@@ -99,11 +100,20 @@ namespace DirtyThirtyShowdown
             var roundEndPanel = BuildOverlayPanel(canvasObj.transform, "RoundEndPanel",
                 out var roundEndText, "Player Wins Round!", 64);
             var matchEndPanel = BuildMatchEndPanel(canvasObj.transform,
-                out var matchWinnerText, out var matchEndInstructionsText);
+                out var matchWinnerText, out var matchEndInstructionsText,
+                out var victoryBgImage);
+
+            // Load victory sprites
+            var eliVictory  = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Background/VictoryEli.png");
+            var leneVictory = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Background/VictoryLene.png");
+            var natiVictory = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Background/VictoryNati.png");
+            var sabiVictory = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Background/VictorySabi.png");
+            var patzVictory = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Background/VictoryPatz.png");
 
             var screenFlashOverlay = BuildScreenFlashOverlay(canvasObj.transform);
 
-            // Deactivate non-default panels
+            // Deactivate non-default panels (TitleScreen is the default active panel)
+            charSelectPanel.SetActive(false);
             gameplayPanel.SetActive(false);
             roundStartPanel.SetActive(false);
             roundEndPanel.SetActive(false);
@@ -160,10 +170,11 @@ namespace DirtyThirtyShowdown
                 p2Portrait, p2NameText, p2Ability1Cooldown, p2Ability2Cooldown,
                 p2Ability1KeyText, p2Ability2KeyText, p2Ability1NameText, p2Ability2NameText,
                 p2ShieldIndicator,
-                charSelectPanel, gameplayPanel, roundStartPanel, roundEndPanel, matchEndPanel,
+                titleScreenPanel, charSelectPanel, gameplayPanel, roundStartPanel, roundEndPanel, matchEndPanel,
                 roundStartText, roundEndText, matchWinnerText, matchEndInstructionsText,
                 p1PowerSurgeIndicator, p2PowerSurgeIndicator, controlsReversedIndicator,
-                p1Controller, p2Controller, awc);
+                p1Controller, p2Controller, awc,
+                victoryBgImage, eliVictory, leneVictory, natiVictory, sabiVictory, patzVictory);
 
             // Wire CharacterSelectManager
             WireCharacterSelectManager(charSelectMgr,
@@ -208,10 +219,21 @@ namespace DirtyThirtyShowdown
 
             // Background
             var bg = panel.AddComponent<Image>();
-            bg.color = PanelBg;
+            var charSelectSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Background/CharacterSelection.png");
+            if (charSelectSprite != null)
+            {
+                bg.sprite = charSelectSprite;
+                bg.color = Color.white;
+                bg.type = Image.Type.Simple;
+                bg.preserveAspect = false;
+            }
+            else
+            {
+                bg.color = PanelBg;
+            }
 
             // Title
-            var title = CreateTMP(panel.transform, "Title", "DIRTY THIRTY SHOWDOWN", 56, FontStyles.Bold);
+            var title = CreateTMP(panel.transform, "Title", "DIRTY THIRTY SHOWDOWN", 56, FontStyles.Bold, titleFont);
             var titleRT = title.GetComponent<RectTransform>();
             titleRT.anchorMin = new Vector2(0.2f, 0.85f);
             titleRT.anchorMax = new Vector2(0.8f, 0.98f);
@@ -244,7 +266,7 @@ namespace DirtyThirtyShowdown
 
             // Instructions
             var instr = CreateTMP(panel.transform, "InstructionsText",
-                "P1: A/D to select, SPACE to ready up\nP2: Arrows to select, ENTER to ready up", 24);
+                "P1: A/D to select, SPACE to ready up\nP2: Arrows to select, ENTER to ready up", 24, FontStyles.Normal, smallFont);
             var instrRT = instr.GetComponent<RectTransform>();
             instrRT.anchorMin = new Vector2(0.1f, 0.02f);
             instrRT.anchorMax = new Vector2(0.9f, 0.12f);
@@ -252,6 +274,37 @@ namespace DirtyThirtyShowdown
             instrRT.offsetMax = Vector2.zero;
             instr.alignment = TextAlignmentOptions.Center;
             instr.color = Color.gray;
+
+            // Cheats button (bottom-left corner, small and subtle — it's an easter egg)
+            var cheatsBtnObj = new GameObject("CheatsButton");
+            cheatsBtnObj.transform.SetParent(panel.transform, false);
+            var cheatsBtnRT = cheatsBtnObj.AddComponent<RectTransform>();
+            cheatsBtnRT.anchorMin = new Vector2(0f, 0f);
+            cheatsBtnRT.anchorMax = new Vector2(0.1f, 0.06f);
+            cheatsBtnRT.offsetMin = new Vector2(8, 8);
+            cheatsBtnRT.offsetMax = new Vector2(-4, -4);
+            var cheatsBtnImg = cheatsBtnObj.AddComponent<Image>();
+            cheatsBtnImg.color = new Color(0.3f, 0.3f, 0.3f, 0.6f);
+            var cheatsBtn = cheatsBtnObj.AddComponent<Button>();
+            cheatsBtn.targetGraphic = cheatsBtnImg;
+            var cheatsBtnText = CreateTMP(cheatsBtnObj.transform, "Text", "?", 20, FontStyles.Bold, displayFont);
+            StretchFill(cheatsBtnText.gameObject);
+            cheatsBtnText.alignment = TextAlignmentOptions.Center;
+
+            // Cheat panel (floats over the whole char select screen)
+            var cheatPanel = BuildCheatPanel(panel.transform,
+                out var cheatInput, out var cheatSubmitBtn, out var cheatCloseBtn, out var cheatFeedback);
+
+            // Attach and wire CheatCodeUI — openButton is the "?" cheats button
+            var cheatCodeUI = panel.AddComponent<CheatCodeUI>();
+            var cheatSO = new SerializedObject(cheatCodeUI);
+            SetRef(cheatSO, "cheatPanel",    cheatPanel);
+            SetRef(cheatSO, "openButton",    cheatsBtn);
+            SetRef(cheatSO, "cheatInput",    cheatInput);
+            SetRef(cheatSO, "submitButton",  cheatSubmitBtn);
+            SetRef(cheatSO, "closeButton",   cheatCloseBtn);
+            SetRef(cheatSO, "feedbackText",  cheatFeedback);
+            cheatSO.ApplyModifiedProperties();
 
             // Start Button
             var startBtnObj = new GameObject("StartButton");
@@ -267,7 +320,7 @@ namespace DirtyThirtyShowdown
             startBtn.targetGraphic = startBtnImg;
             startBtn.interactable = false;
 
-            var startBtnText = CreateTMP(startBtnObj.transform, "Text", "START", 32, FontStyles.Bold);
+            var startBtnText = CreateTMP(startBtnObj.transform, "Text", "START", 32, FontStyles.Bold, displayFont);
             StretchFill(startBtnText.gameObject);
             startBtnText.alignment = TextAlignmentOptions.Center;
 
@@ -316,7 +369,7 @@ namespace DirtyThirtyShowdown
             portraitLE.preferredWidth = 128;
 
             // Name
-            var nameText = CreateTMP(panel.transform, "NameText", isLeft ? "Player 1" : "Player 2", 28, FontStyles.Bold);
+            var nameText = CreateTMP(panel.transform, "NameText", isLeft ? "Player 1" : "Player 2", 28, FontStyles.Bold, displayFont);
             nameText.alignment = TextAlignmentOptions.Center;
             nameText.color = isLeft ? P1Color : P2Color;
             var nameLE = nameText.gameObject.AddComponent<LayoutElement>();
@@ -341,7 +394,7 @@ namespace DirtyThirtyShowdown
             readyImg.color = new Color(0.25f, 0.25f, 0.3f, 0.8f);
             var readyLE = readyObj.AddComponent<LayoutElement>();
             readyLE.preferredHeight = 36;
-            var readyText = CreateTMP(readyObj.transform, "Text", "READY", 18, FontStyles.Bold);
+            var readyText = CreateTMP(readyObj.transform, "Text", "READY", 18, FontStyles.Bold, smallFont);
             StretchFill(readyText.gameObject);
             readyText.alignment = TextAlignmentOptions.Center;
             readyText.color = new Color(0.5f, 0.5f, 0.5f);
@@ -390,7 +443,7 @@ namespace DirtyThirtyShowdown
             roundText = roundTmp;
 
             // Timer Text (large, center)
-            var timerTmp = CreateTMP(topBar.transform, "TimerText", "45", 48, FontStyles.Bold);
+            var timerTmp = CreateTMP(topBar.transform, "TimerText", "45", 48, FontStyles.Bold, titleFont);
             var timerRT = timerTmp.GetComponent<RectTransform>();
             timerRT.anchorMin = new Vector2(0.4f, 0f);
             timerRT.anchorMax = new Vector2(0.6f, 1f);
@@ -493,7 +546,7 @@ namespace DirtyThirtyShowdown
             scoreRT.offsetMin = Vector2.zero;
             scoreRT.offsetMax = Vector2.zero;
 
-            var p1Score = CreateTMP(scoreArea.transform, "P1ScoreText", "0", 36, FontStyles.Bold);
+            var p1Score = CreateTMP(scoreArea.transform, "P1ScoreText", "0", 36, FontStyles.Bold, titleFont);
             var p1ScoreRT = p1Score.GetComponent<RectTransform>();
             p1ScoreRT.anchorMin = new Vector2(0f, 0f);
             p1ScoreRT.anchorMax = new Vector2(0.3f, 1f);
@@ -503,7 +556,7 @@ namespace DirtyThirtyShowdown
             p1Score.color = P1Color;
             p1ScoreText = p1Score;
 
-            var p2Score = CreateTMP(scoreArea.transform, "P2ScoreText", "0", 36, FontStyles.Bold);
+            var p2Score = CreateTMP(scoreArea.transform, "P2ScoreText", "0", 36, FontStyles.Bold, titleFont);
             var p2ScoreRT = p2Score.GetComponent<RectTransform>();
             p2ScoreRT.anchorMin = new Vector2(0.7f, 0f);
             p2ScoreRT.anchorMax = new Vector2(1f, 1f);
@@ -523,7 +576,7 @@ namespace DirtyThirtyShowdown
             reversedRT.offsetMax = Vector2.zero;
             var reversedBg = reversedObj.AddComponent<Image>();
             reversedBg.color = new Color(0.8f, 0.2f, 0.8f, 0.7f);
-            var reversedText = CreateTMP(reversedObj.transform, "Text", "CONTROLS REVERSED!", 30, FontStyles.Bold);
+            var reversedText = CreateTMP(reversedObj.transform, "Text", "CONTROLS REVERSED!", 30, FontStyles.Bold, displayFont);
             StretchFill(reversedText.gameObject);
             reversedText.alignment = TextAlignmentOptions.Center;
             reversedText.color = Color.white;
@@ -579,7 +632,7 @@ namespace DirtyThirtyShowdown
             portraitLE.preferredHeight = 80;
 
             // Name
-            nameText = CreateTMP(hud.transform, "NameText", isLeft ? "P1" : "P2", 22, FontStyles.Bold);
+            nameText = CreateTMP(hud.transform, "NameText", isLeft ? "P1" : "P2", 22, FontStyles.Bold, displayFont);
             nameText.alignment = TextAlignmentOptions.Center;
             nameText.color = isLeft ? P1Color : P2Color;
             var nameLE = nameText.gameObject.AddComponent<LayoutElement>();
@@ -600,7 +653,7 @@ namespace DirtyThirtyShowdown
             shieldImg.color = new Color(0.3f, 0.8f, 1f, 0.8f);
             var shieldLE = shieldObj.AddComponent<LayoutElement>();
             shieldLE.preferredHeight = 24;
-            var shieldText = CreateTMP(shieldObj.transform, "Text", "SHIELD", 14, FontStyles.Bold);
+            var shieldText = CreateTMP(shieldObj.transform, "Text", "SHIELD", 14, FontStyles.Bold, smallFont);
             StretchFill(shieldText.gameObject);
             shieldText.alignment = TextAlignmentOptions.Center;
             shieldInd = shieldObj;
@@ -613,7 +666,7 @@ namespace DirtyThirtyShowdown
             surgeImg.color = new Color(1f, 0.8f, 0.2f, 0.8f);
             var surgeLE = surgeObj.AddComponent<LayoutElement>();
             surgeLE.preferredHeight = 24;
-            var surgeText = CreateTMP(surgeObj.transform, "Text", "POWER SURGE!", 14, FontStyles.Bold);
+            var surgeText = CreateTMP(surgeObj.transform, "Text", "POWER SURGE!", 14, FontStyles.Bold, smallFont);
             StretchFill(surgeText.gameObject);
             surgeText.alignment = TextAlignmentOptions.Center;
             powerSurgeInd = surgeObj;
@@ -644,7 +697,7 @@ namespace DirtyThirtyShowdown
             cooldownImg.fillAmount = 0f;
 
             // Key text (over cooldown area)
-            keyText = CreateTMP(cdObj.transform, "KeyText", key, 20, FontStyles.Bold);
+            keyText = CreateTMP(cdObj.transform, "KeyText", key, 20, FontStyles.Bold, smallFont);
             StretchFill(keyText.gameObject);
             keyText.alignment = TextAlignmentOptions.Center;
             keyText.color = Color.white;
@@ -672,7 +725,7 @@ namespace DirtyThirtyShowdown
             var cg = panel.AddComponent<CanvasGroup>();
             cg.alpha = 1f;
 
-            mainText = CreateTMP(panel.transform, name.Replace("Panel", "Text"), defaultText, fontSize, FontStyles.Bold);
+            mainText = CreateTMP(panel.transform, name.Replace("Panel", "Text"), defaultText, fontSize, FontStyles.Bold, titleFont);
             var textRT = mainText.GetComponent<RectTransform>();
             textRT.anchorMin = new Vector2(0.1f, 0.3f);
             textRT.anchorMax = new Vector2(0.9f, 0.7f);
@@ -685,17 +738,29 @@ namespace DirtyThirtyShowdown
         }
 
         private static GameObject BuildMatchEndPanel(Transform parent,
-            out TextMeshProUGUI winnerText, out TextMeshProUGUI instrText)
+            out TextMeshProUGUI winnerText, out TextMeshProUGUI instrText,
+            out Image victoryBgImage)
         {
             var panel = CreatePanel(parent, "MatchEndPanel", true);
             StretchFill(panel);
 
+            // Victory background (hidden until match ends, swapped by UIManager)
+            var victoryBgObj = new GameObject("VictoryBackground");
+            victoryBgObj.transform.SetParent(panel.transform, false);
+            victoryBgObj.transform.SetAsFirstSibling();
+            StretchFill(victoryBgObj);
+            victoryBgImage = victoryBgObj.AddComponent<Image>();
+            victoryBgImage.color = Color.white;
+            victoryBgImage.preserveAspect = false;
+            victoryBgObj.SetActive(false);
+
+            // Dark overlay on top of victory bg
             var bg = panel.AddComponent<Image>();
-            bg.color = OverlayBg;
+            bg.color = new Color(0f, 0f, 0f, 0.45f);
 
             var cg = panel.AddComponent<CanvasGroup>();
 
-            winnerText = CreateTMP(panel.transform, "MatchWinnerText", "PLAYER WINS!", 72, FontStyles.Bold);
+            winnerText = CreateTMP(panel.transform, "MatchWinnerText", "PLAYER WINS!", 72, FontStyles.Bold, titleFont);
             var winRT = winnerText.GetComponent<RectTransform>();
             winRT.anchorMin = new Vector2(0.1f, 0.45f);
             winRT.anchorMax = new Vector2(0.9f, 0.75f);
@@ -705,7 +770,7 @@ namespace DirtyThirtyShowdown
             winnerText.color = new Color(1f, 0.85f, 0.2f);
 
             instrText = CreateTMP(panel.transform, "MatchEndInstructionsText",
-                "SPACE / ENTER = Rematch\nESC / BACKSPACE = Character Select", 28);
+                "SPACE / ENTER = Rematch\nESC / BACKSPACE = Character Select", 28, FontStyles.Normal, displayFont);
             var instrRT = instrText.GetComponent<RectTransform>();
             instrRT.anchorMin = new Vector2(0.15f, 0.2f);
             instrRT.anchorMax = new Vector2(0.85f, 0.42f);
@@ -714,6 +779,192 @@ namespace DirtyThirtyShowdown
             instrText.alignment = TextAlignmentOptions.Center;
             instrText.color = Color.gray;
 
+            return panel;
+        }
+
+        private static GameObject BuildTitleScreenPanel(Transform parent)
+        {
+            var panel = CreatePanel(parent, "TitleScreenPanel", true);
+            StretchFill(panel);
+
+            // Background
+            var bg = panel.AddComponent<Image>();
+            var titleSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Background/TitleScreen.png");
+            if (titleSprite != null)
+            {
+                bg.sprite = titleSprite;
+                bg.color = Color.white;
+                bg.type = Image.Type.Simple;
+                bg.preserveAspect = false;
+            }
+            else
+            {
+                bg.color = new Color(0.08f, 0.05f, 0.02f);
+            }
+
+            // Title text
+            var title = CreateTMP(panel.transform, "TitleText", "DIRTY THIRTY\nSHOWDOWN", 72, FontStyles.Bold, titleFont);
+            var titleRT = title.GetComponent<RectTransform>();
+            titleRT.anchorMin = new Vector2(0.1f, 0.65f);
+            titleRT.anchorMax = new Vector2(0.9f, 0.93f);
+            titleRT.offsetMin = Vector2.zero;
+            titleRT.offsetMax = Vector2.zero;
+            title.alignment = TextAlignmentOptions.Center;
+            title.color = new Color(1f, 0.85f, 0.2f);
+
+            // Button container (centered, stacked vertically)
+            var btnContainer = new GameObject("ButtonContainer");
+            btnContainer.transform.SetParent(panel.transform, false);
+            var btnContainerRT = btnContainer.AddComponent<RectTransform>();
+            btnContainerRT.anchorMin = new Vector2(0.35f, 0.2f);
+            btnContainerRT.anchorMax = new Vector2(0.65f, 0.62f);
+            btnContainerRT.offsetMin = Vector2.zero;
+            btnContainerRT.offsetMax = Vector2.zero;
+            var vlg = btnContainer.AddComponent<VerticalLayoutGroup>();
+            vlg.spacing = 16;
+            vlg.childAlignment = TextAnchor.MiddleCenter;
+            vlg.childControlWidth = true;
+            vlg.childControlHeight = true;
+            vlg.childForceExpandWidth = true;
+            vlg.childForceExpandHeight = true;
+
+            var playBtn    = BuildMenuButton(btnContainer.transform, "PlayButton",    "PLAY",    new Color(0.2f, 0.65f, 0.25f));
+            var optionsBtn = BuildMenuButton(btnContainer.transform, "OptionsButton", "OPTIONS", new Color(0.2f, 0.35f, 0.65f));
+            var exitBtn    = BuildMenuButton(btnContainer.transform, "ExitButton",    "EXIT",    new Color(0.55f, 0.12f, 0.12f));
+
+            // Options panel (stub)
+            var optionsPanel = CreatePanel(panel.transform, "OptionsPanel", true);
+            StretchFill(optionsPanel);
+            optionsPanel.AddComponent<Image>().color = new Color(0.05f, 0.05f, 0.1f, 0.95f);
+
+            var optionsTitle = CreateTMP(optionsPanel.transform, "OptionsTitle", "OPTIONS", 48, FontStyles.Bold, titleFont);
+            var optTitleRT = optionsTitle.GetComponent<RectTransform>();
+            optTitleRT.anchorMin = new Vector2(0.2f, 0.75f);
+            optTitleRT.anchorMax = new Vector2(0.8f, 0.9f);
+            optTitleRT.offsetMin = Vector2.zero;
+            optTitleRT.offsetMax = Vector2.zero;
+            optionsTitle.alignment = TextAlignmentOptions.Center;
+            optionsTitle.color = new Color(1f, 0.85f, 0.2f);
+
+            var optionsContent = CreateTMP(optionsPanel.transform, "OptionsContent", "Coming soon...", 28);
+            var optContentRT = optionsContent.GetComponent<RectTransform>();
+            optContentRT.anchorMin = new Vector2(0.2f, 0.4f);
+            optContentRT.anchorMax = new Vector2(0.8f, 0.72f);
+            optContentRT.offsetMin = Vector2.zero;
+            optContentRT.offsetMax = Vector2.zero;
+            optionsContent.alignment = TextAlignmentOptions.Center;
+            optionsContent.color = Color.gray;
+
+            var optionsCloseBtn = BuildMenuButton(optionsPanel.transform, "CloseButton", "CLOSE", new Color(0.45f, 0.45f, 0.45f));
+            var optionsCloseBtnRT = optionsCloseBtn.GetComponent<RectTransform>();
+            optionsCloseBtnRT.anchorMin = new Vector2(0.35f, 0.1f);
+            optionsCloseBtnRT.anchorMax = new Vector2(0.65f, 0.22f);
+            optionsCloseBtnRT.offsetMin = Vector2.zero;
+            optionsCloseBtnRT.offsetMax = Vector2.zero;
+            optionsPanel.SetActive(false);
+
+            // Attach and wire TitleScreenManager
+            var tsm = panel.AddComponent<TitleScreenManager>();
+            var tsmSO = new SerializedObject(tsm);
+            SetRef(tsmSO, "playButton",        playBtn);
+            SetRef(tsmSO, "optionsButton",     optionsBtn);
+            SetRef(tsmSO, "exitButton",        exitBtn);
+            SetRef(tsmSO, "optionsPanel",      optionsPanel);
+            SetRef(tsmSO, "optionsCloseButton", optionsCloseBtn);
+            tsmSO.ApplyModifiedProperties();
+
+            return panel;
+        }
+
+        private static Button BuildMenuButton(Transform parent, string name, string label, Color bgColor)
+        {
+            var btnObj = new GameObject(name);
+            btnObj.transform.SetParent(parent, false);
+            btnObj.AddComponent<RectTransform>();
+            var btnImg = btnObj.AddComponent<Image>();
+            btnImg.color = bgColor;
+            var btn = btnObj.AddComponent<Button>();
+            btn.targetGraphic = btnImg;
+            var text = CreateTMP(btnObj.transform, "Text", label, 32, FontStyles.Bold, displayFont);
+            StretchFill(text.gameObject);
+            text.alignment = TextAlignmentOptions.Center;
+            return btn;
+        }
+
+        private static GameObject BuildCheatPanel(Transform parent,
+            out TMP_InputField inputField, out Button submitBtn, out Button closeBtn,
+            out TextMeshProUGUI feedbackText)
+        {
+            var panel = CreatePanel(parent, "CheatPanel", true);
+            StretchFill(panel);
+            panel.AddComponent<Image>().color = new Color(0f, 0f, 0f, 0.9f);
+
+            var title = CreateTMP(panel.transform, "CheatTitle", "ENTER CHEAT CODE", 40, FontStyles.Bold, titleFont);
+            var titleRT = title.GetComponent<RectTransform>();
+            titleRT.anchorMin = new Vector2(0.1f, 0.6f);
+            titleRT.anchorMax = new Vector2(0.9f, 0.75f);
+            titleRT.offsetMin = Vector2.zero;
+            titleRT.offsetMax = Vector2.zero;
+            title.alignment = TextAlignmentOptions.Center;
+            title.color = new Color(1f, 0.85f, 0.2f);
+
+            // Input field
+            var inputObj = new GameObject("CheatInput");
+            inputObj.transform.SetParent(panel.transform, false);
+            var inputRT = inputObj.AddComponent<RectTransform>();
+            inputRT.anchorMin = new Vector2(0.15f, 0.45f);
+            inputRT.anchorMax = new Vector2(0.85f, 0.58f);
+            inputRT.offsetMin = Vector2.zero;
+            inputRT.offsetMax = Vector2.zero;
+            var inputBg = inputObj.AddComponent<Image>();
+            inputBg.color = new Color(0.15f, 0.15f, 0.2f);
+
+            inputField = inputObj.AddComponent<TMP_InputField>();
+            inputField.targetGraphic = inputBg;
+
+            var textArea = new GameObject("Text Area");
+            textArea.transform.SetParent(inputObj.transform, false);
+            StretchFill(textArea);
+
+            var inputText = CreateTMP(textArea.transform, "Text", "", 24, FontStyles.Normal, smallFont);
+            StretchFill(inputText.gameObject);
+
+            var placeholder = CreateTMP(textArea.transform, "Placeholder", "type cheat code here...", 24, FontStyles.Normal, smallFont);
+            StretchFill(placeholder.gameObject);
+            placeholder.color = Color.gray;
+            placeholder.fontStyle = FontStyles.Italic;
+
+            inputField.textViewport = textArea.GetComponent<RectTransform>();
+            inputField.textComponent = inputText;
+            inputField.placeholder = placeholder;
+
+            // Submit button
+            submitBtn = BuildMenuButton(panel.transform, "SubmitButton", "SUBMIT", new Color(0.2f, 0.65f, 0.25f));
+            var submitRT = submitBtn.GetComponent<RectTransform>();
+            submitRT.anchorMin = new Vector2(0.2f, 0.28f);
+            submitRT.anchorMax = new Vector2(0.48f, 0.42f);
+            submitRT.offsetMin = Vector2.zero;
+            submitRT.offsetMax = Vector2.zero;
+
+            // Close button
+            closeBtn = BuildMenuButton(panel.transform, "CloseButton", "CLOSE", new Color(0.5f, 0.18f, 0.18f));
+            var closeRT = closeBtn.GetComponent<RectTransform>();
+            closeRT.anchorMin = new Vector2(0.52f, 0.28f);
+            closeRT.anchorMax = new Vector2(0.8f, 0.42f);
+            closeRT.offsetMin = Vector2.zero;
+            closeRT.offsetMax = Vector2.zero;
+
+            // Feedback text
+            feedbackText = CreateTMP(panel.transform, "FeedbackText", "", 24, FontStyles.Normal, displayFont);
+            var feedbackRT = feedbackText.GetComponent<RectTransform>();
+            feedbackRT.anchorMin = new Vector2(0.1f, 0.1f);
+            feedbackRT.anchorMax = new Vector2(0.9f, 0.25f);
+            feedbackRT.offsetMin = Vector2.zero;
+            feedbackRT.offsetMax = Vector2.zero;
+            feedbackText.alignment = TextAlignmentOptions.Center;
+            feedbackText.gameObject.SetActive(false);
+
+            panel.SetActive(false);
             return panel;
         }
 
@@ -789,7 +1040,8 @@ namespace DirtyThirtyShowdown
             nameTMP.fontSize = 20;
             nameTMP.alignment = TextAlignmentOptions.Center;
             nameTMP.color = Color.white;
-            if (defaultFont != null) nameTMP.font = defaultFont;
+            var nameFont = displayFont ?? defaultFont;
+            if (nameFont != null) nameTMP.font = nameFont;
             var nameLE = nameObj.AddComponent<LayoutElement>();
             nameLE.preferredHeight = 30;
 
@@ -837,14 +1089,16 @@ namespace DirtyThirtyShowdown
             TextMeshProUGUI p2Ab1Key, TextMeshProUGUI p2Ab2Key,
             TextMeshProUGUI p2Ab1Name, TextMeshProUGUI p2Ab2Name,
             GameObject p2ShieldInd,
-            GameObject charSelectPanel, GameObject gameplayPanel,
+            GameObject titleScreenPanel, GameObject charSelectPanel, GameObject gameplayPanel,
             GameObject roundStartPanel, GameObject roundEndPanel, GameObject matchEndPanel,
             TextMeshProUGUI roundStartText, TextMeshProUGUI roundEndText,
             TextMeshProUGUI matchWinnerText, TextMeshProUGUI matchEndInstrText,
             GameObject p1PowerSurgeInd, GameObject p2PowerSurgeInd,
             GameObject controlsReversedInd,
             PlayerController p1Controller, PlayerController p2Controller,
-            ArmWrestleController awc)
+            ArmWrestleController awc,
+            Image victoryBgImage,
+            Sprite eliVictory, Sprite leneVictory, Sprite natiVictory, Sprite sabiVictory, Sprite patzVictory)
         {
             var so = new SerializedObject(uiMgr);
 
@@ -875,6 +1129,7 @@ namespace DirtyThirtyShowdown
             SetRef(so, "p2Ability1NameText", p2Ab1Name);
             SetRef(so, "p2Ability2NameText", p2Ab2Name);
             SetRef(so, "p2ShieldIndicator", p2ShieldInd);
+            SetRef(so, "titleScreenPanel", titleScreenPanel);
             SetRef(so, "characterSelectPanel", charSelectPanel);
             SetRef(so, "gameplayPanel", gameplayPanel);
             SetRef(so, "roundStartPanel", roundStartPanel);
@@ -890,6 +1145,12 @@ namespace DirtyThirtyShowdown
             SetRef(so, "player1Controller", p1Controller);
             SetRef(so, "player2Controller", p2Controller);
             SetRef(so, "armWrestleController", awc);
+            SetRef(so, "victoryBackgroundImage", victoryBgImage);
+            SetRef(so, "eliVictorySprite",  eliVictory);
+            SetRef(so, "leneVictorySprite", leneVictory);
+            SetRef(so, "natiVictorySprite", natiVictory);
+            SetRef(so, "sabiVictorySprite", sabiVictory);
+            SetRef(so, "patzVictorySprite", patzVictory);
 
             so.ApplyModifiedProperties();
         }
@@ -1063,7 +1324,7 @@ namespace DirtyThirtyShowdown
         }
 
         private static TextMeshProUGUI CreateTMP(Transform parent, string name, string text,
-            int fontSize, FontStyles style = FontStyles.Normal)
+            int fontSize, FontStyles style = FontStyles.Normal, TMP_FontAsset font = null)
         {
             var obj = new GameObject(name);
             obj.transform.SetParent(parent, false);
@@ -1073,7 +1334,8 @@ namespace DirtyThirtyShowdown
             tmp.fontSize = fontSize;
             tmp.fontStyle = style;
             tmp.color = Color.white;
-            if (defaultFont != null) tmp.font = defaultFont;
+            var resolvedFont = font ?? defaultFont;
+            if (resolvedFont != null) tmp.font = resolvedFont;
             return tmp;
         }
 
