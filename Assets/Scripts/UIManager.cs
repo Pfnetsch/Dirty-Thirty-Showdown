@@ -71,12 +71,15 @@ namespace DirtyThirtyShowdown
         [Header("Ability Effect Indicators")]
         [SerializeField] private GameObject p1PowerSurgeIndicator;
         [SerializeField] private GameObject p2PowerSurgeIndicator;
+        [SerializeField] private GameObject p1InputDisabledIndicator;
+        [SerializeField] private GameObject p2InputDisabledIndicator;
         [SerializeField] private GameObject controlsReversedIndicator;
 
         [Header("References")]
         [SerializeField] private PlayerController player1Controller;
         [SerializeField] private PlayerController player2Controller;
         [SerializeField] private ArmWrestleController armWrestleController;
+        [SerializeField] private AbilitySystem abilitySystem;
 
         private GameManager gameManager;
         private float maxRoundTime;
@@ -113,6 +116,12 @@ namespace DirtyThirtyShowdown
                 player2Controller.OnShieldConsumed += () => SetShieldIndicator(2, false);
             }
 
+            if (abilitySystem != null)
+            {
+                abilitySystem.OnAbilityActivated += HandleAbilityActivated;
+                abilitySystem.OnAbilityEnded += HandleAbilityEnded;
+            }
+
             // Initialize UI
             SetAllPanelsInactive();
             if (titleScreenPanel != null)
@@ -134,6 +143,12 @@ namespace DirtyThirtyShowdown
             {
                 armWrestleController.OnBarPositionChanged -= UpdateBarDisplay;
             }
+
+            if (abilitySystem != null)
+            {
+                abilitySystem.OnAbilityActivated -= HandleAbilityActivated;
+                abilitySystem.OnAbilityEnded -= HandleAbilityEnded;
+            }
         }
 
         #region State Handling
@@ -154,6 +169,16 @@ namespace DirtyThirtyShowdown
                     gameplayPanel?.SetActive(true);
                     roundStartPanel?.SetActive(true);
                     UpdateRoundStartText();
+                    if (gameManager.Player1Character != null)
+                    {
+                        SetupPlayerUI(1, gameManager.Player1Character);
+                        player1Controller?.SetCharacter(gameManager.Player1Character);
+                    }
+                    if (gameManager.Player2Character != null)
+                    {
+                        SetupPlayerUI(2, gameManager.Player2Character);
+                        player2Controller?.SetCharacter(gameManager.Player2Character);
+                    }
                     break;
                 case GameState.Playing:
                     gameplayPanel?.SetActive(true);
@@ -371,21 +396,57 @@ namespace DirtyThirtyShowdown
 
         #region Ability Effects Display
 
+        private void HandleAbilityActivated(AbilityType type, int player)
+        {
+            switch (type)
+            {
+                case AbilityType.PowerSurge:
+                case AbilityType.Flex:
+                    ShowPowerSurgeEffect(player, true);
+                    break;
+                case AbilityType.Flash:
+                case AbilityType.WinkFlirt:
+                    ShowInputDisabledEffect(3 - player, true); // affects the opponent
+                    break;
+                case AbilityType.FakeOut:
+                    ShowControlsReversed(true);
+                    break;
+            }
+        }
+
+        private void HandleAbilityEnded(AbilityType type, int player)
+        {
+            switch (type)
+            {
+                case AbilityType.PowerSurge:
+                case AbilityType.Flex:
+                    ShowPowerSurgeEffect(player, false);
+                    break;
+                case AbilityType.Flash:
+                case AbilityType.WinkFlirt:
+                    ShowInputDisabledEffect(player, false); // player is the target here
+                    break;
+                case AbilityType.FakeOut:
+                    ShowControlsReversed(false);
+                    break;
+            }
+        }
+
         public void ShowPowerSurgeEffect(int playerNumber, bool show)
         {
             GameObject indicator = playerNumber == 1 ? p1PowerSurgeIndicator : p2PowerSurgeIndicator;
-            if (indicator != null)
-            {
-                indicator.SetActive(show);
-            }
+            if (indicator != null) indicator.SetActive(show);
+        }
+
+        public void ShowInputDisabledEffect(int playerNumber, bool show)
+        {
+            GameObject indicator = playerNumber == 1 ? p1InputDisabledIndicator : p2InputDisabledIndicator;
+            if (indicator != null) indicator.SetActive(show);
         }
 
         public void ShowControlsReversed(bool show)
         {
-            if (controlsReversedIndicator != null)
-            {
-                controlsReversedIndicator.SetActive(show);
-            }
+            if (controlsReversedIndicator != null) controlsReversedIndicator.SetActive(show);
         }
 
         #endregion

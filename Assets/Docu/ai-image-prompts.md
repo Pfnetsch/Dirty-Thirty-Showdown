@@ -10,233 +10,209 @@
 
 ## Scene Style
 
-All gameplay images: **Pixel art style, vibrant colors, side view. Two characters seated across from each other at an arm wrestling table. Party/birthday setting in background. Energetic and fun atmosphere.**
+All gameplay images: **Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Festive birthday party background, balloons and colorful banners. Medium wide shot, waist-up framing. Warm overhead party lighting, colorful ambient glow. No text, no UI elements.**
 
 ---
 
 ## UI Screens (7 images)
 
 ### 1. Title Screen
-`Pixel art title screen for "Dirty Thirty Showdown". Arm wrestling table in center, party decorations, balloons, confetti, birthday theme. All 5 characters (4 women and 1 man) visible around the table cheering. Vibrant colors, energetic party atmosphere.`
+`Pixel art, 16-bit retro game art style, vibrant colors, clean black outlines. Arm wrestling table in center of a festive birthday party setting with balloons, confetti, and streamers. All 5 characters (Eli, Lene, Nati, Sabi, Patz) gathered around the table cheering and celebrating. Energetic party atmosphere. Wide establishing shot, full scene visible, warm festive lighting with colorful overhead glow. No text overlay.`
 
 ### 2. Character Select Screen Background
-`Pixel art character select screen background. Party stage with spotlights, 5 empty character slots/pedestals, festive decorations, arm wrestling table visible in background. Clean layout with space for UI elements.`
+`Pixel art, 16-bit retro game art style, vibrant colors. Party stage with dramatic spotlights shining down, 5 empty character pedestals/podiums evenly spaced, festive birthday decorations, arm wrestling table visible in background. Clean open layout with room for UI elements. No text.`
 
 ### 3. Victory Screen — Eli
-`Pixel art victory celebration. Eli (brown wavy hair, red bandana, purple striped top) standing triumphantly with fist raised, confetti falling, spotlight on her. Party background. Joyful expression.`
+`Pixel art, 16-bit retro game art style, vibrant colors, clean black outlines. Victory celebration. Eli (brown wavy hair, red bandana, lavender striped top) standing triumphantly with fist raised high, confetti raining down, dramatic spotlight from above. Festive party background, colorful ambient glow. Medium shot, waist-up framing. Joyful exhilarated expression. No text.`
 
 ### 4. Victory Screen — Lene
-`Pixel art victory celebration. Lene (brown ponytail, blue eyes, teal sweater) standing triumphantly with fist raised, confetti falling, spotlight on her. Party background. Confident smirk.`
+`Pixel art, 16-bit retro game art style, vibrant colors, clean black outlines. Victory celebration. Lene (brown hair in ponytail, orange earrings, teal sweater) standing triumphantly with fist raised high, confetti raining down, dramatic spotlight from above. Festive party background, colorful ambient glow. Medium shot, waist-up framing. Confident satisfied smirk. No text.`
 
 ### 5. Victory Screen — Nati
-`Pixel art victory celebration. Nati (long auburn hair, purple eyes, freckles, green top) standing triumphantly with fist raised, confetti falling, spotlight on her. Party background. Beaming smile.`
+`Pixel art, 16-bit retro game art style, vibrant colors, clean black outlines. Victory celebration. Nati (long auburn hair, purple eyes, freckles, dark green top) standing triumphantly with fist raised high, confetti raining down, dramatic spotlight from above. Festive party background, colorful ambient glow. Medium shot, waist-up framing. Wide beaming smile, glowing with joy. No text.`
 
 ### 6. Victory Screen — Sabi
-`Pixel art victory celebration. Sabi (long dark hair, steampunk goggles on head, gold necklace, brown leather jacket) standing triumphantly with fist raised, confetti falling, spotlight on her. Party background. Cool confident pose.`
+`Pixel art, 16-bit retro game art style, vibrant colors, clean black outlines. Victory celebration. Sabi (long dark hair, steampunk goggles on head, gold necklace, brown leather jacket) standing triumphantly with fist raised high, confetti raining down, dramatic spotlight from above. Festive party background, colorful ambient glow. Medium shot, waist-up framing. Cool effortlessly confident pose. No text.`
 
 ### 7. Victory Screen — Patz
-`Pixel art victory celebration. Patz (messy brown hair, beard, orange bow tie, teal shirt) standing triumphantly with fist raised, confetti falling, spotlight on him. Party background. Proud grin.`
+`Pixel art, 16-bit retro game art style, vibrant colors, clean black outlines. Victory celebration. Patz (messy brown hair, beard, orange bow tie, teal button-up shirt) standing triumphantly with fist raised high, confetti raining down, dramatic spotlight from above. Festive party background, colorful ambient glow. Medium shot, waist-up framing. Broad proud grin. No text.`
 
 ---
 
-## Gameplay Images — 10 Matchups × 5 Poses = 50 Images
+## Gameplay Images — 10 Matchups (42 images total)
 
 ### Pose Key
-- **Neutral**: Both characters straining equally, arms locked upright in center, intense concentration
-- **Left Winning**: Left character pushing right character's arm down slightly, left looks determined, right looks worried
-- **Left Dominating**: Left character almost slamming right character's arm to the table, left looks powerful/triumphant, right looks desperate/struggling
-- **Right Winning**: Right character pushing left character's arm down slightly, right looks determined, left looks worried
-- **Right Dominating**: Right character almost slamming left character's arm to the table, right looks powerful/triumphant, left looks desperate/struggling
+- **Neutral**: Arms locked upright at dead center — neither player has the advantage. Both leaning in hard, straining equally, intense concentration.
+- **[X] Winning**: [X] pushing forward confidently, arm angled toward opponent's side, determined/dominant expression. [Y] arm pushed back slightly, worried/strained expression.
+- **[X] Dominating**: [X] nearly slamming opponent's arm to the table, leaning in powerfully, triumphant expression. [Y] arm nearly pinned, desperate struggling grimace.
+
+*Patz matchups (4, 7, 9, 10): 3 poses only — Neutral, Patz Winning, Patz Dominating. Patz always wins.*
 
 ---
 
-### Matchup 1: Eli (left) vs Lene (right)
+### Matchup 1: Eli (left) vs Lene (right) — 5 poses
 
 **1.1 — Neutral**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top). Right: Lene (brown ponytail, blue eyes, teal sweater). Arms locked upright in center, both straining equally, intense concentration on both faces. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top). Right: Lene (brown ponytail, orange earrings, teal sweater). Arms locked upright at dead center — neither has the advantage. Both leaning in hard, straining with full effort, intense concentration. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **1.2 — Eli Winning**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) pushing down with determined grin. Right: Lene (brown ponytail, teal sweater) arm being pushed down slightly, worried expression. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) pushing forward with determined grin, arm angled toward Lene's side. Right: Lene (brown ponytail, teal sweater) arm pushed back slightly, eyes wide with concern, straining to recover. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **1.3 — Eli Dominating**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) almost slamming opponent's arm to table, powerful triumphant expression. Right: Lene (brown ponytail, teal sweater) arm nearly pinned, desperate struggling grimace. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) nearly slamming opponent's arm to the table, leaning in powerfully, triumphant expression. Right: Lene (brown ponytail, teal sweater) arm nearly pinned, desperate grimace, giving everything she has left. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **1.4 — Lene Winning**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) arm being pushed down slightly, worried expression. Right: Lene (brown ponytail, blue eyes, teal sweater) pushing down with confident smirk. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) arm pushed back slightly, worried expression, straining to hold on. Right: Lene (brown ponytail, orange earrings, teal sweater) pushing forward with confident smirk, arm angled toward Eli's side. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **1.5 — Lene Dominating**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) arm nearly pinned, desperate struggling grimace. Right: Lene (brown ponytail, blue eyes, teal sweater) almost slamming opponent's arm to table, dominant confident expression. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) arm nearly pinned to the table, desperate struggling grimace. Right: Lene (brown ponytail, orange earrings, teal sweater) nearly slamming opponent's arm down, leaning in powerfully, dominant confident expression. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 ---
 
-### Matchup 2: Eli (left) vs Nati (right)
+### Matchup 2: Eli (left) vs Nati (right) — 5 poses
 
 **2.1 — Neutral**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top). Right: Nati (long auburn hair, purple eyes, freckles, green top). Arms locked upright in center, both straining equally, intense concentration. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top). Right: Nati (long auburn hair, purple eyes, freckles, dark green top). Arms locked upright at dead center — neither has the advantage. Both leaning in hard, straining with full effort, intense concentration. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **2.2 — Eli Winning**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) pushing down with determined grin. Right: Nati (long auburn hair, freckles, green top) arm being pushed down slightly, worried expression. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) pushing forward with determined grin, arm angled toward Nati's side. Right: Nati (long auburn hair, freckles, green top) arm pushed back slightly, worried expression, straining to recover. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **2.3 — Eli Dominating**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) almost slamming opponent's arm to table, powerful triumphant expression. Right: Nati (long auburn hair, freckles, green top) arm nearly pinned, desperate struggling grimace. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) nearly slamming opponent's arm to the table, leaning in powerfully, triumphant expression. Right: Nati (long auburn hair, freckles, green top) arm nearly pinned, desperate grimace, giving everything she has left. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **2.4 — Nati Winning**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) arm being pushed down slightly, worried expression. Right: Nati (long auburn hair, purple eyes, freckles, green top) pushing down with a bright smile. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) arm pushed back slightly, worried expression, straining to hold on. Right: Nati (long auburn hair, purple eyes, freckles, green top) pushing forward with bright determined smile, arm angled toward Eli's side. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **2.5 — Nati Dominating**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) arm nearly pinned, desperate struggling grimace. Right: Nati (long auburn hair, purple eyes, freckles, green top) almost slamming opponent's arm to table, beaming victorious expression. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) arm nearly pinned to the table, desperate struggling grimace. Right: Nati (long auburn hair, purple eyes, freckles, green top) nearly slamming opponent's arm down, leaning in powerfully, beaming victorious expression. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 ---
 
-### Matchup 3: Eli (left) vs Sabi (right)
+### Matchup 3: Eli (left) vs Sabi (right) — 5 poses
 
 **3.1 — Neutral**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top). Right: Sabi (long dark hair, steampunk goggles on head, gold necklace, brown leather jacket). Arms locked upright in center, both straining equally. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top). Right: Sabi (long dark hair, steampunk goggles on head, gold necklace, brown leather jacket). Arms locked upright at dead center — neither has the advantage. Both leaning in hard, straining with full effort. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **3.2 — Eli Winning**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) pushing down with determined grin. Right: Sabi (long dark hair, steampunk goggles, leather jacket) arm being pushed down slightly, frowning with effort. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) pushing forward with determined grin, arm angled toward Sabi's side. Right: Sabi (long dark hair, steampunk goggles, leather jacket) arm pushed back slightly, frowning with effort, straining to recover. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **3.3 — Eli Dominating**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) almost slamming opponent's arm to table, powerful triumphant expression. Right: Sabi (long dark hair, steampunk goggles, leather jacket) arm nearly pinned, desperate struggling grimace. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) nearly slamming opponent's arm to the table, leaning in powerfully, triumphant expression. Right: Sabi (long dark hair, steampunk goggles, leather jacket) arm nearly pinned, desperate grimace, giving everything she has left. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **3.4 — Sabi Winning**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) arm being pushed down slightly, worried expression. Right: Sabi (long dark hair, steampunk goggles on head, gold necklace, brown leather jacket) pushing down with cool confident look. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) arm pushed back slightly, worried expression, straining to hold on. Right: Sabi (long dark hair, steampunk goggles on head, gold necklace, leather jacket) pushing forward with cool confident look, arm angled toward Eli's side. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **3.5 — Sabi Dominating**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) arm nearly pinned, desperate struggling grimace. Right: Sabi (long dark hair, steampunk goggles, gold necklace, leather jacket) almost slamming opponent's arm to table, dominant smirk. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) arm nearly pinned to the table, desperate struggling grimace. Right: Sabi (long dark hair, steampunk goggles on head, gold necklace, leather jacket) nearly slamming opponent's arm down, leaning in powerfully, dominant smirk. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 ---
 
-### Matchup 4: Eli (left) vs Patz (right)
+### Matchup 4: Eli (left) vs Patz (right) — 3 poses *(Patz always wins)*
 
 **4.1 — Neutral**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top). Right: Patz (messy brown hair, beard, orange bow tie, teal shirt). Arms locked upright in center, both straining equally. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top). Right: Patz (messy brown hair, beard, orange bow tie, teal shirt). Arms locked upright at dead center — neither has the advantage. Both leaning in hard, straining with full effort. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
-**4.2 — Eli Winning**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) pushing down with determined grin. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) arm being pushed down slightly, surprised expression. Arm wrestling table, party background.`
+**4.2 — Patz Winning**
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) arm pushed back slightly, worried expression, straining to hold on. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) pushing forward with proud grin, arm angled toward Eli's side. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
-**4.3 — Eli Dominating**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) almost slamming opponent's arm to table, powerful triumphant expression. Right: Patz (messy brown hair, beard, bow tie, teal shirt) arm nearly pinned, desperate struggling grimace. Arm wrestling table, party background.`
-
-**4.4 — Patz Winning**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) arm being pushed down slightly, worried expression. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) pushing down with proud grin. Arm wrestling table, party background.`
-
-**4.5 — Patz Dominating**
-`Pixel art arm wrestling scene, side view. Left: Eli (brown wavy hair, red bandana, purple striped top) arm nearly pinned, desperate struggling grimace. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) almost slamming opponent's arm to table, confident victorious expression. Arm wrestling table, party background.`
+**4.3 — Patz Dominating**
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Eli (brown wavy hair, red bandana, lavender striped top) arm nearly pinned to the table, desperate struggling grimace. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) nearly slamming opponent's arm down, leaning in powerfully, confident victorious expression. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 ---
 
-### Matchup 5: Lene (left) vs Nati (right)
+### Matchup 5: Lene (left) vs Nati (right) — 5 poses
 
 **5.1 — Neutral**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, blue eyes, orange earrings, teal sweater). Right: Nati (long auburn hair, purple eyes, freckles, green top). Arms locked upright in center, both straining equally. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Lene (brown ponytail, blue eyes, orange earrings, teal sweater). Right: Nati (long auburn hair, purple eyes, freckles, dark green top). Arms locked upright at dead center — neither has the advantage. Both leaning in hard, straining with full effort. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **5.2 — Lene Winning**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, blue eyes, teal sweater) pushing down with confident smirk. Right: Nati (long auburn hair, freckles, green top) arm being pushed down slightly, worried expression. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Lene (brown ponytail, orange earrings, teal sweater) pushing forward with confident smirk, arm angled toward Nati's side. Right: Nati (long auburn hair, freckles, green top) arm pushed back slightly, worried expression, straining to recover. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **5.3 — Lene Dominating**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, blue eyes, teal sweater) almost slamming opponent's arm to table, dominant confident expression. Right: Nati (long auburn hair, freckles, green top) arm nearly pinned, desperate struggling grimace. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Lene (brown ponytail, orange earrings, teal sweater) nearly slamming opponent's arm to the table, leaning in powerfully, dominant confident expression. Right: Nati (long auburn hair, freckles, green top) arm nearly pinned, desperate grimace, giving everything she has left. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **5.4 — Nati Winning**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, teal sweater) arm being pushed down slightly, annoyed expression. Right: Nati (long auburn hair, purple eyes, freckles, green top) pushing down with bright smile. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Lene (brown ponytail, teal sweater) arm pushed back slightly, annoyed expression, straining to hold on. Right: Nati (long auburn hair, purple eyes, freckles, green top) pushing forward with bright determined smile, arm angled toward Lene's side. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **5.5 — Nati Dominating**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, teal sweater) arm nearly pinned, desperate struggling grimace. Right: Nati (long auburn hair, purple eyes, freckles, green top) almost slamming opponent's arm to table, beaming victorious expression. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Lene (brown ponytail, teal sweater) arm nearly pinned to the table, desperate struggling grimace. Right: Nati (long auburn hair, purple eyes, freckles, green top) nearly slamming opponent's arm down, leaning in powerfully, beaming victorious expression. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 ---
 
-### Matchup 6: Lene (left) vs Sabi (right)
+### Matchup 6: Lene (left) vs Sabi (right) — 5 poses
 
 **6.1 — Neutral**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, blue eyes, orange earrings, teal sweater). Right: Sabi (long dark hair, steampunk goggles on head, gold necklace, brown leather jacket). Arms locked upright in center, both straining equally. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Lene (brown ponytail, blue eyes, orange earrings, teal sweater). Right: Sabi (long dark hair, steampunk goggles on head, gold necklace, brown leather jacket). Arms locked upright at dead center — neither has the advantage. Both leaning in hard, straining with full effort. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **6.2 — Lene Winning**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, blue eyes, teal sweater) pushing down with confident smirk. Right: Sabi (long dark hair, steampunk goggles, leather jacket) arm being pushed down slightly, frowning with effort. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Lene (brown ponytail, orange earrings, teal sweater) pushing forward with confident smirk, arm angled toward Sabi's side. Right: Sabi (long dark hair, steampunk goggles, leather jacket) arm pushed back slightly, frowning with effort, straining to recover. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **6.3 — Lene Dominating**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, blue eyes, teal sweater) almost slamming opponent's arm to table, dominant expression. Right: Sabi (long dark hair, steampunk goggles, leather jacket) arm nearly pinned, desperate struggling grimace. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Lene (brown ponytail, orange earrings, teal sweater) nearly slamming opponent's arm to the table, leaning in powerfully, dominant expression. Right: Sabi (long dark hair, steampunk goggles, leather jacket) arm nearly pinned, desperate grimace, giving everything she has left. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **6.4 — Sabi Winning**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, teal sweater) arm being pushed down slightly, annoyed expression. Right: Sabi (long dark hair, steampunk goggles, gold necklace, leather jacket) pushing down with cool confident look. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Lene (brown ponytail, teal sweater) arm pushed back slightly, annoyed expression, straining to hold on. Right: Sabi (long dark hair, steampunk goggles on head, gold necklace, leather jacket) pushing forward with cool confident look, arm angled toward Lene's side. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **6.5 — Sabi Dominating**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, teal sweater) arm nearly pinned, desperate struggling grimace. Right: Sabi (long dark hair, steampunk goggles, gold necklace, leather jacket) almost slamming opponent's arm to table, dominant smirk. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Lene (brown ponytail, teal sweater) arm nearly pinned to the table, desperate struggling grimace. Right: Sabi (long dark hair, steampunk goggles on head, gold necklace, leather jacket) nearly slamming opponent's arm down, leaning in powerfully, dominant smirk. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 ---
 
-### Matchup 7: Lene (left) vs Patz (right)
+### Matchup 7: Lene (left) vs Patz (right) — 3 poses *(Patz always wins)*
 
 **7.1 — Neutral**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, blue eyes, orange earrings, teal sweater). Right: Patz (messy brown hair, beard, orange bow tie, teal shirt). Arms locked upright in center, both straining equally. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Lene (brown ponytail, blue eyes, orange earrings, teal sweater). Right: Patz (messy brown hair, beard, orange bow tie, teal shirt). Arms locked upright at dead center — neither has the advantage. Both leaning in hard, straining with full effort. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
-**7.2 — Lene Winning**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, blue eyes, teal sweater) pushing down with confident smirk. Right: Patz (messy brown hair, beard, bow tie, teal shirt) arm being pushed down slightly, surprised expression. Arm wrestling table, party background.`
+**7.2 — Patz Winning**
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Lene (brown ponytail, teal sweater) arm pushed back slightly, annoyed expression, straining to hold on. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) pushing forward with proud grin, arm angled toward Lene's side. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
-**7.3 — Lene Dominating**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, blue eyes, teal sweater) almost slamming opponent's arm to table, dominant expression. Right: Patz (messy brown hair, beard, bow tie, teal shirt) arm nearly pinned, desperate struggling grimace. Arm wrestling table, party background.`
-
-**7.4 — Patz Winning**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, teal sweater) arm being pushed down slightly, annoyed expression. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) pushing down with proud grin. Arm wrestling table, party background.`
-
-**7.5 — Patz Dominating**
-`Pixel art arm wrestling scene, side view. Left: Lene (brown ponytail, teal sweater) arm nearly pinned, desperate struggling grimace. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) almost slamming opponent's arm to table, confident victorious expression. Arm wrestling table, party background.`
+**7.3 — Patz Dominating**
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Lene (brown ponytail, teal sweater) arm nearly pinned to the table, desperate struggling grimace. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) nearly slamming opponent's arm down, leaning in powerfully, confident victorious expression. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 ---
 
-### Matchup 8: Nati (left) vs Sabi (right)
+### Matchup 8: Nati (left) vs Sabi (right) — 5 poses
 
 **8.1 — Neutral**
-`Pixel art arm wrestling scene, side view. Left: Nati (long auburn hair, purple eyes, freckles, green top). Right: Sabi (long dark hair, steampunk goggles on head, gold necklace, brown leather jacket). Arms locked upright in center, both straining equally. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Nati (long auburn hair, purple eyes, freckles, dark green top). Right: Sabi (long dark hair, steampunk goggles on head, gold necklace, brown leather jacket). Arms locked upright at dead center — neither has the advantage. Both leaning in hard, straining with full effort. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **8.2 — Nati Winning**
-`Pixel art arm wrestling scene, side view. Left: Nati (long auburn hair, purple eyes, freckles, green top) pushing down with bright determined smile. Right: Sabi (long dark hair, steampunk goggles, leather jacket) arm being pushed down slightly, frowning with effort. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Nati (long auburn hair, purple eyes, freckles, green top) pushing forward with bright determined smile, arm angled toward Sabi's side. Right: Sabi (long dark hair, steampunk goggles, leather jacket) arm pushed back slightly, frowning with effort, straining to recover. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **8.3 — Nati Dominating**
-`Pixel art arm wrestling scene, side view. Left: Nati (long auburn hair, purple eyes, freckles, green top) almost slamming opponent's arm to table, beaming victorious expression. Right: Sabi (long dark hair, steampunk goggles, leather jacket) arm nearly pinned, desperate struggling grimace. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Nati (long auburn hair, purple eyes, freckles, green top) nearly slamming opponent's arm to the table, leaning in powerfully, beaming victorious expression. Right: Sabi (long dark hair, steampunk goggles, leather jacket) arm nearly pinned, desperate grimace, giving everything she has left. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **8.4 — Sabi Winning**
-`Pixel art arm wrestling scene, side view. Left: Nati (long auburn hair, freckles, green top) arm being pushed down slightly, worried expression. Right: Sabi (long dark hair, steampunk goggles, gold necklace, leather jacket) pushing down with cool confident look. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Nati (long auburn hair, freckles, green top) arm pushed back slightly, worried expression, straining to hold on. Right: Sabi (long dark hair, steampunk goggles on head, gold necklace, leather jacket) pushing forward with cool confident look, arm angled toward Nati's side. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 **8.5 — Sabi Dominating**
-`Pixel art arm wrestling scene, side view. Left: Nati (long auburn hair, freckles, green top) arm nearly pinned, desperate struggling grimace. Right: Sabi (long dark hair, steampunk goggles, gold necklace, leather jacket) almost slamming opponent's arm to table, dominant smirk. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Nati (long auburn hair, freckles, green top) arm nearly pinned to the table, desperate struggling grimace. Right: Sabi (long dark hair, steampunk goggles on head, gold necklace, leather jacket) nearly slamming opponent's arm down, leaning in powerfully, dominant smirk. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 ---
 
-### Matchup 9: Nati (left) vs Patz (right)
+### Matchup 9: Nati (left) vs Patz (right) — 3 poses *(Patz always wins)*
 
 **9.1 — Neutral**
-`Pixel art arm wrestling scene, side view. Left: Nati (long auburn hair, purple eyes, freckles, green top). Right: Patz (messy brown hair, beard, orange bow tie, teal shirt). Arms locked upright in center, both straining equally. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Nati (long auburn hair, purple eyes, freckles, dark green top). Right: Patz (messy brown hair, beard, orange bow tie, teal shirt). Arms locked upright at dead center — neither has the advantage. Both leaning in hard, straining with full effort. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
-**9.2 — Nati Winning**
-`Pixel art arm wrestling scene, side view. Left: Nati (long auburn hair, purple eyes, freckles, green top) pushing down with bright determined smile. Right: Patz (messy brown hair, beard, bow tie, teal shirt) arm being pushed down slightly, surprised expression. Arm wrestling table, party background.`
+**9.2 — Patz Winning**
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Nati (long auburn hair, freckles, green top) arm pushed back slightly, worried expression, straining to hold on. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) pushing forward with proud grin, arm angled toward Nati's side. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
-**9.3 — Nati Dominating**
-`Pixel art arm wrestling scene, side view. Left: Nati (long auburn hair, purple eyes, freckles, green top) almost slamming opponent's arm to table, beaming victorious expression. Right: Patz (messy brown hair, beard, bow tie, teal shirt) arm nearly pinned, desperate struggling grimace. Arm wrestling table, party background.`
-
-**9.4 — Patz Winning**
-`Pixel art arm wrestling scene, side view. Left: Nati (long auburn hair, freckles, green top) arm being pushed down slightly, worried expression. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) pushing down with proud grin. Arm wrestling table, party background.`
-
-**9.5 — Patz Dominating**
-`Pixel art arm wrestling scene, side view. Left: Nati (long auburn hair, freckles, green top) arm nearly pinned, desperate struggling grimace. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) almost slamming opponent's arm to table, confident victorious expression. Arm wrestling table, party background.`
+**9.3 — Patz Dominating**
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Nati (long auburn hair, freckles, green top) arm nearly pinned to the table, desperate struggling grimace. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) nearly slamming opponent's arm down, leaning in powerfully, confident victorious expression. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 ---
 
-### Matchup 10: Sabi (left) vs Patz (right)
+### Matchup 10: Sabi (left) vs Patz (right) — 3 poses *(Patz always wins)*
 
 **10.1 — Neutral**
-`Pixel art arm wrestling scene, side view. Left: Sabi (long dark hair, steampunk goggles on head, gold necklace, brown leather jacket). Right: Patz (messy brown hair, beard, orange bow tie, teal shirt). Arms locked upright in center, both straining equally. Arm wrestling table, party background.`
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Sabi (long dark hair, steampunk goggles on head, gold necklace, brown leather jacket). Right: Patz (messy brown hair, beard, orange bow tie, teal shirt). Arms locked upright at dead center — neither has the advantage. Both leaning in hard, straining with full effort. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
-**10.2 — Sabi Winning**
-`Pixel art arm wrestling scene, side view. Left: Sabi (long dark hair, steampunk goggles, gold necklace, leather jacket) pushing down with cool confident look. Right: Patz (messy brown hair, beard, bow tie, teal shirt) arm being pushed down slightly, surprised expression. Arm wrestling table, party background.`
+**10.2 — Patz Winning**
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Sabi (long dark hair, steampunk goggles, leather jacket) arm pushed back slightly, frowning with effort, straining to hold on. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) pushing forward with proud grin, arm angled toward Sabi's side. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
-**10.3 — Sabi Dominating**
-`Pixel art arm wrestling scene, side view. Left: Sabi (long dark hair, steampunk goggles, gold necklace, leather jacket) almost slamming opponent's arm to table, dominant smirk. Right: Patz (messy brown hair, beard, bow tie, teal shirt) arm nearly pinned, desperate struggling grimace. Arm wrestling table, party background.`
-
-**10.4 — Patz Winning**
-`Pixel art arm wrestling scene, side view. Left: Sabi (long dark hair, steampunk goggles, leather jacket) arm being pushed down slightly, frowning with effort. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) pushing down with proud grin. Arm wrestling table, party background.`
-
-**10.5 — Patz Dominating**
-`Pixel art arm wrestling scene, side view. Left: Sabi (long dark hair, steampunk goggles, leather jacket) arm nearly pinned, desperate struggling grimace. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) almost slamming opponent's arm to table, confident victorious expression. Arm wrestling table, party background.`
+**10.3 — Patz Dominating**
+`Pixel art, side view, 16-bit retro game art style, clean black outlines, vibrant colors. Wooden arm wrestling table. Left: Sabi (long dark hair, steampunk goggles, leather jacket) arm nearly pinned to the table, desperate struggling grimace. Right: Patz (messy brown hair, beard, orange bow tie, teal shirt) nearly slamming opponent's arm down, leaning in powerfully, confident victorious expression. Festive birthday party background, balloons and banners. Medium wide shot, waist-up framing, warm overhead party lighting, colorful ambient glow. No text, no UI.`
 
 ---
 
@@ -245,8 +221,9 @@ All gameplay images: **Pixel art style, vibrant colors, side view. Two character
 | Category | Count |
 |----------|-------|
 | UI Screens (title, select, 5 victory) | 7 |
-| Gameplay (10 matchups × 5 poses) | 50 |
-| **Total** | **57** |
+| Gameplay — standard matchups (6 × 5 poses) | 30 |
+| Gameplay — Patz matchups (4 × 3 poses) | 12 |
+| **Total** | **49** |
 
 ## File Naming Convention
 
@@ -256,7 +233,10 @@ Examples:
 - `title_screen.png`
 - `victory_eli.png`
 - `eli_vs_lene_neutral.png`
-- `eli_vs_lene_left_winning.png`
-- `eli_vs_lene_left_dominating.png`
-- `eli_vs_lene_right_winning.png`
-- `eli_vs_lene_right_dominating.png`
+- `eli_vs_lene_eli_winning.png`
+- `eli_vs_lene_eli_dominating.png`
+- `eli_vs_lene_lene_winning.png`
+- `eli_vs_lene_lene_dominating.png`
+- `eli_vs_patz_neutral.png`
+- `eli_vs_patz_patz_winning.png`
+- `eli_vs_patz_patz_dominating.png`

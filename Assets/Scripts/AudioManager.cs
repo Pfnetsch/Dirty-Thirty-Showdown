@@ -174,7 +174,7 @@ namespace DirtyThirtyShowdown
                     break;
                 case GameState.PreRound:
                 case GameState.Playing:
-                    if (musicSource.clip != battleMusic)
+                    if (musicSource != null && musicSource.clip != battleMusic)
                         PlayMusic(battleMusic);
                     break;
                 case GameState.MatchEnd:

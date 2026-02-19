@@ -1,47 +1,44 @@
 # Dirty Thirty Showdown - TODO
 
 ## Open Phases Overview
-- [ ] Phase 4: Match Flow UI
+- [x] Phase 4: Match Flow UI — COMPLETE
 - [ ] Phase 5: Visual Polish (Pixel Art)
 - [ ] Phase 6: Audio Integration
 - [ ] Phase 7: Testing & Balance
 
 ---
 
-## Phase 4: Match Flow UI
+## Phase 4: Match Flow UI — COMPLETE ✓
 
-### Character Select Screen
-- [ ] Layout: Two player panels (left/right) with character grid in center
-  - P1 panel (left): Portrait, name, ability 1 name + key (Q), ability 2 name + key (E), READY indicator
-  - P2 panel (right): Portrait, name, ability 1 name + key (O), ability 2 name + key (P), READY indicator
-  - Center grid: 4 character buttons (2x2 or 1x4) with portrait + name, highlight borders for P1 (blue) / P2 (red)
-  - Bottom: Instructions text, START button (appears when both ready)
-- [ ] Wire up `CharacterSelectManager` to actual scene UI elements
-- [ ] Character button prefab: Portrait image, Name TMP text, Highlight border image
+### Character Select Screen ✓
+- [x] Layout: Two player panels (left/right) with character grid in center
+- [x] Wire up `CharacterSelectManager` to actual scene UI elements
+- [x] Character button prefab: Portrait image, Name TMP text, Highlight border image
+- [x] Builder pre-places 4 buttons in CharacterGrid (visible in editor, repositionable)
 
-### Gameplay HUD
-- [ ] Layout: Symmetric HUD for 2 players
-  - **Top center**: Round indicator ("Round 1 / 2 / 3"), Timer (large, countdown from 45)
-  - **Left side (P1)**: Portrait, character name, ability 1 cooldown (radial fill + key label "Q"), ability 2 cooldown (radial fill + key label "E"), shield indicator (if Lene)
-  - **Right side (P2)**: Mirror of P1 panel with keys "O" and "P"
-  - **Center**: Tug-of-war bar (horizontal), bar indicator/cursor, P1 color fill (blue) vs P2 color fill (red)
-  - **Score display**: Round wins per player (dots or checkmarks)
-- [ ] Ability effect overlays: PowerSurge glow, ControlsReversed arrows, InputDisabled "stunned" icon
-- [ ] Screen flash overlay (CanvasGroup for Eli's Flash ability - already in AbilitySystem)
+### Gameplay HUD ✓
+- [x] Symmetric HUD: portraits, names, cooldowns, timer, round text, bar fills, score
+- [x] Ability effect overlays: PowerSurge (yellow), ControlsReversed (purple), InputDisabled/Stunned (orange)
+- [x] Screen flash overlay for Eli's Flash ability
+- [x] `PlayerController.SetCharacter()` called on PreRound via UIManager
+- [x] Ability events (OnAbilityActivated/OnAbilityEnded) wired to UIManager indicators
 
-### Round Transition Panels
-- [ ] **Pre-Round panel**: "Round X - Get Ready!" centered text, 2-second display
-- [ ] **Round End panel**: "{Winner} wins Round X!" centered text, 2-second display
-- [ ] **Match End panel**: Large "{Winner} WINS!" text, rematch button, character select button
-- [ ] Animations/transitions between panels (fade in/out)
+### Round Transition Panels ✓
+- [x] Pre-Round panel: "Round X / Get Ready!" — 2s display
+- [x] Round End panel: "{Winner} wins Round X!" — 2s display
+- [x] Match End panel: "{Winner} WINS!" + victory background image per character
 
-### Rematch / Return Flow
+### Rematch / Return Flow ✓
 - [x] Rematch button → `GameManager.RestartMatch()`
 - [x] Character Select button → `GameManager.ReturnToCharacterSelect()`
-- [x] Keyboard shortcuts: Space/Enter = rematch, Esc/Backspace = character select (from MatchEnd)
+- [x] Keyboard shortcuts: Space/Enter = rematch, Esc/Backspace = character select
 - [x] CharacterSelectManager auto-resets when returning to character select state
 - [x] Both-ready keyboard start: Space or Enter starts match when both confirmed
-- [x] Match end instructions text field added to UIManager
+
+### Builder ✓
+- [x] All panels built and wired by `UISceneBuilder` (menu: Dirty Thirty Showdown > Build Game UI)
+- [x] AudioSources auto-wired to AudioManager (music/sfx/voice)
+- [x] Victory sprites auto-loaded (import as Sprite 2D and UI first)
 
 ---
 

@@ -142,9 +142,13 @@ namespace DirtyThirtyShowdown
             var characterAssets = LoadCharacterAssets();
             CharacterData patzAsset = AssetDatabase.LoadAssetAtPath<CharacterData>("Assets/Characters/Patz.asset");
 
+            // Pre-place the 4 character buttons so they're visible in the editor
+            PlaceCharacterButtonsInGrid(charGrid, characterAssets, prefab);
+
             // Find or create scene systems
             var bootstrap = FindOrCreateComponent<GameBootstrap>("GameBootstrap");
             var gm = FindOrCreateComponent<GameManager>("GameManager");
+            FindOrCreateComponent<ScreenShake>("ScreenShake");
             var awc = FindOrCreateComponent<ArmWrestleController>("ArmWrestleController");
             var abilitySys = FindOrCreateComponent<AbilitySystem>("AbilitySystem");
             var uiMgr = FindOrCreateComponent<UIManager>("UIManager");
@@ -156,8 +160,9 @@ namespace DirtyThirtyShowdown
             var p1Controller = FindOrCreatePlayerController(1);
             var p2Controller = FindOrCreatePlayerController(2);
 
-            // Ensure AudioManager has audio sources
+            // Ensure AudioManager has audio sources and wire them
             EnsureAudioSources(audioMgr.gameObject, 3);
+            WireAudioManager(audioMgr);
 
             // Wire UIManager
             WireUIManager(uiMgr,
@@ -175,6 +180,16 @@ namespace DirtyThirtyShowdown
                 p1PowerSurgeIndicator, p2PowerSurgeIndicator, controlsReversedIndicator,
                 p1Controller, p2Controller, awc,
                 victoryBgImage, eliVictory, leneVictory, natiVictory, sabiVictory, patzVictory);
+
+            // Wire UIManager ability system + stunned indicators (found by path)
+            var gpTransform = gameplayPanel.transform;
+            var p1InputDisabledInd = gpTransform.Find("P1HUD/InputDisabledIndicator")?.gameObject;
+            var p2InputDisabledInd = gpTransform.Find("P2HUD/InputDisabledIndicator")?.gameObject;
+            var uiExtraSO = new SerializedObject(uiMgr);
+            SetRef(uiExtraSO, "abilitySystem", abilitySys);
+            SetRef(uiExtraSO, "p1InputDisabledIndicator", p1InputDisabledInd);
+            SetRef(uiExtraSO, "p2InputDisabledIndicator", p2InputDisabledInd);
+            uiExtraSO.ApplyModifiedProperties();
 
             // Wire CharacterSelectManager
             WireCharacterSelectManager(charSelectMgr,
@@ -251,8 +266,8 @@ namespace DirtyThirtyShowdown
             var gridRT = gridObj.AddComponent<RectTransform>();
             gridRT.anchorMin = new Vector2(0.25f, 0.3f);
             gridRT.anchorMax = new Vector2(0.75f, 0.75f);
-            gridRT.offsetMin = Vector2.zero;
-            gridRT.offsetMax = Vector2.zero;
+            gridRT.anchoredPosition = new Vector2(0f, -12.89f);
+            gridRT.sizeDelta = new Vector2(199.28f, -331.70f);
             var hlg = gridObj.AddComponent<HorizontalLayoutGroup>();
             hlg.spacing = 20;
             hlg.childAlignment = TextAnchor.MiddleCenter;
@@ -343,8 +358,8 @@ namespace DirtyThirtyShowdown
                 rt.anchorMin = new Vector2(0.78f, 0.15f);
                 rt.anchorMax = new Vector2(0.98f, 0.82f);
             }
-            rt.offsetMin = Vector2.zero;
-            rt.offsetMax = Vector2.zero;
+            rt.anchoredPosition = new Vector2(0f, 298.78f);
+            rt.sizeDelta = new Vector2(0f, -293.58f);
 
             var bg = panel.AddComponent<Image>();
             bg.color = new Color(0.15f, 0.15f, 0.2f, 0.8f);
@@ -671,6 +686,18 @@ namespace DirtyThirtyShowdown
             surgeText.alignment = TextAlignmentOptions.Center;
             powerSurgeInd = surgeObj;
             surgeObj.SetActive(false);
+
+            // Input Disabled (Stunned) Indicator
+            var stunnedObj = new GameObject("InputDisabledIndicator");
+            stunnedObj.transform.SetParent(hud.transform, false);
+            var stunnedImg = stunnedObj.AddComponent<Image>();
+            stunnedImg.color = new Color(0.8f, 0.5f, 0.1f, 0.8f);
+            var stunnedLE = stunnedObj.AddComponent<LayoutElement>();
+            stunnedLE.preferredHeight = 24;
+            var stunnedText = CreateTMP(stunnedObj.transform, "Text", "STUNNED!", 14, FontStyles.Bold, smallFont);
+            StretchFill(stunnedText.gameObject);
+            stunnedText.alignment = TextAlignmentOptions.Center;
+            stunnedObj.SetActive(false);
         }
 
         private static void BuildAbilityGroup(Transform parent, string name, string key, string abilityName,
@@ -818,8 +845,8 @@ namespace DirtyThirtyShowdown
             var btnContainerRT = btnContainer.AddComponent<RectTransform>();
             btnContainerRT.anchorMin = new Vector2(0.35f, 0.2f);
             btnContainerRT.anchorMax = new Vector2(0.65f, 0.62f);
-            btnContainerRT.offsetMin = Vector2.zero;
-            btnContainerRT.offsetMax = Vector2.zero;
+            btnContainerRT.anchoredPosition = new Vector2(-777f, -245f);
+            btnContainerRT.sizeDelta = new Vector2(-213.1123f, -135.7732f);
             var vlg = btnContainer.AddComponent<VerticalLayoutGroup>();
             vlg.spacing = 16;
             vlg.childAlignment = TextAnchor.MiddleCenter;
@@ -990,6 +1017,32 @@ namespace DirtyThirtyShowdown
 
         #region Character Button Prefab
 
+        private static void PlaceCharacterButtonsInGrid(Transform gridParent, CharacterData[] characters, GameObject buttonPrefab)
+        {
+            if (gridParent == null || characters == null || buttonPrefab == null) return;
+
+            // Clear any stale children from a previous builder run
+            for (int i = gridParent.childCount - 1; i >= 0; i--)
+                Undo.DestroyObjectImmediate(gridParent.GetChild(i).gameObject);
+
+            foreach (var character in characters)
+            {
+                if (character == null) continue;
+
+                var btnObj = (GameObject)PrefabUtility.InstantiatePrefab(buttonPrefab, gridParent);
+                Undo.RegisterCreatedObjectUndo(btnObj, $"Create {character.characterName} Button");
+                btnObj.name = $"CharButton_{character.characterName}";
+
+                var portrait = btnObj.transform.Find("Portrait")?.GetComponent<Image>();
+                if (portrait != null && character.characterPortrait != null)
+                    portrait.sprite = character.characterPortrait;
+
+                var nameText = btnObj.transform.Find("Name")?.GetComponent<TextMeshProUGUI>();
+                if (nameText != null)
+                    nameText.text = character.characterName;
+            }
+        }
+
         private static GameObject CreateCharacterButtonPrefab()
         {
             string prefabPath = "Assets/Prefabs/CharacterButton.prefab";
@@ -1073,6 +1126,21 @@ namespace DirtyThirtyShowdown
         #endregion
 
         #region Reference Wiring
+
+        private static void WireAudioManager(AudioManager audioMgr)
+        {
+            var sources = audioMgr.GetComponents<AudioSource>();
+            if (sources.Length < 3)
+            {
+                Debug.LogWarning("[UISceneBuilder] AudioManager needs 3 AudioSources.");
+                return;
+            }
+            var so = new SerializedObject(audioMgr);
+            SetRef(so, "musicSource", sources[0]);
+            SetRef(so, "sfxSource",   sources[1]);
+            SetRef(so, "voiceSource", sources[2]);
+            so.ApplyModifiedProperties();
+        }
 
         private static void WireUIManager(UIManager uiMgr,
             RectTransform barIndicator, RectTransform barTrack,

@@ -126,13 +126,24 @@ namespace DirtyThirtyShowdown
 
         private void SetupCharacterGrid()
         {
-            if (characterGridParent == null || characterButtonPrefab == null || availableCharacters == null)
+            if (characterGridParent == null || availableCharacters == null)
                 return;
 
-            // Clear existing buttons
-            foreach (Transform child in characterGridParent)
+            // If the grid is empty (no pre-placed buttons from the builder), instantiate from prefab
+            if (characterGridParent.childCount == 0)
             {
-                Destroy(child.gameObject);
+                if (characterButtonPrefab == null) return;
+                for (int i = 0; i < availableCharacters.Length; i++)
+                    Instantiate(characterButtonPrefab, characterGridParent);
+            }
+            else
+            {
+                // Add any buttons missing beyond what was pre-placed (e.g. Patz unlocked at runtime)
+                while (characterGridParent.childCount < availableCharacters.Length)
+                {
+                    if (characterButtonPrefab == null) break;
+                    Instantiate(characterButtonPrefab, characterGridParent);
+                }
             }
 
             characterButtons = new Button[availableCharacters.Length];
@@ -140,34 +151,23 @@ namespace DirtyThirtyShowdown
 
             for (int i = 0; i < availableCharacters.Length; i++)
             {
-                int index = i; // Capture for lambda
-                GameObject buttonObj = Instantiate(characterButtonPrefab, characterGridParent);
+                if (i >= characterGridParent.childCount) break;
 
-                // Setup button
-                Button button = buttonObj.GetComponent<Button>();
-                characterButtons[i] = button;
+                GameObject buttonObj = characterGridParent.GetChild(i).gameObject;
+                characterButtons[i] = buttonObj.GetComponent<Button>();
 
-                // Setup portrait image
                 Image portrait = buttonObj.transform.Find("Portrait")?.GetComponent<Image>();
                 if (portrait != null && availableCharacters[i].characterPortrait != null)
-                {
                     portrait.sprite = availableCharacters[i].characterPortrait;
-                }
 
-                // Setup name text
                 TextMeshProUGUI nameText = buttonObj.transform.Find("Name")?.GetComponent<TextMeshProUGUI>();
                 if (nameText != null)
-                {
                     nameText.text = availableCharacters[i].characterName;
-                }
 
-                // Setup highlight for selection indication (border-style)
                 Transform highlight = buttonObj.transform.Find("Highlight");
                 characterButtonHighlights[i] = highlight;
                 if (highlight != null)
-                {
                     highlight.gameObject.SetActive(false);
-                }
             }
         }
 
