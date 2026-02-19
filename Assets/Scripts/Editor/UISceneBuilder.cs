@@ -95,6 +95,18 @@ namespace DirtyThirtyShowdown
                 out var p1ScoreText, out var p2ScoreText,
                 out var controlsReversedIndicator);
 
+            // Matchup display image (center of gameplay panel)
+            var matchupImageObj = BuildMatchupImage(gameplayPanel.transform);
+
+            // Embed VFX sprites into existing ability indicators
+            AddVFXSpritesToExistingIndicators(gameplayPanel.transform);
+
+            // Build new per-player VFX overlays (TrashTalk, Dance, CakeToss)
+            BuildVFXOverlays(gameplayPanel.transform,
+                out var p1TrashTalk, out var p2TrashTalk,
+                out var p1Dance,     out var p2Dance,
+                out var p1Cake,      out var p2Cake);
+
             var roundStartPanel = BuildOverlayPanel(canvasObj.transform, "RoundStartPanel",
                 out var roundStartText, "Round 1\nGet Ready!", 72);
             var roundEndPanel = BuildOverlayPanel(canvasObj.transform, "RoundEndPanel",
@@ -181,14 +193,20 @@ namespace DirtyThirtyShowdown
                 p1Controller, p2Controller, awc,
                 victoryBgImage, eliVictory, leneVictory, natiVictory, sabiVictory, patzVictory);
 
-            // Wire UIManager ability system + stunned indicators (found by path)
+            // Wire UIManager ability system, stunned indicators, and new VFX overlays
             var gpTransform = gameplayPanel.transform;
             var p1InputDisabledInd = gpTransform.Find("P1HUD/InputDisabledIndicator")?.gameObject;
             var p2InputDisabledInd = gpTransform.Find("P2HUD/InputDisabledIndicator")?.gameObject;
             var uiExtraSO = new SerializedObject(uiMgr);
-            SetRef(uiExtraSO, "abilitySystem", abilitySys);
+            SetRef(uiExtraSO, "abilitySystem",           abilitySys);
             SetRef(uiExtraSO, "p1InputDisabledIndicator", p1InputDisabledInd);
             SetRef(uiExtraSO, "p2InputDisabledIndicator", p2InputDisabledInd);
+            SetRef(uiExtraSO, "p1TrashTalkOverlay",       p1TrashTalk);
+            SetRef(uiExtraSO, "p2TrashTalkOverlay",       p2TrashTalk);
+            SetRef(uiExtraSO, "p1DanceOverlay",           p1Dance);
+            SetRef(uiExtraSO, "p2DanceOverlay",           p2Dance);
+            SetRef(uiExtraSO, "p1CakeSplatOverlay",       p1Cake);
+            SetRef(uiExtraSO, "p2CakeSplatOverlay",       p2Cake);
             uiExtraSO.ApplyModifiedProperties();
 
             // Wire CharacterSelectManager
@@ -209,6 +227,11 @@ namespace DirtyThirtyShowdown
             WireArmWrestleController(awc,
                 barIndicator.GetComponent<RectTransform>(),
                 barTrack.GetComponent<RectTransform>());
+
+            // Wire MatchupDisplayController
+            var matchupCtrl = gameplayPanel.GetComponent<MatchupDisplayController>();
+            if (matchupCtrl == null) matchupCtrl = gameplayPanel.AddComponent<MatchupDisplayController>();
+            WireMatchupDisplayController(matchupCtrl, matchupImageObj.GetComponent<Image>(), awc);
 
             // Wire PlayerControllers
             WirePlayerController(p1Controller, 1, awc, abilitySys);
@@ -247,16 +270,6 @@ namespace DirtyThirtyShowdown
                 bg.color = PanelBg;
             }
 
-            // Title
-            var title = CreateTMP(panel.transform, "Title", "DIRTY THIRTY SHOWDOWN", 56, FontStyles.Bold, titleFont);
-            var titleRT = title.GetComponent<RectTransform>();
-            titleRT.anchorMin = new Vector2(0.2f, 0.85f);
-            titleRT.anchorMax = new Vector2(0.8f, 0.98f);
-            titleRT.offsetMin = Vector2.zero;
-            titleRT.offsetMax = Vector2.zero;
-            title.alignment = TextAlignmentOptions.Center;
-            title.color = new Color(1f, 0.85f, 0.2f);
-
             // P1 Panel (left)
             var p1Panel = BuildPlayerSelectPanel(panel.transform, "P1Panel", true);
 
@@ -281,14 +294,14 @@ namespace DirtyThirtyShowdown
 
             // Instructions
             var instr = CreateTMP(panel.transform, "InstructionsText",
-                "P1: A/D to select, SPACE to ready up\nP2: Arrows to select, ENTER to ready up", 24, FontStyles.Normal, smallFont);
+                "P1: A/D to select, SPACE to ready up\nP2: Arrows to select, ENTER to ready up", 40, FontStyles.Normal, smallFont);
             var instrRT = instr.GetComponent<RectTransform>();
             instrRT.anchorMin = new Vector2(0.1f, 0.02f);
             instrRT.anchorMax = new Vector2(0.9f, 0.12f);
             instrRT.offsetMin = Vector2.zero;
             instrRT.offsetMax = Vector2.zero;
             instr.alignment = TextAlignmentOptions.Center;
-            instr.color = Color.gray;
+            instr.color = Color.white;
 
             // Cheats button (bottom-left corner, small and subtle — it's an easter egg)
             var cheatsBtnObj = new GameObject("CheatsButton");
@@ -358,8 +371,8 @@ namespace DirtyThirtyShowdown
                 rt.anchorMin = new Vector2(0.78f, 0.15f);
                 rt.anchorMax = new Vector2(0.98f, 0.82f);
             }
-            rt.anchoredPosition = new Vector2(0f, 298.78f);
-            rt.sizeDelta = new Vector2(0f, -293.58f);
+            rt.anchoredPosition = new Vector2(0f, 319f);
+            rt.sizeDelta = new Vector2(0f, -334.01f);
 
             var bg = panel.AddComponent<Image>();
             bg.color = new Color(0.15f, 0.15f, 0.2f, 0.8f);
@@ -377,7 +390,7 @@ namespace DirtyThirtyShowdown
             var portraitObj = new GameObject("Portrait");
             portraitObj.transform.SetParent(panel.transform, false);
             var portraitImg = portraitObj.AddComponent<Image>();
-            portraitImg.color = Color.gray;
+            portraitImg.color = Color.white;
             portraitImg.preserveAspect = true;
             var portraitLE = portraitObj.AddComponent<LayoutElement>();
             portraitLE.preferredHeight = 128;
@@ -407,9 +420,11 @@ namespace DirtyThirtyShowdown
             readyObj.transform.SetParent(panel.transform, false);
             var readyImg = readyObj.AddComponent<Image>();
             readyImg.color = new Color(0.25f, 0.25f, 0.3f, 0.8f);
+            var readyRT = readyObj.GetComponent<RectTransform>();
+            readyRT.sizeDelta = new Vector2(readyRT.sizeDelta.x, 60f);
             var readyLE = readyObj.AddComponent<LayoutElement>();
-            readyLE.preferredHeight = 36;
-            var readyText = CreateTMP(readyObj.transform, "Text", "READY", 18, FontStyles.Bold, smallFont);
+            readyLE.preferredHeight = 60;
+            var readyText = CreateTMP(readyObj.transform, "Text", "READY", 28, FontStyles.Bold, displayFont);
             StretchFill(readyText.gameObject);
             readyText.alignment = TextAlignmentOptions.Center;
             readyText.color = new Color(0.5f, 0.5f, 0.5f);
@@ -740,6 +755,125 @@ namespace DirtyThirtyShowdown
             nameText.color = new Color(0.85f, 0.85f, 0.85f);
         }
 
+        private static void AddVFXSpritesToExistingIndicators(Transform gameplayRoot)
+        {
+            // Load VFX sprites
+            var surgeSpr   = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/VFX/vfx_power_surge.png");
+            var heartsSpr  = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/VFX/vfx_wink_hearts.png");
+            var arrowsSpr  = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/VFX/vfx_fake_out.png");
+            var shieldSpr  = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/VFX/vfx_shield.png");
+
+            // Power Surge: add sprite to P1 and P2 surge indicators
+            EmbedVFXSprite(gameplayRoot.Find("P1HUD/PowerSurgeIndicator"), surgeSpr);
+            EmbedVFXSprite(gameplayRoot.Find("P2HUD/PowerSurgeIndicator"), surgeSpr);
+
+            // Input Disabled (Wink/Flash): add hearts sprite
+            EmbedVFXSprite(gameplayRoot.Find("P1HUD/InputDisabledIndicator"), heartsSpr);
+            EmbedVFXSprite(gameplayRoot.Find("P2HUD/InputDisabledIndicator"), heartsSpr);
+
+            // Shield: add sprite to shield indicators
+            EmbedVFXSprite(gameplayRoot.Find("P1HUD/ShieldIndicator"), shieldSpr);
+            EmbedVFXSprite(gameplayRoot.Find("P2HUD/ShieldIndicator"), shieldSpr);
+
+            // Controls Reversed: add arrows sprite
+            EmbedVFXSprite(gameplayRoot.Find("ControlsReversedIndicator"), arrowsSpr);
+        }
+
+        private static void EmbedVFXSprite(Transform indicator, Sprite sprite)
+        {
+            if (indicator == null || sprite == null) return;
+
+            // Remove any existing VFX child to avoid duplicates on rebuild
+            var existing = indicator.Find("VFXSprite");
+            if (existing != null) Undo.DestroyObjectImmediate(existing.gameObject);
+
+            var vfxObj = new GameObject("VFXSprite");
+            vfxObj.transform.SetParent(indicator, false);
+            // Ignore layout so it floats over the panel text
+            var le = vfxObj.AddComponent<LayoutElement>();
+            le.ignoreLayout = true;
+            // Stretch to fill the indicator
+            var rt = vfxObj.GetComponent<RectTransform>();
+            if (rt == null) rt = vfxObj.AddComponent<RectTransform>();
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+            var img = vfxObj.AddComponent<Image>();
+            img.sprite = sprite;
+            img.color = Color.white;
+            img.preserveAspect = true;
+            img.raycastTarget = false;
+        }
+
+        private static void BuildVFXOverlays(Transform gameplayRoot,
+            out GameObject p1TrashTalk, out GameObject p2TrashTalk,
+            out GameObject p1Dance,     out GameObject p2Dance,
+            out GameObject p1Cake,      out GameObject p2Cake)
+        {
+            var trashSpr = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/VFX/vfx_trash_talk.png");
+            var noteSpr  = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/VFX/vfx_dance_notes.png");
+            var cakeSpr  = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/VFX/vfx_cake_splat.png");
+
+            // P1-side overlays (appear on P1's half when P1 is the target)
+            p1TrashTalk = BuildVFXOverlayObject(gameplayRoot, "P1TrashTalkOverlay", trashSpr, isLeft: true);
+            p1Dance     = BuildVFXOverlayObject(gameplayRoot, "P1DanceOverlay",     noteSpr,  isLeft: true);
+            p1Cake      = BuildVFXOverlayObject(gameplayRoot, "P1CakeSplatOverlay", cakeSpr,  isLeft: true);
+
+            // P2-side overlays
+            p2TrashTalk = BuildVFXOverlayObject(gameplayRoot, "P2TrashTalkOverlay", trashSpr, isLeft: false);
+            p2Dance     = BuildVFXOverlayObject(gameplayRoot, "P2DanceOverlay",     noteSpr,  isLeft: false);
+            p2Cake      = BuildVFXOverlayObject(gameplayRoot, "P2CakeSplatOverlay", cakeSpr,  isLeft: false);
+        }
+
+        private static GameObject BuildVFXOverlayObject(Transform parent, string name, Sprite sprite, bool isLeft)
+        {
+            var obj = new GameObject(name);
+            obj.transform.SetParent(parent, false);
+            var rt = obj.AddComponent<RectTransform>();
+
+            // Position over the left or right HUD area, slightly inset into the center
+            if (isLeft)
+            {
+                rt.anchorMin = new Vector2(0.02f, 0.5f);
+                rt.anchorMax = new Vector2(0.22f, 0.85f);
+            }
+            else
+            {
+                rt.anchorMin = new Vector2(0.78f, 0.5f);
+                rt.anchorMax = new Vector2(0.98f, 0.85f);
+            }
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+
+            var img = obj.AddComponent<Image>();
+            img.sprite = sprite;
+            img.color = Color.white;
+            img.preserveAspect = true;
+            img.raycastTarget = false;
+
+            obj.SetActive(false);
+            return obj;
+        }
+
+        private static GameObject BuildMatchupImage(Transform parent)
+        {
+            var obj = new GameObject("MatchupDisplay");
+            obj.transform.SetParent(parent, false);
+            var rt = obj.AddComponent<RectTransform>();
+            // Centre area: between the two HUDs and above bar/score
+            rt.anchorMin = new Vector2(0.15f, 0.3f);
+            rt.anchorMax = new Vector2(0.85f, 0.88f);
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+            var img = obj.AddComponent<Image>();
+            img.color = Color.white;
+            img.preserveAspect = true;
+            img.raycastTarget = false;
+            obj.SetActive(false); // hidden until a matchup is loaded at round start
+            return obj;
+        }
+
         private static GameObject BuildOverlayPanel(Transform parent, string name,
             out TextMeshProUGUI mainText, string defaultText, int fontSize)
         {
@@ -830,14 +964,14 @@ namespace DirtyThirtyShowdown
             }
 
             // Title text
-            var title = CreateTMP(panel.transform, "TitleText", "DIRTY THIRTY\nSHOWDOWN", 72, FontStyles.Bold, titleFont);
+            var title = CreateTMP(panel.transform, "TitleText", "DIRTY THIRTY\nSHOWDOWN", 36, FontStyles.Bold, titleFont);
             var titleRT = title.GetComponent<RectTransform>();
             titleRT.anchorMin = new Vector2(0.1f, 0.65f);
             titleRT.anchorMax = new Vector2(0.9f, 0.93f);
-            titleRT.offsetMin = Vector2.zero;
-            titleRT.offsetMax = Vector2.zero;
+            titleRT.anchoredPosition = new Vector2(-748.63f, 161.61f);
+            titleRT.sizeDelta = new Vector2(-1098.696f, -177.5493f);
             title.alignment = TextAlignmentOptions.Center;
-            title.color = new Color(1f, 0.85f, 0.2f);
+            title.color = Color.white;
 
             // Button container (centered, stacked vertically)
             var btnContainer = new GameObject("ButtonContainer");
@@ -953,10 +1087,10 @@ namespace DirtyThirtyShowdown
             textArea.transform.SetParent(inputObj.transform, false);
             StretchFill(textArea);
 
-            var inputText = CreateTMP(textArea.transform, "Text", "", 24, FontStyles.Normal, smallFont);
+            var inputText = CreateTMP(textArea.transform, "Text", "", 32, FontStyles.Normal, smallFont);
             StretchFill(inputText.gameObject);
 
-            var placeholder = CreateTMP(textArea.transform, "Placeholder", "type cheat code here...", 24, FontStyles.Normal, smallFont);
+            var placeholder = CreateTMP(textArea.transform, "Placeholder", "type cheat code here...", 32, FontStyles.Normal, smallFont);
             StretchFill(placeholder.gameObject);
             placeholder.color = Color.gray;
             placeholder.fontStyle = FontStyles.Italic;
@@ -981,11 +1115,11 @@ namespace DirtyThirtyShowdown
             closeRT.offsetMin = Vector2.zero;
             closeRT.offsetMax = Vector2.zero;
 
-            // Feedback text
+            // Feedback text — sits just below the input field
             feedbackText = CreateTMP(panel.transform, "FeedbackText", "", 24, FontStyles.Normal, displayFont);
             var feedbackRT = feedbackText.GetComponent<RectTransform>();
-            feedbackRT.anchorMin = new Vector2(0.1f, 0.1f);
-            feedbackRT.anchorMax = new Vector2(0.9f, 0.25f);
+            feedbackRT.anchorMin = new Vector2(0.1f, 0.43f);
+            feedbackRT.anchorMax = new Vector2(0.9f, 0.47f);
             feedbackRT.offsetMin = Vector2.zero;
             feedbackRT.offsetMax = Vector2.zero;
             feedbackText.alignment = TextAlignmentOptions.Center;
@@ -1079,7 +1213,7 @@ namespace DirtyThirtyShowdown
             var portraitObj = new GameObject("Portrait");
             portraitObj.transform.SetParent(btnObj.transform, false);
             var portraitImg = portraitObj.AddComponent<Image>();
-            portraitImg.color = Color.gray;
+            portraitImg.color = Color.white;
             portraitImg.preserveAspect = true;
             var portraitLE = portraitObj.AddComponent<LayoutElement>();
             portraitLE.preferredHeight = 120;
@@ -1261,6 +1395,27 @@ namespace DirtyThirtyShowdown
             SetRef(so, "instructionsText", instrText);
 
             so.ApplyModifiedProperties();
+        }
+
+        private static void WireMatchupDisplayController(MatchupDisplayController ctrl, Image displayImage, ArmWrestleController awc)
+        {
+            var so = new SerializedObject(ctrl);
+            SetRef(so, "displayImage", displayImage);
+            SetRef(so, "armWrestleController", awc);
+
+            // Auto-populate list from existing matchup assets
+            var matchupAssets = MatchupSpritesCreator.LoadAllMatchupAssets();
+            var listProp = so.FindProperty("allMatchups");
+            listProp.arraySize = matchupAssets.Length;
+            for (int i = 0; i < matchupAssets.Length; i++)
+                listProp.GetArrayElementAtIndex(i).objectReferenceValue = matchupAssets[i];
+
+            so.ApplyModifiedProperties();
+
+            if (matchupAssets.Length > 0)
+                Debug.Log($"[UISceneBuilder] Wired {matchupAssets.Length} matchup sprite asset(s) to MatchupDisplayController.");
+            else
+                Debug.Log("[UISceneBuilder] No matchup assets found yet. Run 'Dirty Thirty Showdown > Create Matchup Sprite Assets' first, then rebuild UI.");
         }
 
         private static void WireGameManager(GameManager gm, ArmWrestleController awc, UIManager uiMgr)

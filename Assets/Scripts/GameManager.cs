@@ -21,7 +21,7 @@ namespace DirtyThirtyShowdown
         [Header("Match Settings")]
         [SerializeField] private int roundsToWin = 2;
         [SerializeField] private float roundTimeLimit = 45f;
-        [SerializeField] private float preRoundDelay = 2f;
+        [SerializeField] private float preRoundDelay = 4f;
         [SerializeField] private float roundEndDelay = 2f;
 
         [Header("References")]
@@ -183,6 +183,13 @@ namespace DirtyThirtyShowdown
         {
             ChangeState(GameState.MatchEnd);
             OnMatchEnd?.Invoke(winner);
+        }
+
+        public void GoToTitleScreen()
+        {
+            Player1Character = null;
+            Player2Character = null;
+            ChangeState(GameState.TitleScreen);
         }
 
         public void GoToCharacterSelect()

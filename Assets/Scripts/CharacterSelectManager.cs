@@ -111,6 +111,14 @@ namespace DirtyThirtyShowdown
 
         private void Update()
         {
+            if (GameManager.Instance?.CurrentState != GameState.CharacterSelect) return;
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                GameManager.Instance.GoToTitleScreen();
+                return;
+            }
+
             HandlePlayer1Input();
             HandlePlayer2Input();
 
@@ -314,19 +322,19 @@ namespace DirtyThirtyShowdown
 
             if (!p1Ready && !p2Ready)
             {
-                instructionsText.text = "P1: A/D to select, SPACE to ready up\nP2: Arrows to select, ENTER to ready up";
+                instructionsText.text = "P1: A/D = navigate  |  SPACE = confirm  |  Mash SPACE to arm wrestle!\nP2: ←/→ = navigate  |  ENTER = confirm  |  Mash ENTER to arm wrestle!\nESC = back to title";
             }
             else if (!p1Ready)
             {
-                instructionsText.text = "P1: A/D to select, SPACE to ready up\nP2: READY!";
+                instructionsText.text = "P1: A/D = navigate  |  SPACE = confirm  |  Mash SPACE to arm wrestle!\nP2: READY!";
             }
             else if (!p2Ready)
             {
-                instructionsText.text = "P1: READY!\nP2: Arrows to select, ENTER to ready up";
+                instructionsText.text = "P1: READY!\nP2: ←/→ = navigate  |  ENTER = confirm  |  Mash ENTER to arm wrestle!";
             }
             else
             {
-                instructionsText.text = "BOTH PLAYERS READY!\nPress START to begin!";
+                instructionsText.text = "BOTH PLAYERS READY!\nPress SPACE or ENTER to begin!";
             }
         }
 

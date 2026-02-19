@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Collections;
 
 namespace DirtyThirtyShowdown
 {
@@ -75,6 +76,14 @@ namespace DirtyThirtyShowdown
         [SerializeField] private GameObject p2InputDisabledIndicator;
         [SerializeField] private GameObject controlsReversedIndicator;
 
+        [Header("VFX Overlays (new abilities)")]
+        [SerializeField] private GameObject p1TrashTalkOverlay;
+        [SerializeField] private GameObject p2TrashTalkOverlay;
+        [SerializeField] private GameObject p1DanceOverlay;
+        [SerializeField] private GameObject p2DanceOverlay;
+        [SerializeField] private GameObject p1CakeSplatOverlay;
+        [SerializeField] private GameObject p2CakeSplatOverlay;
+
         [Header("References")]
         [SerializeField] private PlayerController player1Controller;
         [SerializeField] private PlayerController player2Controller;
@@ -83,6 +92,7 @@ namespace DirtyThirtyShowdown
 
         private GameManager gameManager;
         private float maxRoundTime;
+        private Coroutine countdownCoroutine;
 
         private void Start()
         {
@@ -168,7 +178,7 @@ namespace DirtyThirtyShowdown
                 case GameState.PreRound:
                     gameplayPanel?.SetActive(true);
                     roundStartPanel?.SetActive(true);
-                    UpdateRoundStartText();
+                    HideAllAbilityOverlays();
                     if (gameManager.Player1Character != null)
                     {
                         SetupPlayerUI(1, gameManager.Player1Character);
@@ -179,6 +189,8 @@ namespace DirtyThirtyShowdown
                         SetupPlayerUI(2, gameManager.Player2Character);
                         player2Controller?.SetCharacter(gameManager.Player2Character);
                     }
+                    if (countdownCoroutine != null) StopCoroutine(countdownCoroutine);
+                    countdownCoroutine = StartCoroutine(CountdownCoroutine());
                     break;
                 case GameState.Playing:
                     gameplayPanel?.SetActive(true);
@@ -304,6 +316,23 @@ namespace DirtyThirtyShowdown
             }
         }
 
+        private IEnumerator CountdownCoroutine()
+        {
+            if (roundStartText == null) yield break;
+
+            roundStartText.text = $"Round {gameManager?.CurrentRound}\nGet Ready!";
+            yield return new WaitForSeconds(0.5f);
+
+            for (int i = 3; i >= 1; i--)
+            {
+                roundStartText.text = i.ToString();
+                yield return new WaitForSeconds(1f);
+            }
+
+            roundStartText.text = "GO!";
+            // Panel stays visible for ~1 more second before Playing state hides it
+        }
+
         #endregion
 
         #region Timer
@@ -398,6 +427,8 @@ namespace DirtyThirtyShowdown
 
         private void HandleAbilityActivated(AbilityType type, int player)
         {
+            // NOTE: player = the user who triggered the ability.
+            // For offensive abilities, the target is (3 - player).
             switch (type)
             {
                 case AbilityType.PowerSurge:
@@ -406,7 +437,16 @@ namespace DirtyThirtyShowdown
                     break;
                 case AbilityType.Flash:
                 case AbilityType.WinkFlirt:
-                    ShowInputDisabledEffect(3 - player, true); // affects the opponent
+                    ShowInputDisabledEffect(3 - player, true);
+                    break;
+                case AbilityType.TrashTalk:
+                    SetOverlay(player == 1 ? p2TrashTalkOverlay : p1TrashTalkOverlay, true);
+                    break;
+                case AbilityType.Dance:
+                    SetOverlay(player == 1 ? p2DanceOverlay : p1DanceOverlay, true);
+                    break;
+                case AbilityType.CakeToss:
+                    SetOverlay(player == 1 ? p2CakeSplatOverlay : p1CakeSplatOverlay, true);
                     break;
                 case AbilityType.FakeOut:
                     ShowControlsReversed(true);
@@ -416,6 +456,8 @@ namespace DirtyThirtyShowdown
 
         private void HandleAbilityEnded(AbilityType type, int player)
         {
+            // NOTE: for TrashTalk/Dance/WinkFlirt/Flash, player = the target (the affected one).
+            // For PowerSurge/Flex/CakeToss/FakeOut, player = the user.
             switch (type)
             {
                 case AbilityType.PowerSurge:
@@ -424,7 +466,17 @@ namespace DirtyThirtyShowdown
                     break;
                 case AbilityType.Flash:
                 case AbilityType.WinkFlirt:
-                    ShowInputDisabledEffect(player, false); // player is the target here
+                    ShowInputDisabledEffect(player, false);
+                    break;
+                case AbilityType.TrashTalk:
+                    SetOverlay(player == 1 ? p1TrashTalkOverlay : p2TrashTalkOverlay, false);
+                    break;
+                case AbilityType.Dance:
+                    SetOverlay(player == 1 ? p1DanceOverlay : p2DanceOverlay, false);
+                    break;
+                case AbilityType.CakeToss:
+                    // player = user, so opponent is (3 - player)
+                    SetOverlay(player == 1 ? p2CakeSplatOverlay : p1CakeSplatOverlay, false);
                     break;
                 case AbilityType.FakeOut:
                     ShowControlsReversed(false);
@@ -447,6 +499,26 @@ namespace DirtyThirtyShowdown
         public void ShowControlsReversed(bool show)
         {
             if (controlsReversedIndicator != null) controlsReversedIndicator.SetActive(show);
+        }
+
+        private void SetOverlay(GameObject overlay, bool show)
+        {
+            if (overlay != null) overlay.SetActive(show);
+        }
+
+        private void HideAllAbilityOverlays()
+        {
+            ShowPowerSurgeEffect(1, false);
+            ShowPowerSurgeEffect(2, false);
+            ShowInputDisabledEffect(1, false);
+            ShowInputDisabledEffect(2, false);
+            ShowControlsReversed(false);
+            SetOverlay(p1TrashTalkOverlay, false);
+            SetOverlay(p2TrashTalkOverlay, false);
+            SetOverlay(p1DanceOverlay, false);
+            SetOverlay(p2DanceOverlay, false);
+            SetOverlay(p1CakeSplatOverlay, false);
+            SetOverlay(p2CakeSplatOverlay, false);
         }
 
         #endregion

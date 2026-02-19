@@ -11,7 +11,14 @@ namespace DirtyThirtyShowdown
 
         public event Action OnPatzUnlocked;
 
-        private const string CheatCode = "oh mighty patz please help";
+        private static readonly string[] ValidCodes =
+        {
+            "oh mighty patz please help",
+            "patz please help",
+            "patz help",
+            "patz is the best",
+            "patz wuhu",
+        };
 
         private void Awake()
         {
@@ -29,7 +36,14 @@ namespace DirtyThirtyShowdown
         {
             if (string.IsNullOrEmpty(input)) return false;
 
-            if (input.Trim().ToLowerInvariant() == CheatCode)
+            string normalized = input.Trim().ToLowerInvariant();
+            bool matched = false;
+            foreach (var code in ValidCodes)
+            {
+                if (normalized == code) { matched = true; break; }
+            }
+
+            if (matched)
             {
                 if (!PatzUnlocked)
                 {
