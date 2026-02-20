@@ -87,6 +87,8 @@ namespace DirtyThirtyShowdown
             public TextMeshProUGUI ability2KeyText;
             public TextMeshProUGUI ability1NameText;
             public TextMeshProUGUI ability2NameText;
+            public GameObject ability1ReadyFlash;
+            public GameObject ability2ReadyFlash;
             public GameObject shieldIndicator;
             public GameObject powerSurgeIndicator;
             public GameObject inputDisabledIndicator;
@@ -121,6 +123,8 @@ namespace DirtyThirtyShowdown
                 refs.ability2Cooldown = FindDeep<Image>(ab2, "Cooldown");
             }
 
+            refs.ability1ReadyFlash   = ab1?.Find("ReadyFlash")?.gameObject;
+            refs.ability2ReadyFlash   = ab2?.Find("ReadyFlash")?.gameObject;
             refs.powerSurgeIndicator  = root.Find("PowerSurgeIndicator")?.gameObject;
             refs.shieldIndicator      = root.Find("ShieldIndicator")?.gameObject;
             refs.inputDisabledIndicator = root.Find("InputDisabledIndicator")?.gameObject;
@@ -188,15 +192,17 @@ namespace DirtyThirtyShowdown
             if (player1Controller != null)
             {
                 player1Controller.OnCooldownUpdate += (ability, remaining, total) => UpdateCooldown(1, ability, remaining, total);
+                player1Controller.OnAbilityReady   += (ability) => SetAbilityReady(1, ability, true);
                 player1Controller.OnShieldActivated += () => SetShieldIndicator(1, true);
-                player1Controller.OnShieldConsumed += () => SetShieldIndicator(1, false);
+                player1Controller.OnShieldConsumed  += () => SetShieldIndicator(1, false);
             }
 
             if (player2Controller != null)
             {
                 player2Controller.OnCooldownUpdate += (ability, remaining, total) => UpdateCooldown(2, ability, remaining, total);
+                player2Controller.OnAbilityReady   += (ability) => SetAbilityReady(2, ability, true);
                 player2Controller.OnShieldActivated += () => SetShieldIndicator(2, true);
-                player2Controller.OnShieldConsumed += () => SetShieldIndicator(2, false);
+                player2Controller.OnShieldConsumed  += () => SetShieldIndicator(2, false);
             }
 
             if (abilitySystem != null)
@@ -451,6 +457,16 @@ namespace DirtyThirtyShowdown
             Image cooldownImage = ability == 1 ? hud.ability1Cooldown : hud.ability2Cooldown;
             if (cooldownImage != null)
                 cooldownImage.fillAmount = remaining > 0 ? remaining / total : 0f;
+            // Hide ready flash while ability is on cooldown
+            if (remaining > 0)
+                SetAbilityReady(playerNumber, ability, false);
+        }
+
+        private void SetAbilityReady(int playerNumber, int ability, bool ready)
+        {
+            ref PlayerHUDRefs hud = ref (playerNumber == 1 ? ref p1HUD : ref p2HUD);
+            GameObject flash = ability == 1 ? hud.ability1ReadyFlash : hud.ability2ReadyFlash;
+            flash?.SetActive(ready);
         }
 
         private void SetShieldIndicator(int playerNumber, bool active)
@@ -477,6 +493,10 @@ namespace DirtyThirtyShowdown
             if (hud.ability2KeyText != null) hud.ability2KeyText.text = key2;
             if (hud.ability1NameText != null) hud.ability1NameText.text = character.ability1Name;
             if (hud.ability2NameText != null) hud.ability2NameText.text = character.ability2Name;
+
+            // Abilities start ready at round start
+            SetAbilityReady(playerNumber, 1, true);
+            SetAbilityReady(playerNumber, 2, true);
         }
 
         #endregion

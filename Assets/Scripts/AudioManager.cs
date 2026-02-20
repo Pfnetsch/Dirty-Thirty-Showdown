@@ -67,6 +67,9 @@ namespace DirtyThirtyShowdown
 
         private void Start()
         {
+            AutoWireAudioSources();
+            CreateDefaultProfiles();
+
             gameManager = GameManager.Instance;
             if (gameManager != null)
             {
@@ -78,6 +81,105 @@ namespace DirtyThirtyShowdown
 
             UpdateVolumes();
             GenerateAllClips();
+        }
+
+        private void AutoWireAudioSources()
+        {
+            var sources = GetComponents<AudioSource>();
+            // Add missing sources
+            while (sources.Length < 3)
+            {
+                gameObject.AddComponent<AudioSource>();
+                sources = GetComponents<AudioSource>();
+            }
+            if (musicSource == null) musicSource = sources[0];
+            if (sfxSource   == null) sfxSource   = sources[1];
+            if (voiceSource == null) voiceSource = sources[2];
+
+            musicSource.loop        = true;
+            musicSource.playOnAwake = false;
+            sfxSource.playOnAwake   = false;
+            voiceSource.playOnAwake = false;
+        }
+
+        // ─── Default Profile Creation ─────────────────────────────────────────────
+
+        /// <summary>
+        /// Creates in-memory ProceduralSoundProfile instances for any slots left null in the Inspector.
+        /// These are not saved as assets — just used at runtime.
+        /// </summary>
+        private void CreateDefaultProfiles()
+        {
+            mashHitSound        ??= MakeSimple("MashHit",       OscillatorType.Square,   180f, 0.06f, 0.003f, 0.04f, 0f,   0.015f, 0.55f, lpCutoff: 1400f, pitchEnd: 0.7f);
+            navigateSound       ??= MakeSimple("Navigate",      OscillatorType.Sine,     660f, 0.09f, 0.003f, 0.04f, 0f,   0.04f,  0.45f);
+            confirmSound        ??= MakeArp("Confirm",          OscillatorType.Sine,     new[]{440f, 660f},        0.12f, 0.55f);
+            cooldownReadySound  ??= MakeSimple("CdReady",       OscillatorType.Triangle, 880f, 0.22f, 0.01f,  0.06f, 0.2f, 0.10f,  0.55f, pitchEnd: 1.5f);
+            roundStartSound     ??= MakeArp("RoundStart",       OscillatorType.Square,   new[]{261f, 329f, 392f, 523f}, 0.10f, 0.60f, lpCutoff: 1800f);
+            roundEndSound       ??= MakeSimple("RoundEnd",      OscillatorType.Square,   440f, 0.30f, 0.01f,  0.05f, 0f,   0.20f,  0.55f, lpCutoff: 1600f, pitchEnd: 0.6f);
+            matchWinSound       ??= MakeArp("MatchWin",         OscillatorType.Square,   new[]{392f, 523f, 659f, 784f}, 0.14f, 0.65f, lpCutoff: 2000f);
+            timerWarningSound   ??= MakeSimple("TimerWarn",     OscillatorType.Sine,     880f, 0.14f, 0.005f, 0.02f, 0f,   0.06f,  0.50f);
+            powerSurgeSound     ??= MakeSimple("PowerSurge",    OscillatorType.Sawtooth, 200f, 0.45f, 0.02f,  0.10f, 0.4f, 0.20f,  0.65f, lpCutoff: 1800f, pitchEnd: 2.2f);
+            flashSound          ??= MakeSimple("Flash",         OscillatorType.Sine,    1400f, 0.28f, 0.005f, 0.05f, 0f,   0.18f,  0.65f, pitchEnd: 0.5f, noise: 0.15f);
+            trashTalkSound      ??= MakeSimple("TrashTalk",     OscillatorType.Sawtooth, 500f, 0.30f, 0.01f,  0.05f, 0f,   0.20f,  0.60f, lpCutoff: 1600f, pitchEnd: 0.5f);
+            shieldActivateSound ??= MakeSimple("ShieldOn",      OscillatorType.Triangle, 660f, 0.35f, 0.01f,  0.08f, 0.3f, 0.18f,  0.55f, pitchEnd: 1.4f);
+            shieldBreakSound    ??= MakeSimple("ShieldBreak",   OscillatorType.Noise,    400f, 0.28f, 0.005f, 0.05f, 0f,   0.20f,  0.65f, noise: 0.85f);
+            winkFlirtSound      ??= MakeArp("WinkFlirt",        OscillatorType.Sine,     new[]{523f, 659f, 784f},      0.10f, 0.55f);
+            danceSound          ??= MakeArp("Dance",            OscillatorType.Square,   new[]{330f, 415f, 330f, 494f}, 0.09f, 0.50f, lpCutoff: 1600f);
+            cakeTossSound       ??= MakeSimple("CakeToss",      OscillatorType.Noise,    300f, 0.22f, 0.005f, 0.06f, 0f,   0.14f,  0.65f, noise: 0.80f, pitchEnd: 0.4f);
+            fakeOutSound        ??= MakeSimple("FakeOut",       OscillatorType.Sawtooth, 550f, 0.40f, 0.01f,  0.05f, 0f,   0.28f,  0.60f, lpCutoff: 1800f, pitchEnd: 0.35f, vibratoRate: 8f, vibratoDepth: 0.04f);
+        }
+
+        private static ProceduralSoundProfile MakeSimple(
+            string pName, OscillatorType osc, float hz, float dur,
+            float atk, float dcy, float sus, float rel, float vol,
+            float pitchEnd = 1f, float noise = 0f, float lpCutoff = 0f,
+            float vibratoRate = 0f, float vibratoDepth = 0f)
+        {
+            var p = ScriptableObject.CreateInstance<ProceduralSoundProfile>();
+            p.name                  = pName;
+            p.oscillatorType        = osc;
+            p.baseFrequency         = hz;
+            p.duration              = dur;
+            p.attack                = atk;
+            p.decay                 = dcy;
+            p.sustain               = sus;
+            p.release               = rel;
+            p.volume                = vol;
+            p.pitchStartMultiplier  = 1f;
+            p.pitchEndMultiplier    = pitchEnd;
+            p.pitchCurve            = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+            p.noiseAmount           = noise;
+            p.lowPassCutoff         = lpCutoff;
+            p.vibratoRate           = vibratoRate;
+            p.vibratoDepth          = vibratoDepth;
+            p.variantCount          = 3;
+            p.frequencyVariation    = 0.02f;
+            p.volumeVariation       = 0.05f;
+            return p;
+        }
+
+        private static ProceduralSoundProfile MakeArp(
+            string pName, OscillatorType osc, float[] freqs,
+            float noteDur, float vol, float lpCutoff = 0f)
+        {
+            var p = ScriptableObject.CreateInstance<ProceduralSoundProfile>();
+            p.name               = pName;
+            p.oscillatorType     = osc;
+            p.baseFrequency      = freqs[0];
+            p.duration           = noteDur;
+            p.pitchStartMultiplier = 1f;
+            p.pitchEndMultiplier   = 1f;
+            p.pitchCurve         = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+            p.volume             = vol;
+            p.lowPassCutoff      = lpCutoff;
+            p.variantCount       = 1;  // arpeggios sound best without pitch variation
+            p.frequencyVariation = 0f;
+            p.volumeVariation    = 0.03f;
+            var notes = new ArpeggioNote[freqs.Length];
+            for (int i = 0; i < freqs.Length; i++)
+                notes[i] = new ArpeggioNote { frequency = freqs[i], duration = noteDur };
+            p.arpeggio = notes;
+            return p;
         }
 
         private void OnDestroy()

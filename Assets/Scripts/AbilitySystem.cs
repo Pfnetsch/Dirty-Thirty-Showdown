@@ -55,6 +55,7 @@ namespace DirtyThirtyShowdown
             }
 
             OnAbilityActivated?.Invoke(type, playerNumber);
+            AudioManager.Instance?.PlayAbilitySFX(type);
 
             switch (type)
             {
@@ -171,8 +172,8 @@ namespace DirtyThirtyShowdown
 
         private void PlayShieldBlockEffect(int player)
         {
-            // Visual/audio feedback when shield blocks an ability
             Debug.Log($"Player {player}'s shield blocked an ability!");
+            AudioManager.Instance?.PlayShieldBreak();
             // Instantiate shield break effect, play sound, etc.
         }
 
@@ -230,8 +231,8 @@ namespace DirtyThirtyShowdown
 
         private void ExecuteFlex(int playerNumber, float duration)
         {
-            // 10x mashing power — completely overpowered
-            armWrestleController.SetMashMultiplier(playerNumber, 10f, duration);
+            // 20x mashing power — utterly unstoppable
+            armWrestleController.SetMashMultiplier(playerNumber, 20f, duration);
             StartCoroutine(AbilityDurationCoroutine(AbilityType.Flex, playerNumber, duration));
         }
 

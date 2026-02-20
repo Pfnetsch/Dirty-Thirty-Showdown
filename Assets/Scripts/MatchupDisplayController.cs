@@ -18,6 +18,7 @@ namespace DirtyThirtyShowdown
     {
         [SerializeField] private Image displayImage;
         [SerializeField] private ArmWrestleController armWrestleController;
+        [SerializeField] private AbilitySystem abilitySystem;
         [SerializeField] private List<MatchupSprites> allMatchups = new();
 
         [Header("Thresholds (fraction of ±1 bar range)")]
@@ -30,11 +31,21 @@ namespace DirtyThirtyShowdown
         private MatchupSprites currentMatchup;
         private bool char1IsP1;   // orientation flag — set when matchup is selected
         private Sprite lastSprite;
+        private bool flexActive;
 
         private void Start()
         {
             if (displayImage != null)
                 displayImage.preserveAspect = false;
+
+            if (abilitySystem == null)
+                abilitySystem = FindFirstObjectByType<AbilitySystem>();
+
+            if (abilitySystem != null)
+            {
+                abilitySystem.OnAbilityActivated += OnAbilityActivated;
+                abilitySystem.OnAbilityEnded     += OnAbilityEnded;
+            }
 
             if (GameManager.Instance != null)
             {
@@ -58,6 +69,12 @@ namespace DirtyThirtyShowdown
         {
             if (GameManager.Instance != null)
                 GameManager.Instance.OnStateChanged -= OnStateChanged;
+
+            if (abilitySystem != null)
+            {
+                abilitySystem.OnAbilityActivated -= OnAbilityActivated;
+                abilitySystem.OnAbilityEnded     -= OnAbilityEnded;
+            }
         }
 
         private void OnStateChanged(GameState state)
@@ -80,7 +97,10 @@ namespace DirtyThirtyShowdown
             var p1 = gm.Player1Character;
             var p2 = gm.Player2Character;
 
+            // First pass: prefer the asset where char1 == P1 (correct visual orientation).
+            // Second pass: fall back to the reversed asset if no direct match exists.
             currentMatchup = null;
+            MatchupSprites reversedFallback = null;
             foreach (var m in allMatchups)
             {
                 if (m == null || m.character1 == null || m.character2 == null) continue;
@@ -91,12 +111,14 @@ namespace DirtyThirtyShowdown
                     char1IsP1 = true;
                     break;
                 }
-                if (m.character1 == p2 && m.character2 == p1)
-                {
-                    currentMatchup = m;
-                    char1IsP1 = false;
-                    break;
-                }
+                if (reversedFallback == null && m.character1 == p2 && m.character2 == p1)
+                    reversedFallback = m;
+            }
+
+            if (currentMatchup == null && reversedFallback != null)
+            {
+                currentMatchup = reversedFallback;
+                char1IsP1 = false;
             }
 
             if (currentMatchup == null || currentMatchup.neutral == null)
@@ -124,6 +146,16 @@ namespace DirtyThirtyShowdown
         {
             if (displayImage == null || currentMatchup == null) return;
 
+            // Flex ability override — show the flexing sprite while active
+            if (flexActive && currentMatchup.char1FlexingSprite != null)
+            {
+                Sprite flexSprite = currentMatchup.char1FlexingSprite;
+                if (flexSprite == lastSprite) return;
+                displayImage.sprite = flexSprite;
+                lastSprite = flexSprite;
+                return;
+            }
+
             // Convert bar position to char1's winning direction.
             // bar negative = P1 winning.
             // If char1 is P1: char1 winning when bar is negative → invert sign so positive = char1 winning.
@@ -150,8 +182,27 @@ namespace DirtyThirtyShowdown
         private void HideDisplay()
         {
             currentMatchup = null;
+            flexActive = false;
             if (displayImage != null)
                 displayImage.gameObject.SetActive(false);
+        }
+
+        private void OnAbilityActivated(AbilityType type, int player)
+        {
+            if (type == AbilityType.Flex)
+            {
+                flexActive = true;
+                lastSprite = null; // force refresh
+            }
+        }
+
+        private void OnAbilityEnded(AbilityType type, int player)
+        {
+            if (type == AbilityType.Flex)
+            {
+                flexActive = false;
+                lastSprite = null; // force refresh
+            }
         }
     }
 }

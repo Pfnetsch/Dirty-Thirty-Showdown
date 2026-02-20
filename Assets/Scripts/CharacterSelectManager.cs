@@ -117,14 +117,14 @@ namespace DirtyThirtyShowdown
         {
             if (GameManager.Instance?.CurrentState != GameState.CharacterSelect) return;
 
+            // Don't process character select input while the cheat panel is open
+            if (cheatCodeUI != null && cheatCodeUI.IsPanelOpen) return;
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 GameManager.Instance.GoToTitleScreen();
                 return;
             }
-
-            // Don't process character select input while the cheat panel is open
-            if (cheatCodeUI != null && cheatCodeUI.IsPanelOpen) return;
 
             HandlePlayer1Input();
             HandlePlayer2Input();

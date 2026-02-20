@@ -42,7 +42,8 @@ namespace DirtyThirtyShowdown
 
         // Events
         public event Action<int, float, float> OnCooldownUpdate; // ability (1/2), remaining, total
-        public event Action<int> OnAbilityUsed; // ability (1/2)
+        public event Action<int> OnAbilityUsed;   // ability (1/2)
+        public event Action<int> OnAbilityReady;  // ability (1/2) — fires once when cooldown hits 0
         public event Action OnShieldActivated;
         public event Action OnShieldConsumed;
 
@@ -113,6 +114,8 @@ namespace DirtyThirtyShowdown
             lastMashTime = Time.time;
             currentMashPower += mashPowerPerPress;
 
+            AudioManager.Instance?.PlayMashHit();
+
             if (armWrestleController != null)
                 armWrestleController.AddMashPower(playerNumber, mashPowerPerPress);
         }
@@ -176,8 +179,11 @@ namespace DirtyThirtyShowdown
             {
                 Ability1CooldownRemaining -= Time.deltaTime;
                 if (Character != null)
-                {
                     OnCooldownUpdate?.Invoke(1, Ability1CooldownRemaining, Character.ability1Cooldown);
+                if (Ability1CooldownRemaining <= 0f)
+                {
+                    Ability1CooldownRemaining = 0f;
+                    OnAbilityReady?.Invoke(1);
                 }
             }
 
@@ -185,8 +191,11 @@ namespace DirtyThirtyShowdown
             {
                 Ability2CooldownRemaining -= Time.deltaTime;
                 if (Character != null)
-                {
                     OnCooldownUpdate?.Invoke(2, Ability2CooldownRemaining, Character.ability2Cooldown);
+                if (Ability2CooldownRemaining <= 0f)
+                {
+                    Ability2CooldownRemaining = 0f;
+                    OnAbilityReady?.Invoke(2);
                 }
             }
         }

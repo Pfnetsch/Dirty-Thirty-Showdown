@@ -62,6 +62,12 @@ namespace DirtyThirtyShowdown
 
         public bool IsPanelOpen => cheatPanel != null && cheatPanel.activeSelf;
 
+        private void Update()
+        {
+            if (IsPanelOpen && Input.GetKeyDown(KeyCode.Escape))
+                ClosePanel();
+        }
+
         private void Submit()
         {
             if (cheatInput == null || CheatManager.Instance == null) return;

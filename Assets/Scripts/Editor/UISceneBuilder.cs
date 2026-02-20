@@ -83,6 +83,7 @@ namespace DirtyThirtyShowdown
             var gameplayPanel = BuildGameplayPanel(canvasObj.transform,
                 out var barTrack, out var barFillLeft, out var barFillRight, out var barIndicator,
                 out var roundText, out var timerText, out var timerFill,
+                out var p1HUDRoot, out var p2HUDRoot,
                 out var p1Portrait, out var p1NameText,
                 out var p1Ability1Cooldown, out var p1Ability2Cooldown,
                 out var p1Ability1KeyText, out var p1Ability2KeyText,
@@ -184,15 +185,10 @@ namespace DirtyThirtyShowdown
                 barIndicator.GetComponent<RectTransform>(), barTrack.GetComponent<RectTransform>(),
                 barFillLeft, barFillRight,
                 p1ScoreText, p2ScoreText, roundText, timerText, timerFill,
-                p1Portrait, p1NameText, p1Ability1Cooldown, p1Ability2Cooldown,
-                p1Ability1KeyText, p1Ability2KeyText, p1Ability1NameText, p1Ability2NameText,
-                p1ShieldIndicator,
-                p2Portrait, p2NameText, p2Ability1Cooldown, p2Ability2Cooldown,
-                p2Ability1KeyText, p2Ability2KeyText, p2Ability1NameText, p2Ability2NameText,
-                p2ShieldIndicator,
+                p1HUDRoot, p2HUDRoot,
                 splashScreenPanel, titleScreenPanel, charSelectPanel, gameplayPanel, roundStartPanel, roundEndPanel, matchEndPanel,
                 roundStartText, roundEndText, matchWinnerText, matchEndInstructionsText,
-                p1PowerSurgeIndicator, p2PowerSurgeIndicator, controlsReversedIndicator,
+                controlsReversedIndicator,
                 p1Controller, p2Controller, awc,
                 victoryBgImage, eliVictory, leneVictory, natiVictory, sabiVictory, patzVictory);
 
@@ -243,7 +239,7 @@ namespace DirtyThirtyShowdown
             // Wire MatchupDisplayController
             var matchupCtrl = gameplayPanel.GetComponent<MatchupDisplayController>();
             if (matchupCtrl == null) matchupCtrl = gameplayPanel.AddComponent<MatchupDisplayController>();
-            WireMatchupDisplayController(matchupCtrl, matchupImageObj.GetComponent<Image>(), awc);
+            WireMatchupDisplayController(matchupCtrl, matchupImageObj.GetComponent<Image>(), awc, abilitySys);
 
             // Wire PlayerControllers
             WirePlayerController(p1Controller, 1, awc, abilitySys);
@@ -484,6 +480,7 @@ namespace DirtyThirtyShowdown
         private static GameObject BuildGameplayPanel(Transform parent,
             out Image barTrack, out Image barFillLeft, out Image barFillRight, out Image barIndicator,
             out TextMeshProUGUI roundText, out TextMeshProUGUI timerText, out Image timerFill,
+            out Transform p1HUDRoot, out Transform p2HUDRoot,
             out Image p1Portrait, out TextMeshProUGUI p1NameText,
             out Image p1Ab1Cd, out Image p1Ab2Cd,
             out TextMeshProUGUI p1Ab1Key, out TextMeshProUGUI p1Ab2Key,
@@ -547,14 +544,22 @@ namespace DirtyThirtyShowdown
             timerFillImg.fillAmount = 1f;
             timerFill = timerFillImg;
 
+            // Load PlayerHUD prefab
+            var hudPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/PlayerHUD.prefab");
+            if (hudPrefab == null) Debug.LogWarning("[UISceneBuilder] PlayerHUD.prefab not found — falling back to procedural HUD.");
+
             // P1 HUD (left)
-            BuildPlayerHUD(panel.transform, "P1HUD", true,
+            InstantiatePlayerHUD(panel.transform, "P1HUD", hudPrefab,
+                new Vector2(0.02f, 0.5f), new Vector2(0.15f, 0.88f),
+                out p1HUDRoot,
                 out p1Portrait, out p1NameText, out p1Ab1Cd, out p1Ab2Cd,
                 out p1Ab1Key, out p1Ab2Key, out p1Ab1Name, out p1Ab2Name,
                 out p1ShieldInd, out p1PowerSurgeInd);
 
             // P2 HUD (right)
-            BuildPlayerHUD(panel.transform, "P2HUD", false,
+            InstantiatePlayerHUD(panel.transform, "P2HUD", hudPrefab,
+                new Vector2(0.85f, 0.5f), new Vector2(0.98f, 0.88f),
+                out p2HUDRoot,
                 out p2Portrait, out p2NameText, out p2Ab1Cd, out p2Ab2Cd,
                 out p2Ab1Key, out p2Ab2Key, out p2Ab1Name, out p2Ab2Name,
                 out p2ShieldInd, out p2PowerSurgeInd);
@@ -665,7 +670,75 @@ namespace DirtyThirtyShowdown
             return panel;
         }
 
+        private static void InstantiatePlayerHUD(Transform parent, string name, GameObject prefab,
+            Vector2 anchorMin, Vector2 anchorMax,
+            out Transform hudRoot,
+            out Image portrait, out TextMeshProUGUI nameText,
+            out Image ab1Cd, out Image ab2Cd,
+            out TextMeshProUGUI ab1Key, out TextMeshProUGUI ab2Key,
+            out TextMeshProUGUI ab1Name, out TextMeshProUGUI ab2Name,
+            out GameObject shieldInd, out GameObject powerSurgeInd)
+        {
+            if (prefab == null)
+            {
+                bool isLeft = anchorMin.x < 0.5f;
+                BuildPlayerHUD(parent, name, isLeft,
+                    out hudRoot, out portrait, out nameText, out ab1Cd, out ab2Cd,
+                    out ab1Key, out ab2Key, out ab1Name, out ab2Name,
+                    out shieldInd, out powerSurgeInd);
+                return;
+            }
+
+            var hud = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
+            Undo.RegisterCreatedObjectUndo(hud, $"Create {name}");
+            hud.name = name;
+
+            var rt = hud.GetComponent<RectTransform>();
+            rt.anchorMin = anchorMin;
+            rt.anchorMax = anchorMax;
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+
+            hudRoot       = hud.transform;
+            portrait      = hud.transform.Find("Portrait")?.GetComponent<Image>();
+            nameText      = hud.transform.Find("NameText")?.GetComponent<TextMeshProUGUI>();
+            ab1Cd         = hud.transform.Find("Ability1Group/Cooldown")?.GetComponent<Image>();
+            ab2Cd         = hud.transform.Find("Ability2Group/Cooldown")?.GetComponent<Image>();
+            ab1Key        = hud.transform.Find("Ability1Group/Cooldown/KeyText")?.GetComponent<TextMeshProUGUI>();
+            ab2Key        = hud.transform.Find("Ability2Group/Cooldown/KeyText")?.GetComponent<TextMeshProUGUI>();
+            ab1Name       = hud.transform.Find("Ability1Group/NameText")?.GetComponent<TextMeshProUGUI>();
+            ab2Name       = hud.transform.Find("Ability2Group/NameText")?.GetComponent<TextMeshProUGUI>();
+            shieldInd     = hud.transform.Find("ShieldIndicator")?.gameObject;
+            powerSurgeInd = hud.transform.Find("PowerSurgeIndicator")?.gameObject;
+
+            // Inject ReadyFlash into prefab instances if not already present
+            InjectReadyFlash(hud.transform.Find("Ability1Group"));
+            InjectReadyFlash(hud.transform.Find("Ability2Group"));
+        }
+
+        private static void InjectReadyFlash(Transform abilityGroup)
+        {
+            if (abilityGroup == null) return;
+            if (abilityGroup.Find("ReadyFlash") != null) return; // already present
+
+            var rf = new GameObject("ReadyFlash");
+            Undo.RegisterCreatedObjectUndo(rf, "Create ReadyFlash");
+            rf.transform.SetParent(abilityGroup, false);
+            var rt = rf.AddComponent<RectTransform>();
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.offsetMin = new Vector2(-2, -2);
+            rt.offsetMax = new Vector2(2, 2);
+            var le = rf.AddComponent<LayoutElement>();
+            le.ignoreLayout = true;
+            var img = rf.AddComponent<Image>();
+            img.color = new Color(0.15f, 1f, 0.3f, 0.22f);
+            img.raycastTarget = false;
+            rf.SetActive(false);
+        }
+
         private static void BuildPlayerHUD(Transform parent, string name, bool isLeft,
+            out Transform hudRoot,
             out Image portrait, out TextMeshProUGUI nameText,
             out Image ab1Cd, out Image ab2Cd,
             out TextMeshProUGUI ab1Key, out TextMeshProUGUI ab2Key,
@@ -673,6 +746,7 @@ namespace DirtyThirtyShowdown
             out GameObject shieldInd, out GameObject powerSurgeInd)
         {
             var hud = new GameObject(name);
+            hudRoot = hud.transform;
             hud.transform.SetParent(parent, false);
             var hudRT = hud.AddComponent<RectTransform>();
 
@@ -804,6 +878,22 @@ namespace DirtyThirtyShowdown
             nameRT.offsetMax = Vector2.zero;
             nameText.alignment = TextAlignmentOptions.MidlineLeft;
             nameText.color = new Color(0.85f, 0.85f, 0.85f);
+
+            // Ready Flash — green overlay shown when ability is available (ignores layout)
+            var readyFlash = new GameObject("ReadyFlash");
+            Undo.RegisterCreatedObjectUndo(readyFlash, "Create ReadyFlash");
+            readyFlash.transform.SetParent(group.transform, false);
+            var rfRT = readyFlash.AddComponent<RectTransform>();
+            rfRT.anchorMin = Vector2.zero;
+            rfRT.anchorMax = Vector2.one;
+            rfRT.offsetMin = new Vector2(-2, -2);
+            rfRT.offsetMax = new Vector2(2, 2);
+            var rfLE = readyFlash.AddComponent<LayoutElement>();
+            rfLE.ignoreLayout = true;
+            var rfImg = readyFlash.AddComponent<Image>();
+            rfImg.color = new Color(0.15f, 1f, 0.3f, 0.22f);
+            rfImg.raycastTarget = false;
+            readyFlash.SetActive(false); // hidden until SetupPlayerUI marks it ready
         }
 
         private static void AddVFXSpritesToExistingIndicators(Transform gameplayRoot)
@@ -839,17 +929,19 @@ namespace DirtyThirtyShowdown
             if (existing != null) Undo.DestroyObjectImmediate(existing.gameObject);
 
             var vfxObj = new GameObject("VFXSprite");
+            Undo.RegisterCreatedObjectUndo(vfxObj, "Create VFXSprite");
             vfxObj.transform.SetParent(indicator, false);
-            // Ignore layout so it floats over the panel text
+            // Ignore layout; sit as a square icon on the right edge of the indicator
             var le = vfxObj.AddComponent<LayoutElement>();
             le.ignoreLayout = true;
-            // Stretch to fill the indicator
-            var rt = vfxObj.GetComponent<RectTransform>();
-            if (rt == null) rt = vfxObj.AddComponent<RectTransform>();
-            rt.anchorMin = Vector2.zero;
-            rt.anchorMax = Vector2.one;
-            rt.offsetMin = Vector2.zero;
-            rt.offsetMax = Vector2.zero;
+            var rt = vfxObj.AddComponent<RectTransform>();
+            // Anchor to the right side, square matching the indicator height
+            rt.anchorMin = new Vector2(1f, 0f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot     = new Vector2(1f, 0.5f);
+            rt.sizeDelta = new Vector2(0f, 0f); // width = height (square via SetSizeWithCurrentAnchors below)
+            // Use a fixed 24x24 square (indicator height is 24)
+            rt.sizeDelta = new Vector2(24f, 0f);
             var img = vfxObj.AddComponent<Image>();
             img.sprite = sprite;
             img.color = Color.white;
@@ -883,19 +975,12 @@ namespace DirtyThirtyShowdown
             obj.transform.SetParent(parent, false);
             var rt = obj.AddComponent<RectTransform>();
 
-            // Position over the left or right HUD area, slightly inset into the center
-            if (isLeft)
-            {
-                rt.anchorMin = new Vector2(0.02f, 0.5f);
-                rt.anchorMax = new Vector2(0.22f, 0.85f);
-            }
-            else
-            {
-                rt.anchorMin = new Vector2(0.78f, 0.5f);
-                rt.anchorMax = new Vector2(0.98f, 0.85f);
-            }
-            rt.offsetMin = Vector2.zero;
-            rt.offsetMax = Vector2.zero;
+            // Fixed 220×220 square anchored over each player's character area in the matchup image.
+            // Anchor at a single point (no stretching), sizeDelta gives the fixed pixel size.
+            rt.anchorMin = rt.anchorMax = new Vector2(isLeft ? 0.23f : 0.77f, 0.60f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.sizeDelta = new Vector2(220f, 220f);
+            rt.anchoredPosition = Vector2.zero;
 
             var img = obj.AddComponent<Image>();
             img.sprite = sprite;
@@ -1144,10 +1229,10 @@ namespace DirtyThirtyShowdown
             textArea.transform.SetParent(inputObj.transform, false);
             StretchFill(textArea);
 
-            var inputText = CreateTMP(textArea.transform, "Text", "", 32, FontStyles.Normal, smallFont);
+            var inputText = CreateTMP(textArea.transform, "Text", "", 60, FontStyles.Normal, smallFont);
             StretchFill(inputText.gameObject);
 
-            var placeholder = CreateTMP(textArea.transform, "Placeholder", "type cheat code here...", 32, FontStyles.Normal, smallFont);
+            var placeholder = CreateTMP(textArea.transform, "Placeholder", "type cheat code here...", 60, FontStyles.Normal, smallFont);
             StretchFill(placeholder.gameObject);
             placeholder.color = Color.gray;
             placeholder.fontStyle = FontStyles.Italic;
@@ -1338,21 +1423,11 @@ namespace DirtyThirtyShowdown
             Image barFillLeft, Image barFillRight,
             TextMeshProUGUI p1ScoreText, TextMeshProUGUI p2ScoreText,
             TextMeshProUGUI roundText, TextMeshProUGUI timerText, Image timerFill,
-            Image p1Portrait, TextMeshProUGUI p1NameText,
-            Image p1Ab1Cd, Image p1Ab2Cd,
-            TextMeshProUGUI p1Ab1Key, TextMeshProUGUI p1Ab2Key,
-            TextMeshProUGUI p1Ab1Name, TextMeshProUGUI p1Ab2Name,
-            GameObject p1ShieldInd,
-            Image p2Portrait, TextMeshProUGUI p2NameText,
-            Image p2Ab1Cd, Image p2Ab2Cd,
-            TextMeshProUGUI p2Ab1Key, TextMeshProUGUI p2Ab2Key,
-            TextMeshProUGUI p2Ab1Name, TextMeshProUGUI p2Ab2Name,
-            GameObject p2ShieldInd,
+            Transform p1HUDRoot, Transform p2HUDRoot,
             GameObject splashScreenPanel, GameObject titleScreenPanel, GameObject charSelectPanel, GameObject gameplayPanel,
             GameObject roundStartPanel, GameObject roundEndPanel, GameObject matchEndPanel,
             TextMeshProUGUI roundStartText, TextMeshProUGUI roundEndText,
             TextMeshProUGUI matchWinnerText, TextMeshProUGUI matchEndInstrText,
-            GameObject p1PowerSurgeInd, GameObject p2PowerSurgeInd,
             GameObject controlsReversedInd,
             PlayerController p1Controller, PlayerController p2Controller,
             ArmWrestleController awc,
@@ -1370,24 +1445,8 @@ namespace DirtyThirtyShowdown
             SetRef(so, "roundText", roundText);
             SetRef(so, "timerText", timerText);
             SetRef(so, "timerFill", timerFill);
-            SetRef(so, "p1Portrait", p1Portrait);
-            SetRef(so, "p1NameText", p1NameText);
-            SetRef(so, "p1Ability1Cooldown", p1Ab1Cd);
-            SetRef(so, "p1Ability2Cooldown", p1Ab2Cd);
-            SetRef(so, "p1Ability1KeyText", p1Ab1Key);
-            SetRef(so, "p1Ability2KeyText", p1Ab2Key);
-            SetRef(so, "p1Ability1NameText", p1Ab1Name);
-            SetRef(so, "p1Ability2NameText", p1Ab2Name);
-            SetRef(so, "p1ShieldIndicator", p1ShieldInd);
-            SetRef(so, "p2Portrait", p2Portrait);
-            SetRef(so, "p2NameText", p2NameText);
-            SetRef(so, "p2Ability1Cooldown", p2Ab1Cd);
-            SetRef(so, "p2Ability2Cooldown", p2Ab2Cd);
-            SetRef(so, "p2Ability1KeyText", p2Ab1Key);
-            SetRef(so, "p2Ability2KeyText", p2Ab2Key);
-            SetRef(so, "p2Ability1NameText", p2Ab1Name);
-            SetRef(so, "p2Ability2NameText", p2Ab2Name);
-            SetRef(so, "p2ShieldIndicator", p2ShieldInd);
+            SetRef(so, "p1HUDRoot", p1HUDRoot);
+            SetRef(so, "p2HUDRoot", p2HUDRoot);
             SetRef(so, "splashScreenPanel", splashScreenPanel);
             SetRef(so, "titleScreenPanel", titleScreenPanel);
             SetRef(so, "characterSelectPanel", charSelectPanel);
@@ -1399,8 +1458,6 @@ namespace DirtyThirtyShowdown
             SetRef(so, "roundEndText", roundEndText);
             SetRef(so, "matchWinnerText", matchWinnerText);
             SetRef(so, "matchEndInstructionsText", matchEndInstrText);
-            SetRef(so, "p1PowerSurgeIndicator", p1PowerSurgeInd);
-            SetRef(so, "p2PowerSurgeIndicator", p2PowerSurgeInd);
             SetRef(so, "controlsReversedIndicator", controlsReversedInd);
             SetRef(so, "player1Controller", p1Controller);
             SetRef(so, "player2Controller", p2Controller);
@@ -1455,11 +1512,12 @@ namespace DirtyThirtyShowdown
             so.ApplyModifiedProperties();
         }
 
-        private static void WireMatchupDisplayController(MatchupDisplayController ctrl, Image displayImage, ArmWrestleController awc)
+        private static void WireMatchupDisplayController(MatchupDisplayController ctrl, Image displayImage, ArmWrestleController awc, AbilitySystem abSys)
         {
             var so = new SerializedObject(ctrl);
             SetRef(so, "displayImage", displayImage);
             SetRef(so, "armWrestleController", awc);
+            SetRef(so, "abilitySystem", abSys);
 
             // Auto-populate list from existing matchup assets
             var matchupAssets = MatchupSpritesCreator.LoadAllMatchupAssets();

@@ -32,6 +32,10 @@ namespace DirtyThirtyShowdown
         [Tooltip("char2 is close to winning. Required when you have 5 states.")]
         public Sprite char2Dominating;
 
+        [Header("Ability Override Sprites")]
+        [Tooltip("Shown while char1 uses their Flex ability. Assign for Patz matchups only.")]
+        public Sprite char1FlexingSprite;
+
         /// <summary>Returns true if this asset covers the given pair (in either order).</summary>
         public bool Matches(CharacterData a, CharacterData b)
         {
