@@ -19,7 +19,7 @@ MonoBehaviour:
   ability1Description: Bar can only move toward your side for 2 seconds. Stop their
     momentum!
   ability1Cooldown: 13
-  ability1Duration: 3
+  ability1Duration: 4
   ability2Type: 7
   ability2Name: Fake Out
   ability2Description: Reverse controls/momentum briefly for 2 seconds. Total chaos!

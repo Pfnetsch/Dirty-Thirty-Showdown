@@ -679,6 +679,7 @@ namespace DirtyThirtyShowdown
             out TextMeshProUGUI ab1Name, out TextMeshProUGUI ab2Name,
             out GameObject shieldInd, out GameObject powerSurgeInd)
         {
+            // Fallback: no prefab → build procedurally
             if (prefab == null)
             {
                 bool isLeft = anchorMin.x < 0.5f;
@@ -689,6 +690,7 @@ namespace DirtyThirtyShowdown
                 return;
             }
 
+            // Prefab path — instantiate and override anchors
             var hud = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
             Undo.RegisterCreatedObjectUndo(hud, $"Create {name}");
             hud.name = name;
@@ -711,15 +713,15 @@ namespace DirtyThirtyShowdown
             shieldInd     = hud.transform.Find("ShieldIndicator")?.gameObject;
             powerSurgeInd = hud.transform.Find("PowerSurgeIndicator")?.gameObject;
 
-            // Inject ReadyFlash + CooldownBg into prefab instances if not already present
-            InjectReadyFlash(hud.transform.Find("Ability1Group"));
-            InjectReadyFlash(hud.transform.Find("Ability2Group"));
+            // Inject new features onto the prefab instance
             InjectCooldownBg(hud.transform.Find("Ability1Group"));
             InjectCooldownBg(hud.transform.Find("Ability2Group"));
+            InjectReadyFlash(hud.transform.Find("Ability1Group"));
+            InjectReadyFlash(hud.transform.Find("Ability2Group"));
         }
 
-        // Adds a dark background ring behind the Cooldown fill and updates Cooldown to be a
-        // bright recharge-fill (starts full = ready, empties on use, refills as it recharges).
+        // Adds a dark background ring behind the Cooldown fill so the circle is always visible,
+        // and switches the fill to a bright recharge indicator (0=just used, 1=ready).
         private static void InjectCooldownBg(Transform abilityGroup)
         {
             if (abilityGroup == null) return;
@@ -733,14 +735,13 @@ namespace DirtyThirtyShowdown
             var bgObj = new GameObject("CooldownBg");
             Undo.RegisterCreatedObjectUndo(bgObj, "Create CooldownBg");
             bgObj.transform.SetParent(abilityGroup, false);
-            bgObj.transform.SetSiblingIndex(cooldown.GetSiblingIndex()); // insert before Cooldown
+            bgObj.transform.SetSiblingIndex(cooldown.GetSiblingIndex());
 
-            // Match the Cooldown rect exactly
             var bgRT = bgObj.AddComponent<RectTransform>();
-            bgRT.anchorMin       = cdRT.anchorMin;
-            bgRT.anchorMax       = cdRT.anchorMax;
-            bgRT.pivot           = cdRT.pivot;
-            bgRT.sizeDelta       = cdRT.sizeDelta;
+            bgRT.anchorMin        = cdRT.anchorMin;
+            bgRT.anchorMax        = cdRT.anchorMax;
+            bgRT.pivot            = cdRT.pivot;
+            bgRT.sizeDelta        = cdRT.sizeDelta;
             bgRT.anchoredPosition = cdRT.anchoredPosition;
 
             var bgImg = bgObj.AddComponent<Image>();
@@ -750,7 +751,7 @@ namespace DirtyThirtyShowdown
             bgImg.fillAmount = 1f;
             bgImg.raycastTarget = false;
 
-            // Update Cooldown fill to bright recharge indicator, starting full (ready)
+            // Switch the Cooldown fill to a bright recharge indicator, starting full (ready)
             var cdImg = cooldown.GetComponent<Image>();
             if (cdImg != null)
             {
@@ -769,16 +770,16 @@ namespace DirtyThirtyShowdown
             var rf = new GameObject("ReadyFlash");
             Undo.RegisterCreatedObjectUndo(rf, "Create ReadyFlash");
             rf.transform.SetParent(abilityGroup, false);
-            var rt = rf.AddComponent<RectTransform>();
-            rt.anchorMin = Vector2.zero;
-            rt.anchorMax = Vector2.one;
-            rt.offsetMin = new Vector2(-2, -2);
-            rt.offsetMax = new Vector2(2, 2);
-            var le = rf.AddComponent<LayoutElement>();
-            le.ignoreLayout = true;
-            var img = rf.AddComponent<Image>();
-            img.color = new Color(0.15f, 1f, 0.3f, 0.22f);
-            img.raycastTarget = false;
+            var rfRT = rf.AddComponent<RectTransform>();
+            rfRT.anchorMin = Vector2.zero;
+            rfRT.anchorMax = Vector2.one;
+            rfRT.offsetMin = new Vector2(-2, -2);
+            rfRT.offsetMax = new Vector2(2, 2);
+            var rfLE = rf.AddComponent<LayoutElement>();
+            rfLE.ignoreLayout = true;
+            var rfImg = rf.AddComponent<Image>();
+            rfImg.color = new Color(0.15f, 1f, 0.3f, 0.22f);
+            rfImg.raycastTarget = false;
             rf.SetActive(false);
         }
 
@@ -999,17 +1000,11 @@ namespace DirtyThirtyShowdown
             var vfxObj = new GameObject("VFXSprite");
             Undo.RegisterCreatedObjectUndo(vfxObj, "Create VFXSprite");
             vfxObj.transform.SetParent(indicator, false);
-            // Ignore layout; sit as a square icon on the right edge of the indicator
-            var le = vfxObj.AddComponent<LayoutElement>();
-            le.ignoreLayout = true;
             var rt = vfxObj.AddComponent<RectTransform>();
-            // Anchor to the right side, square matching the indicator height
-            rt.anchorMin = new Vector2(1f, 0f);
-            rt.anchorMax = new Vector2(1f, 1f);
-            rt.pivot     = new Vector2(1f, 0.5f);
-            rt.sizeDelta = new Vector2(0f, 0f); // width = height (square via SetSizeWithCurrentAnchors below)
-            // Use a fixed 24x24 square (indicator height is 24)
-            rt.sizeDelta = new Vector2(24f, 0f);
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
             var img = vfxObj.AddComponent<Image>();
             img.sprite = sprite;
             img.color = Color.white;

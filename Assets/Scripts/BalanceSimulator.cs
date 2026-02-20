@@ -29,9 +29,9 @@ namespace DirtyThirtyShowdown
         private float maxMashRate = 20f;
 
         // Ability settings (mirror AbilitySystem defaults)
-        private float powerSurgeMultiplier = 2f;
+        private float powerSurgeMultiplier = 1.7f;
         private float trashTalkSlowdown = 0.75f;
-        private float danceEfficiency = 0.5f;
+        private float danceEfficiency = 0.65f;
 
         [UnityEditor.MenuItem("Tools/Dirty Thirty Showdown/Balance Simulator")]
         public static void ShowWindow()

@@ -13,9 +13,9 @@ namespace DirtyThirtyShowdown
         [SerializeField] private AudioSource sfxAudioSource;
 
         [Header("Ability Settings")]
-        [SerializeField] private float powerSurgeMultiplier = 2f;
+        [SerializeField] private float powerSurgeMultiplier = 1.7f;
         [SerializeField] private float trashTalkSlowdown = 0.75f; // 25% slowdown
-        [SerializeField] private float danceEfficiency = 0.5f; // Need 50% more mashing
+        [SerializeField] private float danceEfficiency = 0.65f; // Need 35% more mashing
 
         [Header("Visual Effects")]
         [SerializeField] private GameObject flashEffectPrefab;
