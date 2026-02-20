@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5da2c82ea129e148be07eda46d5af9d, type: 3}
+  m_Name: patz_vs_sabi
+  m_EditorClassIdentifier: Assembly-CSharp::DirtyThirtyShowdown.MatchupSprites
+  character1: {fileID: 11400000, guid: 80903fc5d4d2ad84d9454987cd4cb9ac, type: 2}
+  character2: {fileID: 11400000, guid: 6c28173e079fe674685f3ff44f15b367, type: 2}
+  char1Dominating: {fileID: -2200441697438955801, guid: 547db3fa7d6489344a32f4e7ab5bb9e6, type: 3}
+  char1Winning: {fileID: 0}
+  neutral: {fileID: 3672162019918833003, guid: c9a70f7812ed569409ccc531b5b27a41, type: 3}
+  char2Winning: {fileID: 0}
+  char2Dominating: {fileID: 0}

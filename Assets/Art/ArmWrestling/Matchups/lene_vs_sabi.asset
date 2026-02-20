@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5da2c82ea129e148be07eda46d5af9d, type: 3}
+  m_Name: lene_vs_sabi
+  m_EditorClassIdentifier: Assembly-CSharp::DirtyThirtyShowdown.MatchupSprites
+  character1: {fileID: 11400000, guid: 2757c59da9d5b994383f796b927a43d7, type: 2}
+  character2: {fileID: 11400000, guid: 6c28173e079fe674685f3ff44f15b367, type: 2}
+  char1Dominating: {fileID: 386592735708869107, guid: e0e9d1bbd831ecf4980e9d00e641919c, type: 3}
+  char1Winning: {fileID: 0}
+  neutral: {fileID: -1588585062875298021, guid: 9b7e2241c67bc44419bf86e22086d14b, type: 3}
+  char2Winning: {fileID: 0}
+  char2Dominating: {fileID: -2973611890581401233, guid: 9bb30e3b548807e4ea8a7dab2865d5f6, type: 3}

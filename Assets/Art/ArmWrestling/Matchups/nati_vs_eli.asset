@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5da2c82ea129e148be07eda46d5af9d, type: 3}
+  m_Name: nati_vs_eli
+  m_EditorClassIdentifier: Assembly-CSharp::DirtyThirtyShowdown.MatchupSprites
+  character1: {fileID: 11400000, guid: 55e13537cb6dd2a41aa46f392ea7836e, type: 2}
+  character2: {fileID: 11400000, guid: 481ccbbf647c94042bb68adc30b3aa32, type: 2}
+  char1Dominating: {fileID: 5472592321479477639, guid: c4339555a9f2a994f84139c3d3ab8d56, type: 3}
+  char1Winning: {fileID: 0}
+  neutral: {fileID: 8678010509716866966, guid: 327c9e3d5c65d87489c52d6274de3f3e, type: 3}
+  char2Winning: {fileID: 0}
+  char2Dominating: {fileID: 1846271306437510070, guid: 9b664512839d3144bb21300532a59fe2, type: 3}

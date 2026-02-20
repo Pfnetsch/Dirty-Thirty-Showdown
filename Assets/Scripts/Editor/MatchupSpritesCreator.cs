@@ -52,9 +52,15 @@ namespace DirtyThirtyShowdown
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
 
-                // Skip files in subfolders (only want top-level matchup PNGs)
+                // Skip the Matchups output folder itself
+                if (path.StartsWith(OutputRoot + "/")) continue;
+
+                // Allow top-level files (0 slashes) and files directly inside character subfolders (1 slash).
+                // Skip anything deeper (e.g. Eli/Neutral/rotations/east.png).
                 string relativePath = path.Substring(ArtRoot.Length + 1);
-                if (relativePath.Contains("/")) continue;
+                int slashCount = 0;
+                foreach (char c in relativePath) if (c == '/') slashCount++;
+                if (slashCount > 1) continue;
 
                 string filename = Path.GetFileNameWithoutExtension(path).ToLower();
 
@@ -138,10 +144,16 @@ namespace DirtyThirtyShowdown
                 asset.character1 = char1Data;
                 asset.character2 = char2Data;
 
-                // Assign sprites by state name
-                sprites.TryGetValue("neutral",              out asset.neutral);
-                sprites.TryGetValue($"{c1Name}_dominating", out asset.char1Dominating);
-                sprites.TryGetValue($"{c1Name}_winning",    out asset.char1Winning);
+                // Assign sprites by state name.
+                // Bare "dominating"/"winning" (no char prefix) are treated as char1 states — used by Patz.
+                sprites.TryGetValue("neutral", out asset.neutral);
+
+                if (!sprites.TryGetValue($"{c1Name}_dominating", out asset.char1Dominating))
+                    sprites.TryGetValue("dominating", out asset.char1Dominating);
+
+                if (!sprites.TryGetValue($"{c1Name}_winning", out asset.char1Winning))
+                    sprites.TryGetValue("winning", out asset.char1Winning);
+
                 sprites.TryGetValue($"{c2Name}_dominating", out asset.char2Dominating);
                 sprites.TryGetValue($"{c2Name}_winning",    out asset.char2Winning);
 

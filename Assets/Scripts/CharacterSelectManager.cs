@@ -187,13 +187,13 @@ namespace DirtyThirtyShowdown
 
             if (Input.GetKeyDown(p1LeftKey))
             {
-                p1SelectionIndex = (p1SelectionIndex - 1 + availableCharacters.Length) % availableCharacters.Length;
+                p1SelectionIndex = Navigate(p1SelectionIndex, -1, p2Ready ? p2SelectionIndex : -1);
                 PlaySelectSound();
                 UpdateSelectionUI();
             }
             else if (Input.GetKeyDown(p1RightKey))
             {
-                p1SelectionIndex = (p1SelectionIndex + 1) % availableCharacters.Length;
+                p1SelectionIndex = Navigate(p1SelectionIndex, +1, p2Ready ? p2SelectionIndex : -1);
                 PlaySelectSound();
                 UpdateSelectionUI();
             }
@@ -209,13 +209,13 @@ namespace DirtyThirtyShowdown
 
             if (Input.GetKeyDown(p2LeftKey))
             {
-                p2SelectionIndex = (p2SelectionIndex - 1 + availableCharacters.Length) % availableCharacters.Length;
+                p2SelectionIndex = Navigate(p2SelectionIndex, -1, p1Ready ? p1SelectionIndex : -1);
                 PlaySelectSound();
                 UpdateSelectionUI();
             }
             else if (Input.GetKeyDown(p2RightKey))
             {
-                p2SelectionIndex = (p2SelectionIndex + 1) % availableCharacters.Length;
+                p2SelectionIndex = Navigate(p2SelectionIndex, +1, p1Ready ? p1SelectionIndex : -1);
                 PlaySelectSound();
                 UpdateSelectionUI();
             }
@@ -225,8 +225,19 @@ namespace DirtyThirtyShowdown
             }
         }
 
+        // Moves index by direction, skipping blockedIndex if set.
+        private int Navigate(int current, int direction, int blockedIndex)
+        {
+            int count = availableCharacters.Length;
+            int next = (current + direction + count) % count;
+            if (next == blockedIndex)
+                next = (next + direction + count) % count;
+            return next;
+        }
+
         private void ConfirmPlayer1Selection()
         {
+            if (p1SelectionIndex == p2SelectionIndex) return;
             p1Ready = true;
             PlayConfirmSound();
             PlayCharacterVoiceLine(availableCharacters[p1SelectionIndex]);
@@ -236,6 +247,7 @@ namespace DirtyThirtyShowdown
 
         private void ConfirmPlayer2Selection()
         {
+            if (p2SelectionIndex == p1SelectionIndex) return;
             p2Ready = true;
             PlayConfirmSound();
             PlayCharacterVoiceLine(availableCharacters[p2SelectionIndex]);
@@ -379,10 +391,16 @@ namespace DirtyThirtyShowdown
             newArray[newArray.Length - 1] = patzCharacter;
             availableCharacters = newArray;
 
-            // Auto-select Patz as P2's character and rebuild grid
             SetupCharacterGrid();
-            p2SelectionIndex = availableCharacters.Length - 1;
+
+            // Lock P1 in as Patz. P2 picks freely (skip to index 0, or 1 if 0 would be Patz).
+            p1SelectionIndex = availableCharacters.Length - 1;
+            p1Ready = true;
+            p2SelectionIndex = 0;
+            p2Ready = false;
+
             UpdateSelectionUI();
+            CheckBothReady();
 
             Debug.Log("[CharacterSelectManager] Patz has entered the arena!");
         }

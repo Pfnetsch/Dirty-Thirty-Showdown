@@ -244,3 +244,141 @@ Examples:
 - `eli_vs_patz_neutral.png`
 - `eli_vs_patz_patz_winning.png`
 - `eli_vs_patz_patz_dominating.png`
+
+
+
+[1] Lene Strong Win
+[2] Lene Slight Advantage
+[4] Eli Slight Advantage
+[5] Eli Strong Win
+[3] Neutral
+
+
+Modify only the arm and hand pixels. Keep all other pixels identical.
+
+-------------------------------------------------------------------------
+
+Edit the provided image.
+
+Preserve exact canvas size 1920x1080.
+Preserve exact composition.
+Preserve camera angle and perspective.
+Preserve character placement and proportions.
+Preserve background, lighting, table position, and all details.
+Do not shift, crop, zoom, reframe, redraw, or reinterpret the scene.
+
+Only modify the clasped hands and subtle upper body lean according to the state below.
+Maintain pixel-art purity with crisp, clean pixel edges.
+No smoothing, no painterly blending.
+
+
+Move the clasped hands strongly toward the back-left corner of the table in perspective.
+
+Left character is winning:
+- Her forearm angled downward toward the table.
+- Right character’s wrist bent backward.
+- Left character leaning forward confidently.
+- Right character leaning back slightly with strained expression.
+
+Do not change anything else in the scene.
+
+
+Move the clasped hands slightly toward the back-left side of the table.
+
+Left character has a small advantage:
+- Slight wrist bend on right character.
+- Very subtle lean: Left character slightly forward, Right character slightly back.
+- Arms not fully lowered.
+
+Do not change anything else in the scene.
+
+
+Move the clasped hands slightly toward the back-right side of the table.
+
+Right character has a small advantage:
+- Slight wrist bend on left character.
+- Subtle lean: Right character slightly forward, left character slightly back.
+- Arms not fully lowered.
+
+Do not change anything else in the scene.
+
+
+Move the clasped hands strongly toward the back-right corner of the table in perspective.
+
+Right character is winning:
+- Left characters’s wrist bent downward toward the table.
+- Right character leaning forward confidently.
+- Left character leaning back with strained expression.
+- Hands close to table surface but not touching.
+
+Do not change anything else in the scene.
+
+------------------------------------------------------------------------------------------------------
+
+Edit the provided image.
+
+Preserve exact canvas size 1920x1080.
+Preserve exact composition.
+Preserve camera angle and perspective.
+Preserve background, lighting, table position, and all details.
+Do not crop, zoom, shift, redraw, or reinterpret the scene.
+
+The left character is the cheat character and instantly wins.
+
+Move the clasped hands completely down so the opponent’s hand is fully pinned flat against the tabletop surface in perspective.
+
+The opponent’s forearm should be fully lowered and pressed to the table.
+The cheat character’s arm remains strong and angled downward in total control.
+
+Increase dominance in posture:
+- Cheat character leaning slightly forward confidently.
+- Opponent leaning back slightly in shock.
+- Opponent’s wrist fully bent and defeated.
+
+Hands should clearly make contact with the table surface.
+Maintain clean pixel-art edges and crisp outlines.
+No painterly blending. No smoothing.
+
+Modify only the arms, hands, and subtle upper body lean. Keep all other pixels identical.
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+Please edit the provided arm wrestling scene for my pixel art game.
+The right character needs to be replaced with the provided one. 
+Preserve exact canvas size 1920x1080. Preserve exact composition. 
+Preserve camera angle and perspective. 
+Preserve background, lighting, table position, and all details. 
+Do not shift, crop, zoom, reframe, redraw, or reinterpret the scene. 
+
+Only modify the character on the right side. 
+Maintain pixel-art purity with crisp, clean pixel edges. 
+No smoothing, no painterly blending.
+
+------------------------------------------------------------------------------------------------------
+
+eli_vs_lene_neutral.png
+eli_vs_lene_eli_winning.png
+eli_vs_lene_eli_dominating.png
+eli_vs_lene_lene_winning.png
+eli_vs_lene_lene_dominating.png
+
+eli_vs_nati_neutral.png
+eli_vs_nati_eli_winning.png
+eli_vs_nati_eli_dominating.png
+eli_vs_nati_nati_winning.png
+eli_vs_nati_nati_dominating.png
+
+eli_vs_sabi_neutral.png
+eli_vs_sabi_eli_winning.png
+eli_vs_sabi_eli_dominating.png
+eli_vs_sabi_sabi_winning.png
+eli_vs_sabi_sabi_dominating.png
+
+----------------------------------
+
+
+
+eli_vs_patz_neutral.png
+eli_vs_patz_patz_winning.png
+eli_vs_patz_patz_dominating.png
+
