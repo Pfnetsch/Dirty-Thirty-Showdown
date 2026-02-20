@@ -711,9 +711,54 @@ namespace DirtyThirtyShowdown
             shieldInd     = hud.transform.Find("ShieldIndicator")?.gameObject;
             powerSurgeInd = hud.transform.Find("PowerSurgeIndicator")?.gameObject;
 
-            // Inject ReadyFlash into prefab instances if not already present
+            // Inject ReadyFlash + CooldownBg into prefab instances if not already present
             InjectReadyFlash(hud.transform.Find("Ability1Group"));
             InjectReadyFlash(hud.transform.Find("Ability2Group"));
+            InjectCooldownBg(hud.transform.Find("Ability1Group"));
+            InjectCooldownBg(hud.transform.Find("Ability2Group"));
+        }
+
+        // Adds a dark background ring behind the Cooldown fill and updates Cooldown to be a
+        // bright recharge-fill (starts full = ready, empties on use, refills as it recharges).
+        private static void InjectCooldownBg(Transform abilityGroup)
+        {
+            if (abilityGroup == null) return;
+            if (abilityGroup.Find("CooldownBg") != null) return; // already present
+
+            var cooldown = abilityGroup.Find("Cooldown");
+            if (cooldown == null) return;
+
+            var cdRT = cooldown.GetComponent<RectTransform>();
+
+            var bgObj = new GameObject("CooldownBg");
+            Undo.RegisterCreatedObjectUndo(bgObj, "Create CooldownBg");
+            bgObj.transform.SetParent(abilityGroup, false);
+            bgObj.transform.SetSiblingIndex(cooldown.GetSiblingIndex()); // insert before Cooldown
+
+            // Match the Cooldown rect exactly
+            var bgRT = bgObj.AddComponent<RectTransform>();
+            bgRT.anchorMin       = cdRT.anchorMin;
+            bgRT.anchorMax       = cdRT.anchorMax;
+            bgRT.pivot           = cdRT.pivot;
+            bgRT.sizeDelta       = cdRT.sizeDelta;
+            bgRT.anchoredPosition = cdRT.anchoredPosition;
+
+            var bgImg = bgObj.AddComponent<Image>();
+            bgImg.color      = new Color(0.1f, 0.1f, 0.1f, 0.9f);
+            bgImg.type       = Image.Type.Filled;
+            bgImg.fillMethod = Image.FillMethod.Radial360;
+            bgImg.fillAmount = 1f;
+            bgImg.raycastTarget = false;
+
+            // Update Cooldown fill to bright recharge indicator, starting full (ready)
+            var cdImg = cooldown.GetComponent<Image>();
+            if (cdImg != null)
+            {
+                cdImg.color         = new Color(0.3f, 0.9f, 0.4f, 0.9f);
+                cdImg.fillOrigin    = (int)Image.Origin360.Top;
+                cdImg.fillClockwise = true;
+                cdImg.fillAmount    = 1f;
+            }
         }
 
         private static void InjectReadyFlash(Transform abilityGroup)
@@ -849,37 +894,60 @@ namespace DirtyThirtyShowdown
             var groupLE = group.AddComponent<LayoutElement>();
             groupLE.preferredHeight = 50;
 
-            // Cooldown overlay (radial fill)
+            // Fixed icon size: 44×44 square anchored to left-center of the group.
+            // Using a fixed size avoids the oval distortion from a non-square anchor region.
+            const float iconSize = 44f;
+
+            // ── Background ring (dark, always full — visible at all times) ──
+            var cdBgObj = new GameObject("CooldownBg");
+            Undo.RegisterCreatedObjectUndo(cdBgObj, "Create CooldownBg");
+            cdBgObj.transform.SetParent(group.transform, false);
+            var cdBgRT = cdBgObj.AddComponent<RectTransform>();
+            cdBgRT.anchorMin = cdBgRT.anchorMax = new Vector2(0f, 0.5f);
+            cdBgRT.pivot     = new Vector2(0f, 0.5f);
+            cdBgRT.sizeDelta = new Vector2(iconSize, iconSize);
+            cdBgRT.anchoredPosition = Vector2.zero;
+            var cdBgImg = cdBgObj.AddComponent<Image>();
+            cdBgImg.color      = new Color(0.1f, 0.1f, 0.1f, 0.9f);
+            cdBgImg.type       = Image.Type.Filled;
+            cdBgImg.fillMethod = Image.FillMethod.Radial360;
+            cdBgImg.fillAmount = 1f;
+            cdBgImg.raycastTarget = false;
+
+            // ── Recharge fill (bright green, fills from 0→1 as ability recharges) ──
             var cdObj = new GameObject("Cooldown");
+            Undo.RegisterCreatedObjectUndo(cdObj, "Create Cooldown");
             cdObj.transform.SetParent(group.transform, false);
             var cdRT = cdObj.AddComponent<RectTransform>();
-            cdRT.anchorMin = new Vector2(0f, 0f);
-            cdRT.anchorMax = new Vector2(0.35f, 1f);
-            cdRT.offsetMin = Vector2.zero;
-            cdRT.offsetMax = Vector2.zero;
+            cdRT.anchorMin = cdRT.anchorMax = new Vector2(0f, 0.5f);
+            cdRT.pivot     = new Vector2(0f, 0.5f);
+            cdRT.sizeDelta = new Vector2(iconSize, iconSize);
+            cdRT.anchoredPosition = Vector2.zero;
             cooldownImg = cdObj.AddComponent<Image>();
-            cooldownImg.color = new Color(0.3f, 0.3f, 0.3f, 0.8f);
-            cooldownImg.type = Image.Type.Filled;
-            cooldownImg.fillMethod = Image.FillMethod.Radial360;
-            cooldownImg.fillAmount = 0f;
+            cooldownImg.color       = new Color(0.3f, 0.9f, 0.4f, 0.9f);
+            cooldownImg.type        = Image.Type.Filled;
+            cooldownImg.fillMethod  = Image.FillMethod.Radial360;
+            cooldownImg.fillOrigin  = (int)Image.Origin360.Top;
+            cooldownImg.fillClockwise = true;
+            cooldownImg.fillAmount  = 1f; // start full = ability ready
 
-            // Key text (over cooldown area)
+            // Key text (centered over the circle)
             keyText = CreateTMP(cdObj.transform, "KeyText", key, 20, FontStyles.Bold, smallFont);
             StretchFill(keyText.gameObject);
             keyText.alignment = TextAlignmentOptions.Center;
             keyText.color = Color.white;
 
-            // Name text (right side)
+            // Name text (starts just past the icon)
             nameText = CreateTMP(group.transform, "NameText", abilityName, 16);
             var nameRT = nameText.GetComponent<RectTransform>();
-            nameRT.anchorMin = new Vector2(0.38f, 0f);
+            nameRT.anchorMin = new Vector2(0f, 0f);
             nameRT.anchorMax = new Vector2(1f, 1f);
-            nameRT.offsetMin = Vector2.zero;
+            nameRT.offsetMin = new Vector2(iconSize + 6f, 0);
             nameRT.offsetMax = Vector2.zero;
             nameText.alignment = TextAlignmentOptions.MidlineLeft;
             nameText.color = new Color(0.85f, 0.85f, 0.85f);
 
-            // Ready Flash — green overlay shown when ability is available (ignores layout)
+            // Ready Flash — subtle glow overlay when ability is ready (ignores layout)
             var readyFlash = new GameObject("ReadyFlash");
             Undo.RegisterCreatedObjectUndo(readyFlash, "Create ReadyFlash");
             readyFlash.transform.SetParent(group.transform, false);
@@ -893,7 +961,7 @@ namespace DirtyThirtyShowdown
             var rfImg = readyFlash.AddComponent<Image>();
             rfImg.color = new Color(0.15f, 1f, 0.3f, 0.22f);
             rfImg.raycastTarget = false;
-            readyFlash.SetActive(false); // hidden until SetupPlayerUI marks it ready
+            readyFlash.SetActive(false);
         }
 
         private static void AddVFXSpritesToExistingIndicators(Transform gameplayRoot)

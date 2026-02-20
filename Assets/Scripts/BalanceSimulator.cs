@@ -569,29 +569,27 @@ namespace DirtyThirtyShowdown
 
         private SimCharacter[] GetAllCharacters()
         {
-            return new SimCharacter[]
+            var characters = new List<SimCharacter>();
+            string[] guids = UnityEditor.AssetDatabase.FindAssets("t:CharacterData");
+            foreach (string guid in guids)
             {
-                new SimCharacter {
-                    Name = "Eli",
-                    Ability1Type = AbilityType.PowerSurge, Ability1Cooldown = 15f, Ability1Duration = 3f,
-                    Ability2Type = AbilityType.Flash, Ability2Cooldown = 10f, Ability2Duration = 0.5f
-                },
-                new SimCharacter {
-                    Name = "Lene",
-                    Ability1Type = AbilityType.TrashTalk, Ability1Cooldown = 16f, Ability1Duration = 2f,
-                    Ability2Type = AbilityType.Shield, Ability2Cooldown = 22f, Ability2Duration = 0f
-                },
-                new SimCharacter {
-                    Name = "Nati",
-                    Ability1Type = AbilityType.WinkFlirt, Ability1Cooldown = 12f, Ability1Duration = 1.5f,
-                    Ability2Type = AbilityType.Dance, Ability2Cooldown = 18f, Ability2Duration = 4f
-                },
-                new SimCharacter {
-                    Name = "Sabi",
-                    Ability1Type = AbilityType.CakeToss, Ability1Cooldown = 20f, Ability1Duration = 2f,
-                    Ability2Type = AbilityType.FakeOut, Ability2Cooldown = 24f, Ability2Duration = 2f
-                }
-            };
+                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                var data = UnityEditor.AssetDatabase.LoadAssetAtPath<CharacterData>(path);
+                if (data == null) continue;
+                // Skip easter egg characters with instant-win abilities
+                if (data.ability1Type == AbilityType.DivineSmash || data.ability2Type == AbilityType.Flex) continue;
+                characters.Add(new SimCharacter
+                {
+                    Name = data.characterName,
+                    Ability1Type = data.ability1Type,
+                    Ability1Cooldown = data.ability1Cooldown,
+                    Ability1Duration = data.ability1Duration,
+                    Ability2Type = data.ability2Type,
+                    Ability2Cooldown = data.ability2Cooldown,
+                    Ability2Duration = data.ability2Duration
+                });
+            }
+            return characters.ToArray();
         }
 
         #endregion

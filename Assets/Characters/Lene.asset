@@ -23,7 +23,7 @@ MonoBehaviour:
   ability2Type: 3
   ability2Name: Shield
   ability2Description: Block the next ability used against you. Perfect defense!
-  ability2Cooldown: 22
+  ability2Cooldown: 16
   ability2Duration: 0
   characterPortrait: {fileID: 4194233823704116778, guid: 2700854ce19525e459317f75bacadb8e, type: 3}
   characterSprite: {fileID: 0}

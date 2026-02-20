@@ -22,7 +22,7 @@ MonoBehaviour:
   ability2Type: 1
   ability2Name: Flash
   ability2Description: Screen flash and shake to break your opponent's concentration
-  ability2Cooldown: 10
+  ability2Cooldown: 14
   ability2Duration: 0.5
   characterPortrait: {fileID: 7399648493245821728, guid: 1af2c99c932bfa34cb023482cee1eaef, type: 3}
   characterSprite: {fileID: 0}

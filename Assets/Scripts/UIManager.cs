@@ -456,7 +456,8 @@ namespace DirtyThirtyShowdown
             ref PlayerHUDRefs hud = ref (playerNumber == 1 ? ref p1HUD : ref p2HUD);
             Image cooldownImage = ability == 1 ? hud.ability1Cooldown : hud.ability2Cooldown;
             if (cooldownImage != null)
-                cooldownImage.fillAmount = remaining > 0 ? remaining / total : 0f;
+                // Fill increases as ability recharges: 0 = just used, 1 = ready
+                cooldownImage.fillAmount = remaining > 0 ? (1f - remaining / total) : 1f;
             // Hide ready flash while ability is on cooldown
             if (remaining > 0)
                 SetAbilityReady(playerNumber, ability, false);
@@ -494,7 +495,9 @@ namespace DirtyThirtyShowdown
             if (hud.ability1NameText != null) hud.ability1NameText.text = character.ability1Name;
             if (hud.ability2NameText != null) hud.ability2NameText.text = character.ability2Name;
 
-            // Abilities start ready at round start
+            // Abilities start ready at round start — show full rings and ready flash
+            if (hud.ability1Cooldown != null) hud.ability1Cooldown.fillAmount = 1f;
+            if (hud.ability2Cooldown != null) hud.ability2Cooldown.fillAmount = 1f;
             SetAbilityReady(playerNumber, 1, true);
             SetAbilityReady(playerNumber, 2, true);
         }

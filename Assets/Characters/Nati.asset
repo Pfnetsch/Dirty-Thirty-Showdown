@@ -19,7 +19,7 @@ MonoBehaviour:
   ability1Description: Opponent's button becomes completely unresponsive for 1.5
     seconds. Irresistible!
   ability1Cooldown: 15
-  ability1Duration: 1.5
+  ability1Duration: 1.0
   ability2Type: 5
   ability2Name: Celebration Dance
   ability2Description: Opponent needs 50% more button mashing for same effect for
