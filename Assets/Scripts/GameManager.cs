@@ -6,6 +6,7 @@ namespace DirtyThirtyShowdown
 {
     public enum GameState
     {
+        SplashScreen,
         TitleScreen,
         CharacterSelect,
         PreRound,
@@ -29,7 +30,7 @@ namespace DirtyThirtyShowdown
         [SerializeField] private UIManager uiManager;
 
         // Match state
-        public GameState CurrentState { get; private set; } = GameState.TitleScreen;
+        public GameState CurrentState { get; private set; } = GameState.SplashScreen;
         public int Player1Score { get; private set; } = 0;
         public int Player2Score { get; private set; } = 0;
         public int CurrentRound { get; private set; } = 1;

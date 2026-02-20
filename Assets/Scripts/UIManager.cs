@@ -48,6 +48,7 @@ namespace DirtyThirtyShowdown
         [SerializeField] private GameObject p2ShieldIndicator;
 
         [Header("State Panels")]
+        [SerializeField] private GameObject splashScreenPanel;
         [SerializeField] private GameObject titleScreenPanel;
         [SerializeField] private GameObject characterSelectPanel;
         [SerializeField] private GameObject gameplayPanel;
@@ -134,7 +135,9 @@ namespace DirtyThirtyShowdown
 
             // Initialize UI
             SetAllPanelsInactive();
-            if (titleScreenPanel != null)
+            if (splashScreenPanel != null)
+                splashScreenPanel.SetActive(true);
+            else if (titleScreenPanel != null)
                 titleScreenPanel.SetActive(true);
         }
 
@@ -169,6 +172,9 @@ namespace DirtyThirtyShowdown
 
             switch (newState)
             {
+                case GameState.SplashScreen:
+                    splashScreenPanel?.SetActive(true);
+                    break;
                 case GameState.TitleScreen:
                     titleScreenPanel?.SetActive(true);
                     break;
@@ -210,6 +216,7 @@ namespace DirtyThirtyShowdown
 
         private void SetAllPanelsInactive()
         {
+            splashScreenPanel?.SetActive(false);
             titleScreenPanel?.SetActive(false);
             characterSelectPanel?.SetActive(false);
             gameplayPanel?.SetActive(false);
