@@ -29,6 +29,36 @@ namespace DirtyThirtyShowdown
         private const string OutputRoot = "Assets/Art/ArmWrestling/Matchups";
         private const string CharRoot   = "Assets/Characters";
 
+        [MenuItem("Dirty Thirty Showdown/Wire Matchup Assets to Scene")]
+        public static void WireMatchupAssetsToScene()
+        {
+            var ctrl = Object.FindFirstObjectByType<MatchupDisplayController>(FindObjectsInactive.Include);
+            if (ctrl == null)
+            {
+                Debug.LogWarning("[MatchupSpritesCreator] No MatchupDisplayController found in the scene.");
+                return;
+            }
+
+            var matchupAssets = LoadAllMatchupAssets();
+            if (matchupAssets.Length == 0)
+            {
+                Debug.LogWarning("[MatchupSpritesCreator] No MatchupSprites assets found. Run 'Create Matchup Sprite Assets' first.");
+                return;
+            }
+
+            var so = new SerializedObject(ctrl);
+            var listProp = so.FindProperty("allMatchups");
+            listProp.arraySize = matchupAssets.Length;
+            for (int i = 0; i < matchupAssets.Length; i++)
+                listProp.GetArrayElementAtIndex(i).objectReferenceValue = matchupAssets[i];
+            so.ApplyModifiedProperties();
+
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(
+                UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene());
+
+            Debug.Log($"[MatchupSpritesCreator] Wired {matchupAssets.Length} matchup asset(s) to MatchupDisplayController. Save the scene!");
+        }
+
         [MenuItem("Dirty Thirty Showdown/Create Matchup Sprite Assets")]
         public static void CreateMatchupAssets()
         {
