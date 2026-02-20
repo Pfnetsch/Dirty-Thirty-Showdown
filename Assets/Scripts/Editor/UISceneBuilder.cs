@@ -77,6 +77,7 @@ namespace DirtyThirtyShowdown
             }
 
             // Build all panels
+            var splashScreenPanel = BuildSplashScreenPanel(canvasObj.transform);
             var titleScreenPanel = BuildTitleScreenPanel(canvasObj.transform);
             var charSelectPanel = BuildCharacterSelectPanel(canvasObj.transform);
             var gameplayPanel = BuildGameplayPanel(canvasObj.transform,
@@ -125,7 +126,8 @@ namespace DirtyThirtyShowdown
 
             var screenFlashOverlay = BuildScreenFlashOverlay(canvasObj.transform);
 
-            // Deactivate non-default panels (TitleScreen is the default active panel)
+            // Deactivate non-default panels (SplashScreen starts active; rest start inactive)
+            titleScreenPanel.SetActive(false);
             charSelectPanel.SetActive(false);
             gameplayPanel.SetActive(false);
             roundStartPanel.SetActive(false);
@@ -188,7 +190,7 @@ namespace DirtyThirtyShowdown
                 p2Portrait, p2NameText, p2Ability1Cooldown, p2Ability2Cooldown,
                 p2Ability1KeyText, p2Ability2KeyText, p2Ability1NameText, p2Ability2NameText,
                 p2ShieldIndicator,
-                titleScreenPanel, charSelectPanel, gameplayPanel, roundStartPanel, roundEndPanel, matchEndPanel,
+                splashScreenPanel, titleScreenPanel, charSelectPanel, gameplayPanel, roundStartPanel, roundEndPanel, matchEndPanel,
                 roundStartText, roundEndText, matchWinnerText, matchEndInstructionsText,
                 p1PowerSurgeIndicator, p2PowerSurgeIndicator, controlsReversedIndicator,
                 p1Controller, p2Controller, awc,
@@ -250,6 +252,43 @@ namespace DirtyThirtyShowdown
         }
 
         #region Panel Builders
+
+        private static GameObject BuildSplashScreenPanel(Transform parent)
+        {
+            var panel = CreatePanel(parent, "SplashScreenPanel", true);
+            StretchFill(panel);
+
+            // CanvasGroup for fade in/out (used by SplashScreenManager)
+            panel.AddComponent<CanvasGroup>();
+
+            // Centered logo image
+            var logoObj = new GameObject("Logo");
+            Undo.RegisterCreatedObjectUndo(logoObj, "Create Logo");
+            logoObj.transform.SetParent(panel.transform, false);
+            var logoRect = logoObj.AddComponent<RectTransform>();
+            logoRect.anchorMin = Vector2.zero;
+            logoRect.anchorMax = Vector2.one;
+            logoRect.pivot     = new Vector2(0.5f, 0.5f);
+            logoRect.sizeDelta = Vector2.zero;
+            logoRect.anchoredPosition = Vector2.zero;
+            var logoImg = logoObj.AddComponent<Image>();
+            var logoSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/Logo.png");
+            if (logoSprite != null)
+            {
+                logoImg.sprite = logoSprite;
+                logoImg.preserveAspect = false;
+            }
+            else
+            {
+                logoImg.color = new Color(1f, 1f, 1f, 0.5f);
+                Debug.LogWarning("[UISceneBuilder] Assets/Art/Logo.png not found for SplashScreenPanel.");
+            }
+
+            // Attach SplashScreenManager — it drives the fade sequence
+            panel.AddComponent<SplashScreenManager>();
+
+            return panel;
+        }
 
         private static GameObject BuildCharacterSelectPanel(Transform parent)
         {
@@ -1294,7 +1333,7 @@ namespace DirtyThirtyShowdown
             TextMeshProUGUI p2Ab1Key, TextMeshProUGUI p2Ab2Key,
             TextMeshProUGUI p2Ab1Name, TextMeshProUGUI p2Ab2Name,
             GameObject p2ShieldInd,
-            GameObject titleScreenPanel, GameObject charSelectPanel, GameObject gameplayPanel,
+            GameObject splashScreenPanel, GameObject titleScreenPanel, GameObject charSelectPanel, GameObject gameplayPanel,
             GameObject roundStartPanel, GameObject roundEndPanel, GameObject matchEndPanel,
             TextMeshProUGUI roundStartText, TextMeshProUGUI roundEndText,
             TextMeshProUGUI matchWinnerText, TextMeshProUGUI matchEndInstrText,
@@ -1334,6 +1373,7 @@ namespace DirtyThirtyShowdown
             SetRef(so, "p2Ability1NameText", p2Ab1Name);
             SetRef(so, "p2Ability2NameText", p2Ab2Name);
             SetRef(so, "p2ShieldIndicator", p2ShieldInd);
+            SetRef(so, "splashScreenPanel", splashScreenPanel);
             SetRef(so, "titleScreenPanel", titleScreenPanel);
             SetRef(so, "characterSelectPanel", charSelectPanel);
             SetRef(so, "gameplayPanel", gameplayPanel);

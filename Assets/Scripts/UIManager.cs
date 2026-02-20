@@ -95,8 +95,20 @@ namespace DirtyThirtyShowdown
         private float maxRoundTime;
         private Coroutine countdownCoroutine;
 
+        private void AutoFindPanels()
+        {
+            if (splashScreenPanel == null)    splashScreenPanel    = GameObject.Find("SplashScreenPanel");
+            if (titleScreenPanel == null)     titleScreenPanel     = GameObject.Find("TitleScreenPanel");
+            if (characterSelectPanel == null) characterSelectPanel = GameObject.Find("CharacterSelectPanel");
+            if (gameplayPanel == null)        gameplayPanel        = GameObject.Find("GameplayPanel");
+            if (roundStartPanel == null)      roundStartPanel      = GameObject.Find("RoundStartPanel");
+            if (roundEndPanel == null)        roundEndPanel        = GameObject.Find("RoundEndPanel");
+            if (matchEndPanel == null)        matchEndPanel        = GameObject.Find("MatchEndPanel");
+        }
+
         private void Start()
         {
+            AutoFindPanels();
             gameManager = GameManager.Instance;
 
             if (gameManager != null)
@@ -173,7 +185,7 @@ namespace DirtyThirtyShowdown
             switch (newState)
             {
                 case GameState.SplashScreen:
-                    splashScreenPanel?.SetActive(true);
+                    if (splashScreenPanel != null) splashScreenPanel.SetActive(true);
                     break;
                 case GameState.TitleScreen:
                     titleScreenPanel?.SetActive(true);
@@ -216,7 +228,7 @@ namespace DirtyThirtyShowdown
 
         private void SetAllPanelsInactive()
         {
-            splashScreenPanel?.SetActive(false);
+            if (splashScreenPanel != null) splashScreenPanel.SetActive(false);
             titleScreenPanel?.SetActive(false);
             characterSelectPanel?.SetActive(false);
             gameplayPanel?.SetActive(false);

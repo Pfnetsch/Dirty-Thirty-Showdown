@@ -30,8 +30,10 @@ namespace DirtyThirtyShowdown
             canvasGroup.alpha = 0f;
         }
 
-        private void Start()
+        private void OnEnable()
         {
+            skipped = false;
+            if (canvasGroup != null) canvasGroup.alpha = 0f;
             StartCoroutine(PlaySplash());
         }
 
