@@ -10,7 +10,8 @@
       "mcp__pixellab__animate_character",
       "mcp__pixellab__create_map_object",
       "mcp__pixellab__get_map_object",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(node -e:*)"
     ]
   }
 }

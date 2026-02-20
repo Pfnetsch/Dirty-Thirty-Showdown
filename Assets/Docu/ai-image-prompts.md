@@ -356,6 +356,20 @@ No smoothing, no painterly blending.
 
 ------------------------------------------------------------------------------------------------------
 
+Please edit the provided arm wrestling scene for my pixel art game.
+The left character needs to be modified.
+Preserve exact canvas size 1920x1080. Preserve exact composition. 
+Preserve camera angle and perspective. 
+Preserve background, lighting, table position, and all details. 
+Do not shift, crop, zoom, reframe, redraw, or reinterpret the scene. 
+
+Only modify the right arm of the character on the left side.
+The cloth on the right arm should tear open and the character should show a huge biceps. 
+Maintain pixel-art purity with crisp, clean pixel edges. 
+No smoothing, no painterly blending.
+
+------------------------------------------------------------------------------------------------------
+
 eli_vs_lene_neutral.png
 eli_vs_lene_eli_winning.png
 eli_vs_lene_eli_dominating.png

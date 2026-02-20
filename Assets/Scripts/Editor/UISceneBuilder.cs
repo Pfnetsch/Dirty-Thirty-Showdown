@@ -219,6 +219,15 @@ namespace DirtyThirtyShowdown
                 p2CSPortrait, p2CSName, p2CSAbility1, p2CSAbility2, p2CSReady,
                 charGrid, prefab, startButton, instrText);
 
+            // Wire CheatCodeUI reference into CharacterSelectManager
+            var cheatCodeUIComp = charSelectPanel.GetComponent<CheatCodeUI>();
+            if (cheatCodeUIComp != null)
+            {
+                var csmSO = new SerializedObject(charSelectMgr);
+                SetRef(csmSO, "cheatCodeUI", cheatCodeUIComp);
+                csmSO.ApplyModifiedProperties();
+            }
+
             // Wire GameManager
             WireGameManager(gm, awc, uiMgr);
 
@@ -1005,24 +1014,14 @@ namespace DirtyThirtyShowdown
                 bg.color = new Color(0.08f, 0.05f, 0.02f);
             }
 
-            // Title text
-            var title = CreateTMP(panel.transform, "TitleText", "DIRTY THIRTY\nSHOWDOWN", 36, FontStyles.Bold, titleFont);
-            var titleRT = title.GetComponent<RectTransform>();
-            titleRT.anchorMin = new Vector2(0.1f, 0.65f);
-            titleRT.anchorMax = new Vector2(0.9f, 0.93f);
-            titleRT.anchoredPosition = new Vector2(-748.63f, 161.61f);
-            titleRT.sizeDelta = new Vector2(-1098.696f, -177.5493f);
-            title.alignment = TextAlignmentOptions.Center;
-            title.color = Color.white;
-
-            // Button container (centered, stacked vertically)
+            // Button container (bottom-left)
             var btnContainer = new GameObject("ButtonContainer");
             btnContainer.transform.SetParent(panel.transform, false);
             var btnContainerRT = btnContainer.AddComponent<RectTransform>();
-            btnContainerRT.anchorMin = new Vector2(0.35f, 0.2f);
-            btnContainerRT.anchorMax = new Vector2(0.65f, 0.62f);
-            btnContainerRT.anchoredPosition = new Vector2(-777f, -245f);
-            btnContainerRT.sizeDelta = new Vector2(-213.1123f, -135.7732f);
+            btnContainerRT.anchorMin = new Vector2(0.02f, 0.02f);
+            btnContainerRT.anchorMax = new Vector2(0.19f, 0.3f);
+            btnContainerRT.offsetMin = Vector2.zero;
+            btnContainerRT.offsetMax = Vector2.zero;
             var vlg = btnContainer.AddComponent<VerticalLayoutGroup>();
             vlg.spacing = 16;
             vlg.childAlignment = TextAnchor.MiddleCenter;
@@ -1069,11 +1068,27 @@ namespace DirtyThirtyShowdown
             // Attach and wire TitleScreenManager
             var tsm = panel.AddComponent<TitleScreenManager>();
             var tsmSO = new SerializedObject(tsm);
-            SetRef(tsmSO, "playButton",        playBtn);
-            SetRef(tsmSO, "optionsButton",     optionsBtn);
-            SetRef(tsmSO, "exitButton",        exitBtn);
-            SetRef(tsmSO, "optionsPanel",      optionsPanel);
+            SetRef(tsmSO, "playButton",         playBtn);
+            SetRef(tsmSO, "optionsButton",      optionsBtn);
+            SetRef(tsmSO, "exitButton",         exitBtn);
+            SetRef(tsmSO, "optionsPanel",       optionsPanel);
             SetRef(tsmSO, "optionsCloseButton", optionsCloseBtn);
+            SetRef(tsmSO, "backgroundImage",    bg);
+
+            // Load all title screen sprites for idle cycling
+            string[] titleSpriteNames = { "TitleScreen", "TitleScreen_2", "TitleScreen_3", "TitleScreen_4", "TitleScreen_5", "TitleScreen_6" };
+            var titleSprites = new System.Collections.Generic.List<Sprite>();
+            foreach (var spriteName in titleSpriteNames)
+            {
+                var s = AssetDatabase.LoadAssetAtPath<Sprite>($"Assets/Art/Background/{spriteName}.png");
+                if (s != null) titleSprites.Add(s);
+                else Debug.LogWarning($"[UISceneBuilder] Title screen sprite not found: {spriteName}.png");
+            }
+            var titleSpritesProp = tsmSO.FindProperty("titleScreenSprites");
+            titleSpritesProp.arraySize = titleSprites.Count;
+            for (int i = 0; i < titleSprites.Count; i++)
+                titleSpritesProp.GetArrayElementAtIndex(i).objectReferenceValue = titleSprites[i];
+
             tsmSO.ApplyModifiedProperties();
 
             return panel;

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c4f2cb334a20b16478b2dd0a3caabd8f
+guid: 6ce7683178cc5094ab340fefe393e136
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6524908475943039349
-    second: VictoryPatz_0
+      213: 1226546864085928080
+    second: TitleScreen_6_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: VictoryPatz_0
+      name: TitleScreen_6_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1344
-        height: 768
+        width: 2752
+        height: 1536
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b8eca73cf4ed275a0800000000000000
-      internalID: -6524908475943039349
+      spriteID: 0980636dfd1950110800000000000000
+      internalID: 1226546864085928080
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      VictoryPatz_0: -6524908475943039349
+      TitleScreen_6_0: 1226546864085928080
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

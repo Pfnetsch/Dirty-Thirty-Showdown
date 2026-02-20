@@ -364,7 +364,8 @@ namespace DirtyThirtyShowdown
             }
 
             if (matchEndInstructionsText != null)
-                matchEndInstructionsText.text = "SPACE / ENTER = Rematch\nESC / BACKSPACE = Character Select";
+                matchEndInstructionsText.text = "SPACE / ENTER = Rematch\n\nESC / BACKSPACE = Character Select";
+                matchEndInstructionsText.color = new Color(0xCE / 255f, 0xCE / 255f, 0xCE / 255f, 1f);
 
             if (victoryBackgroundImage != null && winnerCharacter != null)
             {

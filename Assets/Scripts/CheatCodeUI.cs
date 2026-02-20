@@ -60,6 +60,8 @@ namespace DirtyThirtyShowdown
                 cheatPanel.SetActive(false);
         }
 
+        public bool IsPanelOpen => cheatPanel != null && cheatPanel.activeSelf;
+
         private void Submit()
         {
             if (cheatInput == null || CheatManager.Instance == null) return;
@@ -67,29 +69,35 @@ namespace DirtyThirtyShowdown
             string input = cheatInput.text;
             bool success = CheatManager.Instance.TryCheatCode(input);
 
-            StopAllCoroutines();
-            StartCoroutine(ShowFeedback(success));
-
             if (success)
             {
                 cheatInput.text = "";
+                StartCoroutine(ClosePanelNextFrame());
+            }
+            else
+            {
+                StopAllCoroutines();
+                StartCoroutine(ShowFeedback());
             }
         }
 
-        private IEnumerator ShowFeedback(bool success)
+        private IEnumerator ClosePanelNextFrame()
+        {
+            yield return null;
+            ClosePanel();
+        }
+
+        private IEnumerator ShowFeedback()
         {
             if (feedbackText == null) yield break;
 
             feedbackText.gameObject.SetActive(true);
-            feedbackText.text = success ? "CHEAT ACTIVATED!" : "Invalid code.";
-            feedbackText.color = success ? Color.green : Color.red;
+            feedbackText.text = "Invalid code.";
+            feedbackText.color = Color.red;
 
             yield return new WaitForSeconds(feedbackDuration);
 
             feedbackText.gameObject.SetActive(false);
-
-            if (success)
-                ClosePanel();
         }
     }
 }

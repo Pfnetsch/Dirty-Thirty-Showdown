@@ -33,6 +33,9 @@ namespace DirtyThirtyShowdown
 
         private void Start()
         {
+            if (displayImage != null)
+                displayImage.preserveAspect = false;
+
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.OnStateChanged += OnStateChanged;

@@ -41,6 +41,9 @@ namespace DirtyThirtyShowdown
         [SerializeField] private KeyCode p2LeftKey = KeyCode.LeftArrow;
         [SerializeField] private KeyCode p2RightKey = KeyCode.RightArrow;
 
+        [Header("Cheat UI")]
+        [SerializeField] private CheatCodeUI cheatCodeUI;
+
         [Header("Start Match")]
         [SerializeField] private Button startMatchButton;
         [SerializeField] private TextMeshProUGUI instructionsText;
@@ -55,6 +58,7 @@ namespace DirtyThirtyShowdown
         private int p2SelectionIndex = 1;
         private bool p1Ready = false;
         private bool p2Ready = false;
+        private bool p1IsPatz = false;
 
         // Character button references
         private Button[] characterButtons;
@@ -118,6 +122,9 @@ namespace DirtyThirtyShowdown
                 GameManager.Instance.GoToTitleScreen();
                 return;
             }
+
+            // Don't process character select input while the cheat panel is open
+            if (cheatCodeUI != null && cheatCodeUI.IsPanelOpen) return;
 
             HandlePlayer1Input();
             HandlePlayer2Input();
@@ -183,7 +190,7 @@ namespace DirtyThirtyShowdown
 
         private void HandlePlayer1Input()
         {
-            if (p1Ready) return;
+            if (p1Ready || p1IsPatz) return;
 
             if (Input.GetKeyDown(p1LeftKey))
             {
@@ -209,13 +216,13 @@ namespace DirtyThirtyShowdown
 
             if (Input.GetKeyDown(p2LeftKey))
             {
-                p2SelectionIndex = Navigate(p2SelectionIndex, -1, p1Ready ? p1SelectionIndex : -1);
+                p2SelectionIndex = Navigate(p2SelectionIndex, -1, p1Ready && !p1IsPatz ? p1SelectionIndex : -1);
                 PlaySelectSound();
                 UpdateSelectionUI();
             }
             else if (Input.GetKeyDown(p2RightKey))
             {
-                p2SelectionIndex = Navigate(p2SelectionIndex, +1, p1Ready ? p1SelectionIndex : -1);
+                p2SelectionIndex = Navigate(p2SelectionIndex, +1, p1Ready && !p1IsPatz ? p1SelectionIndex : -1);
                 PlaySelectSound();
                 UpdateSelectionUI();
             }
@@ -247,7 +254,7 @@ namespace DirtyThirtyShowdown
 
         private void ConfirmPlayer2Selection()
         {
-            if (p2SelectionIndex == p1SelectionIndex) return;
+            if (!p1IsPatz && p2SelectionIndex == p1SelectionIndex) return;
             p2Ready = true;
             PlayConfirmSound();
             PlayCharacterVoiceLine(availableCharacters[p2SelectionIndex]);
@@ -262,7 +269,7 @@ namespace DirtyThirtyShowdown
         private void UpdateSelectionUI()
         {
             // Update P1 selection display
-            CharacterData p1Character = availableCharacters[p1SelectionIndex];
+            CharacterData p1Character = p1IsPatz ? patzCharacter : availableCharacters[p1SelectionIndex];
             if (p1SelectedPortrait != null && p1Character.characterPortrait != null)
                 p1SelectedPortrait.sprite = p1Character.characterPortrait;
             if (p1SelectedName != null)
@@ -302,7 +309,7 @@ namespace DirtyThirtyShowdown
             {
                 if (characterButtonHighlights[i] == null) continue;
 
-                bool isP1Selection = i == p1SelectionIndex;
+                bool isP1Selection = !p1IsPatz && i == p1SelectionIndex;
                 bool isP2Selection = i == p2SelectionIndex;
 
                 if (isP1Selection || isP2Selection)
@@ -366,7 +373,7 @@ namespace DirtyThirtyShowdown
         {
             if (!p1Ready || !p2Ready) return;
 
-            CharacterData p1Character = availableCharacters[p1SelectionIndex];
+            CharacterData p1Character = p1IsPatz ? patzCharacter : availableCharacters[p1SelectionIndex];
             CharacterData p2Character = availableCharacters[p2SelectionIndex];
 
             GameManager.Instance?.SetCharacterSelections(p1Character, p2Character);
@@ -377,24 +384,10 @@ namespace DirtyThirtyShowdown
 
         private void UnlockPatz()
         {
-            if (patzCharacter == null) return;
+            if (patzCharacter == null || p1IsPatz) return;
 
-            // Check if already in the roster
-            foreach (var c in availableCharacters)
-            {
-                if (c == patzCharacter) return;
-            }
-
-            // Append Patz to the available characters array
-            var newArray = new CharacterData[availableCharacters.Length + 1];
-            availableCharacters.CopyTo(newArray, 0);
-            newArray[newArray.Length - 1] = patzCharacter;
-            availableCharacters = newArray;
-
-            SetupCharacterGrid();
-
-            // Lock P1 in as Patz. P2 picks freely (skip to index 0, or 1 if 0 would be Patz).
-            p1SelectionIndex = availableCharacters.Length - 1;
+            // Lock P1 as Patz without adding him to the grid
+            p1IsPatz = true;
             p1Ready = true;
             p2SelectionIndex = 0;
             p2Ready = false;
@@ -407,6 +400,7 @@ namespace DirtyThirtyShowdown
 
         public void ResetSelection()
         {
+            p1IsPatz = false;
             p1Ready = false;
             p2Ready = false;
             p1SelectionIndex = 0;
