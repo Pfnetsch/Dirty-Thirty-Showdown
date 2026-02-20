@@ -18,7 +18,7 @@ MonoBehaviour:
   ability1Name: Cake Toss
   ability1Description: Bar can only move toward your side for 2 seconds. Stop their
     momentum!
-  ability1Cooldown: 20
+  ability1Cooldown: 17
   ability1Duration: 2
   ability2Type: 7
   ability2Name: Fake Out

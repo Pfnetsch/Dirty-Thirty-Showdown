@@ -18,7 +18,7 @@ MonoBehaviour:
   ability1Name: Wink/Flirt
   ability1Description: Opponent's button becomes completely unresponsive for 1.5
     seconds. Irresistible!
-  ability1Cooldown: 12
+  ability1Cooldown: 15
   ability1Duration: 1.5
   ability2Type: 5
   ability2Name: Celebration Dance
