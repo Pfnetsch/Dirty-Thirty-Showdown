@@ -25,27 +25,13 @@ namespace DirtyThirtyShowdown
         [SerializeField] private TextMeshProUGUI timerText;
         [SerializeField] private Image timerFill;
 
-        [Header("Player 1 UI")]
-        [SerializeField] private Image p1Portrait;
-        [SerializeField] private TextMeshProUGUI p1NameText;
-        [SerializeField] private Image p1Ability1Cooldown;
-        [SerializeField] private Image p1Ability2Cooldown;
-        [SerializeField] private TextMeshProUGUI p1Ability1KeyText;
-        [SerializeField] private TextMeshProUGUI p1Ability2KeyText;
-        [SerializeField] private TextMeshProUGUI p1Ability1NameText;
-        [SerializeField] private TextMeshProUGUI p1Ability2NameText;
-        [SerializeField] private GameObject p1ShieldIndicator;
+        [Header("Player HUD Roots (PlayerHUD prefab instances)")]
+        [SerializeField] private Transform p1HUDRoot;
+        [SerializeField] private Transform p2HUDRoot;
 
-        [Header("Player 2 UI")]
-        [SerializeField] private Image p2Portrait;
-        [SerializeField] private TextMeshProUGUI p2NameText;
-        [SerializeField] private Image p2Ability1Cooldown;
-        [SerializeField] private Image p2Ability2Cooldown;
-        [SerializeField] private TextMeshProUGUI p2Ability1KeyText;
-        [SerializeField] private TextMeshProUGUI p2Ability2KeyText;
-        [SerializeField] private TextMeshProUGUI p2Ability1NameText;
-        [SerializeField] private TextMeshProUGUI p2Ability2NameText;
-        [SerializeField] private GameObject p2ShieldIndicator;
+        // Auto-wired from prefab at runtime — do not set in Inspector
+        private PlayerHUDRefs p1HUD;
+        private PlayerHUDRefs p2HUD;
 
         [Header("State Panels")]
         [SerializeField] private GameObject splashScreenPanel;
@@ -71,10 +57,6 @@ namespace DirtyThirtyShowdown
         [SerializeField] private Sprite patzVictorySprite;
 
         [Header("Ability Effect Indicators")]
-        [SerializeField] private GameObject p1PowerSurgeIndicator;
-        [SerializeField] private GameObject p2PowerSurgeIndicator;
-        [SerializeField] private GameObject p1InputDisabledIndicator;
-        [SerializeField] private GameObject p2InputDisabledIndicator;
         [SerializeField] private GameObject controlsReversedIndicator;
 
         [Header("VFX Overlays (new abilities)")]
@@ -95,6 +77,83 @@ namespace DirtyThirtyShowdown
         private float maxRoundTime;
         private Coroutine countdownCoroutine;
 
+        private struct PlayerHUDRefs
+        {
+            public Image portrait;
+            public TextMeshProUGUI nameText;
+            public Image ability1Cooldown;
+            public Image ability2Cooldown;
+            public TextMeshProUGUI ability1KeyText;
+            public TextMeshProUGUI ability2KeyText;
+            public TextMeshProUGUI ability1NameText;
+            public TextMeshProUGUI ability2NameText;
+            public GameObject shieldIndicator;
+            public GameObject powerSurgeIndicator;
+            public GameObject inputDisabledIndicator;
+        }
+
+        private void SetupHUDReferences()
+        {
+            if (p1HUDRoot != null) p1HUD = WireHUDRefs(p1HUDRoot, 1);
+            if (p2HUDRoot != null) p2HUD = WireHUDRefs(p2HUDRoot, 2);
+        }
+
+        private PlayerHUDRefs WireHUDRefs(Transform root, int playerNum)
+        {
+            var refs = new PlayerHUDRefs();
+
+            refs.portrait         = FindDeep<Image>(root, "Portrait");
+            refs.nameText         = root.Find("NameText")?.GetComponent<TextMeshProUGUI>();
+
+            Transform ab1 = root.Find("Ability1Group");
+            if (ab1 != null)
+            {
+                refs.ability1NameText = ab1.Find("NameText")?.GetComponent<TextMeshProUGUI>();
+                refs.ability1KeyText  = FindDeep<TextMeshProUGUI>(ab1, "KeyText");
+                refs.ability1Cooldown = FindDeep<Image>(ab1, "Cooldown");
+            }
+
+            Transform ab2 = root.Find("Ability2Group");
+            if (ab2 != null)
+            {
+                refs.ability2NameText = ab2.Find("NameText")?.GetComponent<TextMeshProUGUI>();
+                refs.ability2KeyText  = FindDeep<TextMeshProUGUI>(ab2, "KeyText");
+                refs.ability2Cooldown = FindDeep<Image>(ab2, "Cooldown");
+            }
+
+            refs.powerSurgeIndicator  = root.Find("PowerSurgeIndicator")?.gameObject;
+            refs.shieldIndicator      = root.Find("ShieldIndicator")?.gameObject;
+            refs.inputDisabledIndicator = root.Find("InputDisabledIndicator")?.gameObject;
+
+            // Warn about anything that failed to wire
+            if (refs.portrait == null)             Debug.LogWarning($"[UIManager] P{playerNum}HUD: Portrait not found");
+            if (refs.nameText == null)             Debug.LogWarning($"[UIManager] P{playerNum}HUD: NameText not found");
+            if (refs.ability1Cooldown == null)     Debug.LogWarning($"[UIManager] P{playerNum}HUD: Ability1Group/Cooldown not found");
+            if (refs.ability2Cooldown == null)     Debug.LogWarning($"[UIManager] P{playerNum}HUD: Ability2Group/Cooldown not found");
+            if (refs.ability1KeyText == null)      Debug.LogWarning($"[UIManager] P{playerNum}HUD: Ability1Group/KeyText not found");
+            if (refs.ability2KeyText == null)      Debug.LogWarning($"[UIManager] P{playerNum}HUD: Ability2Group/KeyText not found");
+            if (refs.powerSurgeIndicator == null)  Debug.LogWarning($"[UIManager] P{playerNum}HUD: PowerSurgeIndicator not found");
+            if (refs.shieldIndicator == null)      Debug.LogWarning($"[UIManager] P{playerNum}HUD: ShieldIndicator not found");
+            if (refs.inputDisabledIndicator == null) Debug.LogWarning($"[UIManager] P{playerNum}HUD: InputDisabledIndicator not found");
+
+            return refs;
+        }
+
+        private static T FindDeep<T>(Transform root, string name) where T : Component
+        {
+            if (root.name == name)
+            {
+                var c = root.GetComponent<T>();
+                if (c != null) return c;
+            }
+            for (int i = 0; i < root.childCount; i++)
+            {
+                var result = FindDeep<T>(root.GetChild(i), name);
+                if (result != null) return result;
+            }
+            return null;
+        }
+
         private void AutoFindPanels()
         {
             if (splashScreenPanel == null)    splashScreenPanel    = GameObject.Find("SplashScreenPanel");
@@ -109,6 +168,7 @@ namespace DirtyThirtyShowdown
         private void Start()
         {
             AutoFindPanels();
+            SetupHUDReferences();
             gameManager = GameManager.Instance;
 
             if (gameManager != null)
@@ -386,30 +446,16 @@ namespace DirtyThirtyShowdown
 
         private void UpdateCooldown(int playerNumber, int ability, float remaining, float total)
         {
-            Image cooldownImage = null;
-
-            if (playerNumber == 1)
-            {
-                cooldownImage = ability == 1 ? p1Ability1Cooldown : p1Ability2Cooldown;
-            }
-            else
-            {
-                cooldownImage = ability == 1 ? p2Ability1Cooldown : p2Ability2Cooldown;
-            }
-
+            ref PlayerHUDRefs hud = ref (playerNumber == 1 ? ref p1HUD : ref p2HUD);
+            Image cooldownImage = ability == 1 ? hud.ability1Cooldown : hud.ability2Cooldown;
             if (cooldownImage != null)
-            {
                 cooldownImage.fillAmount = remaining > 0 ? remaining / total : 0f;
-            }
         }
 
         private void SetShieldIndicator(int playerNumber, bool active)
         {
-            GameObject indicator = playerNumber == 1 ? p1ShieldIndicator : p2ShieldIndicator;
-            if (indicator != null)
-            {
-                indicator.SetActive(active);
-            }
+            ref PlayerHUDRefs hud = ref (playerNumber == 1 ? ref p1HUD : ref p2HUD);
+            hud.shieldIndicator?.SetActive(active);
         }
 
         #endregion
@@ -420,24 +466,16 @@ namespace DirtyThirtyShowdown
         {
             if (character == null) return;
 
-            if (playerNumber == 1)
-            {
-                if (p1Portrait != null) p1Portrait.sprite = character.characterPortrait;
-                if (p1NameText != null) p1NameText.text = character.characterName;
-                if (p1Ability1KeyText != null) p1Ability1KeyText.text = "Q";
-                if (p1Ability2KeyText != null) p1Ability2KeyText.text = "E";
-                if (p1Ability1NameText != null) p1Ability1NameText.text = character.ability1Name;
-                if (p1Ability2NameText != null) p1Ability2NameText.text = character.ability2Name;
-            }
-            else
-            {
-                if (p2Portrait != null) p2Portrait.sprite = character.characterPortrait;
-                if (p2NameText != null) p2NameText.text = character.characterName;
-                if (p2Ability1KeyText != null) p2Ability1KeyText.text = "O";
-                if (p2Ability2KeyText != null) p2Ability2KeyText.text = "P";
-                if (p2Ability1NameText != null) p2Ability1NameText.text = character.ability1Name;
-                if (p2Ability2NameText != null) p2Ability2NameText.text = character.ability2Name;
-            }
+            ref PlayerHUDRefs hud = ref (playerNumber == 1 ? ref p1HUD : ref p2HUD);
+            string key1 = playerNumber == 1 ? "Q" : "O";
+            string key2 = playerNumber == 1 ? "E" : "P";
+
+            if (hud.portrait != null)        hud.portrait.sprite    = character.characterPortrait;
+            if (hud.nameText != null)        hud.nameText.text       = character.characterName;
+            if (hud.ability1KeyText != null) hud.ability1KeyText.text = key1;
+            if (hud.ability2KeyText != null) hud.ability2KeyText.text = key2;
+            if (hud.ability1NameText != null) hud.ability1NameText.text = character.ability1Name;
+            if (hud.ability2NameText != null) hud.ability2NameText.text = character.ability2Name;
         }
 
         #endregion
@@ -505,14 +543,14 @@ namespace DirtyThirtyShowdown
 
         public void ShowPowerSurgeEffect(int playerNumber, bool show)
         {
-            GameObject indicator = playerNumber == 1 ? p1PowerSurgeIndicator : p2PowerSurgeIndicator;
-            if (indicator != null) indicator.SetActive(show);
+            ref PlayerHUDRefs hud = ref (playerNumber == 1 ? ref p1HUD : ref p2HUD);
+            hud.powerSurgeIndicator?.SetActive(show);
         }
 
         public void ShowInputDisabledEffect(int playerNumber, bool show)
         {
-            GameObject indicator = playerNumber == 1 ? p1InputDisabledIndicator : p2InputDisabledIndicator;
-            if (indicator != null) indicator.SetActive(show);
+            ref PlayerHUDRefs hud = ref (playerNumber == 1 ? ref p1HUD : ref p2HUD);
+            hud.inputDisabledIndicator?.SetActive(show);
         }
 
         public void ShowControlsReversed(bool show)

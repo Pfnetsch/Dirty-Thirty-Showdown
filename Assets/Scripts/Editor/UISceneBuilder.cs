@@ -503,7 +503,7 @@ namespace DirtyThirtyShowdown
             topBarBg.color = new Color(0.08f, 0.08f, 0.12f, 0.9f);
 
             // Round Text
-            var roundTmp = CreateTMP(topBar.transform, "RoundText", "Round 1", 28, FontStyles.Bold);
+            var roundTmp = CreateTMP(topBar.transform, "RoundText", "Round 1", 36, FontStyles.Bold, titleFont);
             var roundRT = roundTmp.GetComponent<RectTransform>();
             roundRT.anchorMin = new Vector2(0.02f, 0f);
             roundRT.anchorMax = new Vector2(0.25f, 1f);
@@ -619,7 +619,7 @@ namespace DirtyThirtyShowdown
             var p1Score = CreateTMP(scoreArea.transform, "P1ScoreText", "0", 36, FontStyles.Bold, titleFont);
             var p1ScoreRT = p1Score.GetComponent<RectTransform>();
             p1ScoreRT.anchorMin = new Vector2(0f, 0f);
-            p1ScoreRT.anchorMax = new Vector2(0.3f, 1f);
+            p1ScoreRT.anchorMax = new Vector2(0.2f, 1f);
             p1ScoreRT.offsetMin = Vector2.zero;
             p1ScoreRT.offsetMax = Vector2.zero;
             p1Score.alignment = TextAlignmentOptions.Center;
@@ -628,7 +628,7 @@ namespace DirtyThirtyShowdown
 
             var p2Score = CreateTMP(scoreArea.transform, "P2ScoreText", "0", 36, FontStyles.Bold, titleFont);
             var p2ScoreRT = p2Score.GetComponent<RectTransform>();
-            p2ScoreRT.anchorMin = new Vector2(0.7f, 0f);
+            p2ScoreRT.anchorMin = new Vector2(0.8f, 0f);
             p2ScoreRT.anchorMax = new Vector2(1f, 1f);
             p2ScoreRT.offsetMin = Vector2.zero;
             p2ScoreRT.offsetMax = Vector2.zero;
