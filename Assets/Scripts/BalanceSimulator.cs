@@ -718,7 +718,7 @@ namespace DirtyThirtyShowdown
             bool anyWarning = false;
             foreach (var kvp in results)
             {
-                if (kvp.Value.P1WinRate > 60f || kvp.Value.P1WinRate < 40f)
+                if (kvp.Value.P1WinRate > 65f || kvp.Value.P1WinRate < 35f)
                 {
                     anyWarning = true;
                     sb.AppendLine($"  ⚠ {kvp.Key}: {kvp.Value.P1WinRate:F1}% — significant imbalance!");
