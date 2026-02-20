@@ -34,7 +34,18 @@ namespace DirtyThirtyShowdown
         private void Start()
         {
             if (GameManager.Instance != null)
+            {
                 GameManager.Instance.OnStateChanged += OnStateChanged;
+
+                // The GameplayPanel is inactive until UIManager enables it, so Start() fires
+                // after the first PreRound event has already been sent. Catch up here.
+                var state = GameManager.Instance.CurrentState;
+                if (state == GameState.PreRound || state == GameState.Playing)
+                {
+                    SetupForCurrentMatchup();
+                    return;
+                }
+            }
 
             if (displayImage != null)
                 displayImage.gameObject.SetActive(false);

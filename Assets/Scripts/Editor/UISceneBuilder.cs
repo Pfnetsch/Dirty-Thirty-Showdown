@@ -95,8 +95,9 @@ namespace DirtyThirtyShowdown
                 out var p1ScoreText, out var p2ScoreText,
                 out var controlsReversedIndicator);
 
-            // Matchup display image (center of gameplay panel)
+            // Matchup display image (fullscreen, behind all HUD elements)
             var matchupImageObj = BuildMatchupImage(gameplayPanel.transform);
+            matchupImageObj.transform.SetAsFirstSibling();
 
             // Embed VFX sprites into existing ability indicators
             AddVFXSpritesToExistingIndicators(gameplayPanel.transform);
@@ -510,12 +511,12 @@ namespace DirtyThirtyShowdown
                 out p2Ab1Key, out p2Ab2Key, out p2Ab1Name, out p2Ab2Name,
                 out p2ShieldInd, out p2PowerSurgeInd);
 
-            // Bar Area (center-bottom)
+            // Bar Area (bottom strip)
             var barArea = new GameObject("BarArea");
             barArea.transform.SetParent(panel.transform, false);
             var barAreaRT = barArea.AddComponent<RectTransform>();
-            barAreaRT.anchorMin = new Vector2(0.15f, 0.1f);
-            barAreaRT.anchorMax = new Vector2(0.85f, 0.22f);
+            barAreaRT.anchorMin = new Vector2(0.15f, 0.02f);
+            barAreaRT.anchorMax = new Vector2(0.85f, 0.05f);
             barAreaRT.offsetMin = Vector2.zero;
             barAreaRT.offsetMax = Vector2.zero;
 
@@ -571,8 +572,8 @@ namespace DirtyThirtyShowdown
             var scoreArea = new GameObject("ScoreDisplay");
             scoreArea.transform.SetParent(panel.transform, false);
             var scoreRT = scoreArea.AddComponent<RectTransform>();
-            scoreRT.anchorMin = new Vector2(0.15f, 0.22f);
-            scoreRT.anchorMax = new Vector2(0.85f, 0.3f);
+            scoreRT.anchorMin = new Vector2(0f, 0.01f);
+            scoreRT.anchorMax = new Vector2(1f, 0.06f);
             scoreRT.offsetMin = Vector2.zero;
             scoreRT.offsetMax = Vector2.zero;
 
@@ -629,19 +630,21 @@ namespace DirtyThirtyShowdown
 
             if (isLeft)
             {
-                hudRT.anchorMin = new Vector2(0.02f, 0.3f);
+                hudRT.anchorMin = new Vector2(0.02f, 0.5f);
                 hudRT.anchorMax = new Vector2(0.15f, 0.88f);
             }
             else
             {
-                hudRT.anchorMin = new Vector2(0.85f, 0.3f);
+                hudRT.anchorMin = new Vector2(0.85f, 0.5f);
                 hudRT.anchorMax = new Vector2(0.98f, 0.88f);
             }
             hudRT.offsetMin = Vector2.zero;
             hudRT.offsetMax = Vector2.zero;
 
             var bg = hud.AddComponent<Image>();
-            bg.color = new Color(0.12f, 0.12f, 0.18f, 0.8f);
+            bg.color = isLeft
+                ? new Color(0.337f, 0.337f, 0.5f, 0.4f)
+                : new Color(0.337f, 0.337f, 0.5f, 0.8f);
 
             var vlg = hud.AddComponent<VerticalLayoutGroup>();
             vlg.spacing = 6;
@@ -861,9 +864,9 @@ namespace DirtyThirtyShowdown
             var obj = new GameObject("MatchupDisplay");
             obj.transform.SetParent(parent, false);
             var rt = obj.AddComponent<RectTransform>();
-            // Centre area: between the two HUDs and above bar/score
-            rt.anchorMin = new Vector2(0.15f, 0.3f);
-            rt.anchorMax = new Vector2(0.85f, 0.88f);
+            // Full screen — sits behind all HUD elements (SetAsFirstSibling called after creation)
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
             rt.offsetMin = Vector2.zero;
             rt.offsetMax = Vector2.zero;
             var img = obj.AddComponent<Image>();

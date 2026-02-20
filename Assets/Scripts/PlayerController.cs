@@ -9,7 +9,8 @@ namespace DirtyThirtyShowdown
         [SerializeField] private int playerNumber = 1; // 1 or 2
 
         [Header("Input Keys - Player 1 Defaults")]
-        [SerializeField] private KeyCode mashKey = KeyCode.Space;
+        [SerializeField] private KeyCode mashKey1 = KeyCode.A;
+        [SerializeField] private KeyCode mashKey2 = KeyCode.D;
         [SerializeField] private KeyCode ability1Key = KeyCode.Q;
         [SerializeField] private KeyCode ability2Key = KeyCode.E;
 
@@ -37,6 +38,7 @@ namespace DirtyThirtyShowdown
         // Mashing state
         private float currentMashPower = 0f;
         private float lastMashTime = 0f;
+        private KeyCode lastMashKey = KeyCode.None; // enforces alternation
 
         // Events
         public event Action<int, float, float> OnCooldownUpdate; // ability (1/2), remaining, total
@@ -54,16 +56,17 @@ namespace DirtyThirtyShowdown
 
         private void SetupInputKeys()
         {
-            // Set default keys based on player number
             if (playerNumber == 1)
             {
-                mashKey = KeyCode.Space;
+                mashKey1 = KeyCode.A;
+                mashKey2 = KeyCode.D;
                 ability1Key = KeyCode.Q;
                 ability2Key = KeyCode.E;
             }
             else
             {
-                mashKey = KeyCode.Return; // Enter key
+                mashKey1 = KeyCode.LeftArrow;
+                mashKey2 = KeyCode.RightArrow;
                 ability1Key = KeyCode.O;
                 ability2Key = KeyCode.P;
             }
@@ -94,23 +97,24 @@ namespace DirtyThirtyShowdown
 
         private void HandleMashInput()
         {
-            if (Input.GetKeyDown(mashKey))
-            {
-                // Rate limit mashing
-                float timeSinceLastMash = Time.time - lastMashTime;
-                float minTimeBetweenMashes = 1f / maxMashRate;
+            KeyCode pressed = KeyCode.None;
+            if (Input.GetKeyDown(mashKey1)) pressed = mashKey1;
+            else if (Input.GetKeyDown(mashKey2)) pressed = mashKey2;
 
-                if (timeSinceLastMash >= minTimeBetweenMashes)
-                {
-                    currentMashPower += mashPowerPerPress;
-                    lastMashTime = Time.time;
+            if (pressed == KeyCode.None) return;
 
-                    if (armWrestleController != null)
-                    {
-                        armWrestleController.AddMashPower(playerNumber, mashPowerPerPress);
-                    }
-                }
-            }
+            // Only count if this is the OTHER key from the last press (alternation enforced)
+            if (pressed == lastMashKey) return;
+
+            float timeSinceLastMash = Time.time - lastMashTime;
+            if (timeSinceLastMash < 1f / maxMashRate) return;
+
+            lastMashKey = pressed;
+            lastMashTime = Time.time;
+            currentMashPower += mashPowerPerPress;
+
+            if (armWrestleController != null)
+                armWrestleController.AddMashPower(playerNumber, mashPowerPerPress);
         }
 
         private void HandleAbilityInput()

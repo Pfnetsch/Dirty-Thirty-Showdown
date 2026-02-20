@@ -334,15 +334,15 @@ namespace DirtyThirtyShowdown
 
             if (!p1Ready && !p2Ready)
             {
-                instructionsText.text = "P1: A/D = navigate  |  SPACE = confirm  |  Mash SPACE to arm wrestle!\nP2: ←/→ = navigate  |  ENTER = confirm  |  Mash ENTER to arm wrestle!\nESC = back to title";
+                instructionsText.text = "P1: A/D = navigate  |  SPACE = confirm  |  Alternate A & D to arm wrestle!\nP2: ←/→ = navigate  |  ENTER = confirm  |  Alternate ← & → to arm wrestle!\nESC = back to title";
             }
             else if (!p1Ready)
             {
-                instructionsText.text = "P1: A/D = navigate  |  SPACE = confirm  |  Mash SPACE to arm wrestle!\nP2: READY!";
+                instructionsText.text = "P1: A/D = navigate  |  SPACE = confirm  |  Alternate A & D to arm wrestle!\nP2: READY!";
             }
             else if (!p2Ready)
             {
-                instructionsText.text = "P1: READY!\nP2: ←/→ = navigate  |  ENTER = confirm  |  Mash ENTER to arm wrestle!";
+                instructionsText.text = "P1: READY!\nP2: ←/→ = navigate  |  ENTER = confirm  |  Alternate ← & → to arm wrestle!";
             }
             else
             {

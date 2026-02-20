@@ -72,10 +72,10 @@ To add a new ability: add to `AbilityType` enum, implement in `AbilitySystem.Exe
 
 | Action | Player 1 | Player 2 |
 |--------|----------|----------|
-| Mash | Space | Enter |
+| Mash (alternate!) | A / D | Left / Right |
 | Ability 1 | Q | O |
 | Ability 2 | E | P |
-| Navigate (char select) | A / D | Left / Right |
+| Confirm (char select) | Space | Enter |
 
 ## Development Status
 
