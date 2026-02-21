@@ -120,6 +120,12 @@ namespace DirtyThirtyShowdown
             // Don't process character select input while the cheat panel is open
             if (cheatCodeUI != null && cheatCodeUI.IsPanelOpen) return;
 
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                cheatCodeUI?.OpenPanel();
+                return;
+            }
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 GameManager.Instance.GoToTitleScreen();

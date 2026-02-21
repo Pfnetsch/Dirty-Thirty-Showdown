@@ -1239,6 +1239,24 @@ namespace DirtyThirtyShowdown
 
             tsmSO.ApplyModifiedProperties();
 
+            // Cheat panel on the title screen (same structure as on char select)
+            var titleCheatPanel = BuildCheatPanel(panel.transform,
+                out var titleCheatInput, out var titleCheatSubmitBtn, out var titleCheatCloseBtn, out var titleCheatFeedback);
+
+            var titleCheatCodeUI = panel.AddComponent<CheatCodeUI>();
+            var titleCheatSO = new SerializedObject(titleCheatCodeUI);
+            SetRef(titleCheatSO, "cheatPanel",   titleCheatPanel);
+            SetRef(titleCheatSO, "cheatInput",   titleCheatInput);
+            SetRef(titleCheatSO, "submitButton", titleCheatSubmitBtn);
+            SetRef(titleCheatSO, "closeButton",  titleCheatCloseBtn);
+            SetRef(titleCheatSO, "feedbackText", titleCheatFeedback);
+            titleCheatSO.ApplyModifiedProperties();
+
+            // Wire CheatCodeUI into TitleScreenManager
+            var tsmSO2 = new SerializedObject(tsm);
+            SetRef(tsmSO2, "cheatCodeUI", titleCheatCodeUI);
+            tsmSO2.ApplyModifiedProperties();
+
             return panel;
         }
 
