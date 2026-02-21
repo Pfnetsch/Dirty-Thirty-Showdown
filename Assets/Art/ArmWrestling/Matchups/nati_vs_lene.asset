@@ -23,5 +23,6 @@ MonoBehaviour:
   char1FlashingSprite: {fileID: 0}
   char2FlashingSprite: {fileID: 0}
   char1WinkSprite: {fileID: -371953907600464800, guid: a1c80e5639ee6f6478a91fa0be451836, type: 3}
+  char2WinkSprite: {fileID: 0}
   char1CakeSprite: {fileID: 0}
   char2CakeSprite: {fileID: 0}

@@ -45,6 +45,9 @@ namespace DirtyThirtyShowdown
         [Tooltip("Shown for 2s when char1 uses their WinkFlirt ability. Assign for Nati matchups.")]
         public Sprite char1WinkSprite;
 
+        [Tooltip("Shown for 2s when char2 uses their WinkFlirt ability. Assign for matchups where Nati is char2.")]
+        public Sprite char2WinkSprite;
+
         [Tooltip("Shown for 2s when char1 uses their CakeToss ability. Assign for Sabi matchups.")]
         public Sprite char1CakeSprite;
 

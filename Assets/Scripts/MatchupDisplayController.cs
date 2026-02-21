@@ -36,6 +36,7 @@ namespace DirtyThirtyShowdown
         private bool flashingActive;
         private bool flashUserIsChar1;
         private bool winkActive;
+        private bool winkUserIsChar1;
         private bool cakeActive;
         private bool cakeUserIsChar1;
 
@@ -163,11 +164,12 @@ namespace DirtyThirtyShowdown
             }
 
             // WinkFlirt ability override — show the wink sprite for 2s
-            if (winkActive && currentMatchup.char1WinkSprite != null)
+            Sprite winkSprite = winkUserIsChar1 ? currentMatchup.char1WinkSprite : currentMatchup.char2WinkSprite;
+            if (winkActive && winkSprite != null)
             {
-                if (currentMatchup.char1WinkSprite == lastSprite) return;
-                displayImage.sprite = currentMatchup.char1WinkSprite;
-                lastSprite = currentMatchup.char1WinkSprite;
+                if (winkSprite == lastSprite) return;
+                displayImage.sprite = winkSprite;
+                lastSprite = winkSprite;
                 return;
             }
 
@@ -248,8 +250,10 @@ namespace DirtyThirtyShowdown
             else if (type == AbilityType.WinkFlirt && currentMatchup != null)
             {
                 bool userIsChar1 = (char1IsP1 && player == 1) || (!char1IsP1 && player == 2);
-                if (userIsChar1 && currentMatchup.char1WinkSprite != null)
+                Sprite winkSprite = userIsChar1 ? currentMatchup.char1WinkSprite : currentMatchup.char2WinkSprite;
+                if (winkSprite != null)
                 {
+                    winkUserIsChar1 = userIsChar1;
                     winkActive = true;
                     lastSprite = null;
                     StartCoroutine(ClearWinkAfter(2f));

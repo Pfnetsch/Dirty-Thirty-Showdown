@@ -197,7 +197,13 @@ namespace DirtyThirtyShowdown
                 }
 
                 if (sprites.TryGetValue("wink", out var winkSprite))
-                    asset.char1WinkSprite = winkSprite;
+                {
+                    bool char1HasWink = char1Data.ability1Type == AbilityType.WinkFlirt || char1Data.ability2Type == AbilityType.WinkFlirt;
+                    if (char1HasWink)
+                        asset.char1WinkSprite = winkSprite;
+                    else
+                        asset.char2WinkSprite = winkSprite;
+                }
 
                 if (sprites.TryGetValue("cake", out var cakeSprite))
                 {
