@@ -1113,7 +1113,7 @@ namespace DirtyThirtyShowdown
             tmp.fontStyle         = FontStyles.Bold;
             tmp.color             = new Color(0.08f, 0.04f, 0.18f);
             tmp.alignment         = TextAlignmentOptions.Center;
-            tmp.enableWordWrapping = true;
+            tmp.textWrappingMode = TextWrappingModes.Normal;
             tmp.raycastTarget     = false;
 
             obj.SetActive(false);

@@ -19,3 +19,5 @@ MonoBehaviour:
   neutral: {fileID: -1588585062875298021, guid: 9b7e2241c67bc44419bf86e22086d14b, type: 3}
   char2Winning: {fileID: 0}
   char2Dominating: {fileID: -2973611890581401233, guid: 9bb30e3b548807e4ea8a7dab2865d5f6, type: 3}
+  char1FlexingSprite: {fileID: 0}
+  char1FlashingSprite: {fileID: 0}

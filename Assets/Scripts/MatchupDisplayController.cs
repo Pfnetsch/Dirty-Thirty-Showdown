@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace DirtyThirtyShowdown
@@ -32,6 +33,7 @@ namespace DirtyThirtyShowdown
         private bool char1IsP1;   // orientation flag — set when matchup is selected
         private Sprite lastSprite;
         private bool flexActive;
+        private bool flashingActive;
 
         private void Start()
         {
@@ -146,6 +148,15 @@ namespace DirtyThirtyShowdown
         {
             if (displayImage == null || currentMatchup == null) return;
 
+            // Flash ability override — show the flashing sprite for 1s before the white screen flash
+            if (flashingActive && currentMatchup.char1FlashingSprite != null)
+            {
+                if (currentMatchup.char1FlashingSprite == lastSprite) return;
+                displayImage.sprite = currentMatchup.char1FlashingSprite;
+                lastSprite = currentMatchup.char1FlashingSprite;
+                return;
+            }
+
             // Flex ability override — show the flexing sprite while active
             if (flexActive && currentMatchup.char1FlexingSprite != null)
             {
@@ -183,6 +194,8 @@ namespace DirtyThirtyShowdown
         {
             currentMatchup = null;
             flexActive = false;
+            flashingActive = false;
+            StopAllCoroutines();
             if (displayImage != null)
                 displayImage.gameObject.SetActive(false);
         }
@@ -192,8 +205,27 @@ namespace DirtyThirtyShowdown
             if (type == AbilityType.Flex)
             {
                 flexActive = true;
-                lastSprite = null; // force refresh
+                lastSprite = null;
             }
+            else if (type == AbilityType.Flash && currentMatchup != null)
+            {
+                // Show the flashing image only when the user is the char1 of the current asset
+                // (the flashing sprite is authored from char1's perspective)
+                bool userIsChar1 = (char1IsP1 && player == 1) || (!char1IsP1 && player == 2);
+                if (userIsChar1 && currentMatchup.char1FlashingSprite != null)
+                {
+                    flashingActive = true;
+                    lastSprite = null;
+                    StartCoroutine(ClearFlashingAfter(1f));
+                }
+            }
+        }
+
+        private IEnumerator ClearFlashingAfter(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            flashingActive = false;
+            lastSprite = null; // force return to bar-based sprite
         }
 
         private void OnAbilityEnded(AbilityType type, int player)
@@ -201,7 +233,7 @@ namespace DirtyThirtyShowdown
             if (type == AbilityType.Flex)
             {
                 flexActive = false;
-                lastSprite = null; // force refresh
+                lastSprite = null;
             }
         }
     }

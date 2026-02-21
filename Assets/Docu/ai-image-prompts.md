@@ -369,6 +369,34 @@ Maintain pixel-art purity with crisp, clean pixel edges. No smoothing, no painte
 
 ------------------------------------------------------------------------------------------------------
 
+Please edit the provided arm wrestling scene for my pixel art game.
+The left character needs a change.
+Preserve exact canvas size 1920x1080.
+Preserve exact composition. Preserve camera angle and perspective.
+Preserve background, lighting, table position, and all details.
+Do not shift, crop, zoom, reframe, redraw, or reinterpret the scene.
+
+Only modify the character on the left side.
+The character should pull up her top a little bit so that the stomach can be seen.
+Maintain pixel-art purity with crisp, clean pixel edges.
+No smoothing, no painterly blending.
+
+------------------------------------------------------------------------------------------------------
+
+Please edit the provided arm wrestling scene for my pixel art game.
+The left character needs a change.
+Preserve exact canvas size 1920x1080.
+Preserve exact composition. Preserve camera angle and perspective.
+Preserve background, lighting, table position, and all details.
+Do not shift, crop, zoom, reframe, redraw, or reinterpret the scene.
+
+Only modify the character on the left side.
+The character hold a cake in her other hand (back hand) and is about to throw it onto her oponent.
+Maintain pixel-art purity with crisp, clean pixel edges.
+No smoothing, no painterly blending.
+
+------------------------------------------------------------------------------------------------------
+
 eli_vs_lene_neutral.png
 eli_vs_lene_eli_winning.png
 eli_vs_lene_eli_dominating.png

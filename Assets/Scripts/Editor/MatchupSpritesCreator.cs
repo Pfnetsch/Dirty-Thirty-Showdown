@@ -187,6 +187,9 @@ namespace DirtyThirtyShowdown
                 sprites.TryGetValue($"{c2Name}_dominating", out asset.char2Dominating);
                 sprites.TryGetValue($"{c2Name}_winning",    out asset.char2Winning);
 
+                if (sprites.TryGetValue("flashing", out var flashSprite))
+                    asset.char1FlashingSprite = flashSprite;
+
                 if (isNew)
                 {
                     AssetDatabase.CreateAsset(asset, assetPath);

@@ -36,6 +36,9 @@ namespace DirtyThirtyShowdown
         [Tooltip("Shown while char1 uses their Flex ability. Assign for Patz matchups only.")]
         public Sprite char1FlexingSprite;
 
+        [Tooltip("Shown for 1s when char1 uses their Flash ability (before the white screen flash). Assign for Eli matchups.")]
+        public Sprite char1FlashingSprite;
+
         /// <summary>Returns true if this asset covers the given pair (in either order).</summary>
         public bool Matches(CharacterData a, CharacterData b)
         {

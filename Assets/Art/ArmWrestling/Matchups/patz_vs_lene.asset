@@ -20,3 +20,4 @@ MonoBehaviour:
   char2Winning: {fileID: 0}
   char2Dominating: {fileID: 0}
   char1FlexingSprite: {fileID: -8292858096850106312, guid: 3a711295fad3d7d4f88b4ae20a3b364b, type: 3}
+  char1FlashingSprite: {fileID: 0}

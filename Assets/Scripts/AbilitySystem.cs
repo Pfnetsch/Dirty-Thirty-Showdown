@@ -125,13 +125,18 @@ namespace DirtyThirtyShowdown
         {
             if (screenFlashOverlay != null)
             {
+                // Wait 1s while the flashing matchup image is displayed
+                yield return new WaitForSeconds(1f);
+
+                // Snap to full white, then fade out over 0.5s
                 screenFlashOverlay.alpha = 1f;
                 float elapsed = 0f;
+                const float fadeDuration = 0.5f;
 
-                while (elapsed < duration)
+                while (elapsed < fadeDuration)
                 {
                     elapsed += Time.deltaTime;
-                    screenFlashOverlay.alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
+                    screenFlashOverlay.alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
                     yield return null;
                 }
 
