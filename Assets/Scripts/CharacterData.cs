@@ -62,6 +62,7 @@ namespace DirtyThirtyShowdown
         public AudioClip[] victoryVoiceLines;
         public AudioClip[] defeatVoiceLines;
         public AudioClip[] trashTalkLines; // For Lene specifically
+        public string[] trashTalkSubtitles; // Text shown during TrashTalk ability
 
         [Header("Audio - SFX")]
         public AudioClip ability1SFX;

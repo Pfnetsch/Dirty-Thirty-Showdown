@@ -35,5 +35,10 @@ MonoBehaviour:
   victoryVoiceLines: []
   defeatVoiceLines: []
   trashTalkLines: []
+  trashTalkSubtitles:
+  - You call that strength? My grandma taps harder.
+  - "I\u2019ve crushed soda cans tougher than you."
+  - Yo Mama .. let you win all the time huh?
+  - Girl! Get ready to meet the table.
   ability1SFX: {fileID: 0}
   ability2SFX: {fileID: 0}

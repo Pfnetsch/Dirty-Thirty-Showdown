@@ -23,6 +23,10 @@ namespace DirtyThirtyShowdown
         [SerializeField] private ArmWrestleController armWrestleController;
         [SerializeField] private AbilitySystem abilitySystem;
 
+        [Header("Initial Cooldowns")]
+        private const float initialAbility1Cooldown = 9f;
+        private const float initialAbility2Cooldown = 6f;
+
         // Character data
         public CharacterData Character { get; private set; }
 
@@ -31,6 +35,9 @@ namespace DirtyThirtyShowdown
         public float Ability2CooldownRemaining { get; private set; } = 0f;
         public bool Ability1Ready => Ability1CooldownRemaining <= 0f;
         public bool Ability2Ready => Ability2CooldownRemaining <= 0f;
+
+        private float _ability1TotalCooldown = 1f;
+        private float _ability2TotalCooldown = 1f;
 
         // Shield state (for Lene's Shield ability)
         public bool HasShield { get; private set; } = false;
@@ -158,6 +165,7 @@ namespace DirtyThirtyShowdown
                 cooldown = Character.ability1Cooldown;
                 duration = Character.ability1Duration;
                 Ability1CooldownRemaining = cooldown;
+                _ability1TotalCooldown = cooldown;
             }
             else
             {
@@ -165,6 +173,7 @@ namespace DirtyThirtyShowdown
                 cooldown = Character.ability2Cooldown;
                 duration = Character.ability2Duration;
                 Ability2CooldownRemaining = cooldown;
+                _ability2TotalCooldown = cooldown;
             }
 
             // Execute the ability
@@ -178,8 +187,7 @@ namespace DirtyThirtyShowdown
             if (Ability1CooldownRemaining > 0)
             {
                 Ability1CooldownRemaining -= Time.deltaTime;
-                if (Character != null)
-                    OnCooldownUpdate?.Invoke(1, Ability1CooldownRemaining, Character.ability1Cooldown);
+                OnCooldownUpdate?.Invoke(1, Ability1CooldownRemaining, _ability1TotalCooldown);
                 if (Ability1CooldownRemaining <= 0f)
                 {
                     Ability1CooldownRemaining = 0f;
@@ -190,8 +198,7 @@ namespace DirtyThirtyShowdown
             if (Ability2CooldownRemaining > 0)
             {
                 Ability2CooldownRemaining -= Time.deltaTime;
-                if (Character != null)
-                    OnCooldownUpdate?.Invoke(2, Ability2CooldownRemaining, Character.ability2Cooldown);
+                OnCooldownUpdate?.Invoke(2, Ability2CooldownRemaining, _ability2TotalCooldown);
                 if (Ability2CooldownRemaining <= 0f)
                 {
                     Ability2CooldownRemaining = 0f;
@@ -202,8 +209,10 @@ namespace DirtyThirtyShowdown
 
         public void ResetCooldowns()
         {
-            Ability1CooldownRemaining = 0f;
-            Ability2CooldownRemaining = 0f;
+            Ability1CooldownRemaining = initialAbility1Cooldown;
+            Ability2CooldownRemaining = initialAbility2Cooldown;
+            _ability1TotalCooldown = initialAbility1Cooldown;
+            _ability2TotalCooldown = initialAbility2Cooldown;
             HasShield = false;
         }
 
@@ -236,16 +245,10 @@ namespace DirtyThirtyShowdown
 
         public float GetAbilityCooldownProgress(int abilityNumber)
         {
-            if (Character == null) return 1f;
-
             if (abilityNumber == 1)
-            {
-                return 1f - (Ability1CooldownRemaining / Character.ability1Cooldown);
-            }
+                return _ability1TotalCooldown > 0f ? 1f - (Ability1CooldownRemaining / _ability1TotalCooldown) : 1f;
             else
-            {
-                return 1f - (Ability2CooldownRemaining / Character.ability2Cooldown);
-            }
+                return _ability2TotalCooldown > 0f ? 1f - (Ability2CooldownRemaining / _ability2TotalCooldown) : 1f;
         }
 
         #endregion

@@ -449,13 +449,13 @@ namespace DirtyThirtyShowdown
             nameLE.preferredHeight = 36;
 
             // Ability 1
-            var ab1 = CreateTMP(panel.transform, "Ability1Text", isLeft ? "Q: ---" : "O: ---", 20);
+            var ab1 = CreateTMP(panel.transform, "Ability1Text", isLeft ? "Q: ---" : "O: ---", 36);
             ab1.alignment = TextAlignmentOptions.Center;
             var ab1LE = ab1.gameObject.AddComponent<LayoutElement>();
             ab1LE.preferredHeight = 28;
 
             // Ability 2
-            var ab2 = CreateTMP(panel.transform, "Ability2Text", isLeft ? "E: ---" : "P: ---", 20);
+            var ab2 = CreateTMP(panel.transform, "Ability2Text", isLeft ? "E: ---" : "P: ---", 36);
             ab2.alignment = TextAlignmentOptions.Center;
             var ab2LE = ab2.gameObject.AddComponent<LayoutElement>();
             ab2LE.preferredHeight = 28;
@@ -751,11 +751,13 @@ namespace DirtyThirtyShowdown
             bgImg.fillAmount = 1f;
             bgImg.raycastTarget = false;
 
-            // Switch the Cooldown fill to a bright recharge indicator, starting full (ready)
+            // Switch the Cooldown fill to a radial recharge indicator, starting full (ready)
             var cdImg = cooldown.GetComponent<Image>();
             if (cdImg != null)
             {
                 cdImg.color         = new Color(0.3f, 0.9f, 0.4f, 0.9f);
+                cdImg.type          = Image.Type.Filled;
+                cdImg.fillMethod    = Image.FillMethod.Radial360;
                 cdImg.fillOrigin    = (int)Image.Origin360.Top;
                 cdImg.fillClockwise = true;
                 cdImg.fillAmount    = 1f;
@@ -1022,12 +1024,12 @@ namespace DirtyThirtyShowdown
             var cakeSpr  = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/VFX/vfx_cake_splat.png");
 
             // P1-side overlays (appear on P1's half when P1 is the target)
-            p1TrashTalk = BuildVFXOverlayObject(gameplayRoot, "P1TrashTalkOverlay", trashSpr, isLeft: true);
+            p1TrashTalk = BuildTrashTalkOverlay(gameplayRoot, "P1TrashTalkOverlay", trashSpr, isLeft: true);
             p1Dance     = BuildVFXOverlayObject(gameplayRoot, "P1DanceOverlay",     noteSpr,  isLeft: true);
             p1Cake      = BuildVFXOverlayObject(gameplayRoot, "P1CakeSplatOverlay", cakeSpr,  isLeft: true);
 
             // P2-side overlays
-            p2TrashTalk = BuildVFXOverlayObject(gameplayRoot, "P2TrashTalkOverlay", trashSpr, isLeft: false);
+            p2TrashTalk = BuildTrashTalkOverlay(gameplayRoot, "P2TrashTalkOverlay", trashSpr, isLeft: false);
             p2Dance     = BuildVFXOverlayObject(gameplayRoot, "P2DanceOverlay",     noteSpr,  isLeft: false);
             p2Cake      = BuildVFXOverlayObject(gameplayRoot, "P2CakeSplatOverlay", cakeSpr,  isLeft: false);
         }
@@ -1052,6 +1054,31 @@ namespace DirtyThirtyShowdown
             img.raycastTarget = false;
 
             obj.SetActive(false);
+            return obj;
+        }
+
+        private static GameObject BuildTrashTalkOverlay(Transform parent, string name, Sprite sprite, bool isLeft)
+        {
+            var obj = BuildVFXOverlayObject(parent, name, sprite, isLeft);
+
+            // Add subtitle text child inside the speech-bubble overlay
+            var textObj = new GameObject("SubtitleText");
+            textObj.transform.SetParent(obj.transform, false);
+            var textRT = textObj.AddComponent<RectTransform>();
+            textRT.anchorMin = new Vector2(0f, 0f);
+            textRT.anchorMax = new Vector2(1f, 0.55f); // lower half of the bubble
+            textRT.offsetMin = new Vector2(12f, 8f);
+            textRT.offsetMax = new Vector2(-12f, 0f);
+
+            var tmp = textObj.AddComponent<TextMeshProUGUI>();
+            tmp.text = "";
+            tmp.fontSize = 13f;
+            tmp.fontStyle = FontStyles.Bold;
+            tmp.color = new Color(0.1f, 0.05f, 0.2f); // dark purple
+            tmp.alignment = TextAlignmentOptions.Center;
+            tmp.enableWordWrapping = true;
+            tmp.raycastTarget = false;
+
             return obj;
         }
 

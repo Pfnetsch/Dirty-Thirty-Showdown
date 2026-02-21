@@ -62,6 +62,10 @@ namespace DirtyThirtyShowdown
         [Header("VFX Overlays (new abilities)")]
         [SerializeField] private GameObject p1TrashTalkOverlay;
         [SerializeField] private GameObject p2TrashTalkOverlay;
+
+        // Cached subtitle text components inside each TrashTalk overlay (auto-found at Start)
+        private TextMeshProUGUI p1TrashTalkText;
+        private TextMeshProUGUI p2TrashTalkText;
         [SerializeField] private GameObject p1DanceOverlay;
         [SerializeField] private GameObject p2DanceOverlay;
         [SerializeField] private GameObject p1CakeSplatOverlay;
@@ -173,6 +177,11 @@ namespace DirtyThirtyShowdown
         {
             AutoFindPanels();
             SetupHUDReferences();
+
+            if (p1TrashTalkOverlay != null)
+                p1TrashTalkText = p1TrashTalkOverlay.GetComponentInChildren<TextMeshProUGUI>(true);
+            if (p2TrashTalkOverlay != null)
+                p2TrashTalkText = p2TrashTalkOverlay.GetComponentInChildren<TextMeshProUGUI>(true);
             gameManager = GameManager.Instance;
 
             if (gameManager != null)
@@ -521,8 +530,19 @@ namespace DirtyThirtyShowdown
                     ShowInputDisabledEffect(3 - player, true);
                     break;
                 case AbilityType.TrashTalk:
+                {
+                    // player is the user — pick a random subtitle from their character data
+                    var userController = player == 1 ? player1Controller : player2Controller;
+                    var subtitleText   = player == 1 ? p2TrashTalkText   : p1TrashTalkText;
+                    if (subtitleText != null && userController != null && userController.Character != null)
+                    {
+                        var lines = userController.Character.trashTalkSubtitles;
+                        if (lines != null && lines.Length > 0)
+                            subtitleText.text = lines[UnityEngine.Random.Range(0, lines.Length)];
+                    }
                     SetOverlay(player == 1 ? p2TrashTalkOverlay : p1TrashTalkOverlay, true);
                     break;
+                }
                 case AbilityType.Dance:
                     SetOverlay(player == 1 ? p2DanceOverlay : p1DanceOverlay, true);
                     break;
@@ -551,6 +571,8 @@ namespace DirtyThirtyShowdown
                     break;
                 case AbilityType.TrashTalk:
                     SetOverlay(player == 1 ? p1TrashTalkOverlay : p2TrashTalkOverlay, false);
+                    if (player == 1 && p1TrashTalkText != null) p1TrashTalkText.text = "";
+                    if (player == 2 && p2TrashTalkText != null) p2TrashTalkText.text = "";
                     break;
                 case AbilityType.Dance:
                     SetOverlay(player == 1 ? p1DanceOverlay : p2DanceOverlay, false);

@@ -56,6 +56,13 @@ namespace DirtyThirtyShowdown
             lene.ability2Cooldown = 22f;
             lene.ability2Duration = 0f;
             lene.characterColor = new Color(0.54f, 0.17f, 0.89f); // Purple
+            lene.trashTalkSubtitles = new string[]
+            {
+                "You call that strength?\nMy grandma taps harder.",
+                "I've crushed soda cans\ntougher than you.",
+                "Yo Mama .. let you\nwin all the time huh?",
+                "Girl! Get ready\nto meet the table."
+            };
             SaveCharacterAsset(lene, "Lene");
         }
 
