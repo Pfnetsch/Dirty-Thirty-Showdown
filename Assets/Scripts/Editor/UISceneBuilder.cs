@@ -1019,17 +1019,16 @@ namespace DirtyThirtyShowdown
             out GameObject p1Dance,     out GameObject p2Dance,
             out GameObject p1Cake,      out GameObject p2Cake)
         {
-            var trashSpr = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/VFX/vfx_trash_talk.png");
             var noteSpr  = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/VFX/vfx_dance_notes.png");
             var cakeSpr  = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Art/VFX/vfx_cake_splat.png");
 
             // P1-side overlays (appear on P1's half when P1 is the target)
-            p1TrashTalk = BuildTrashTalkOverlay(gameplayRoot, "P1TrashTalkOverlay", trashSpr, isLeft: true);
+            p1TrashTalk = BuildTrashTalkOverlay(gameplayRoot, "P1TrashTalkOverlay", isLeft: true);
             p1Dance     = BuildVFXOverlayObject(gameplayRoot, "P1DanceOverlay",     noteSpr,  isLeft: true);
             p1Cake      = BuildVFXOverlayObject(gameplayRoot, "P1CakeSplatOverlay", cakeSpr,  isLeft: true);
 
             // P2-side overlays
-            p2TrashTalk = BuildTrashTalkOverlay(gameplayRoot, "P2TrashTalkOverlay", trashSpr, isLeft: false);
+            p2TrashTalk = BuildTrashTalkOverlay(gameplayRoot, "P2TrashTalkOverlay", isLeft: false);
             p2Dance     = BuildVFXOverlayObject(gameplayRoot, "P2DanceOverlay",     noteSpr,  isLeft: false);
             p2Cake      = BuildVFXOverlayObject(gameplayRoot, "P2CakeSplatOverlay", cakeSpr,  isLeft: false);
         }
@@ -1057,28 +1056,67 @@ namespace DirtyThirtyShowdown
             return obj;
         }
 
-        private static GameObject BuildTrashTalkOverlay(Transform parent, string name, Sprite sprite, bool isLeft)
+        private static GameObject BuildTrashTalkOverlay(Transform parent, string name, bool isLeft)
         {
-            var obj = BuildVFXOverlayObject(parent, name, sprite, isLeft);
+            // Build the speech bubble entirely from Unity's built-in UISprite (no PNG dependency).
+            // Structure: root (position) → border Image → white fill Image → text
+            var builtinSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
 
-            // Add subtitle text child inside the speech-bubble overlay
+            var obj = new GameObject(name);
+            obj.transform.SetParent(parent, false);
+            var rt = obj.AddComponent<RectTransform>();
+            rt.anchorMin = rt.anchorMax = new Vector2(isLeft ? 0.23f : 0.77f, 0.60f);
+            rt.pivot     = new Vector2(0.5f, 0.5f);
+            rt.sizeDelta = new Vector2(250f, 110f);
+            rt.anchoredPosition = Vector2.zero;
+
+            // Dark border — 6px larger than the fill on each axis (3px overhang per side).
+            var borderObj = new GameObject("Border");
+            borderObj.transform.SetParent(obj.transform, false);
+            var borderRT = borderObj.AddComponent<RectTransform>();
+            borderRT.anchorMin      = Vector2.zero;
+            borderRT.anchorMax      = Vector2.one;
+            borderRT.sizeDelta      = new Vector2(6f, 6f);
+            borderRT.anchoredPosition = Vector2.zero;
+            var borderImg = borderObj.AddComponent<Image>();
+            borderImg.sprite       = builtinSprite;
+            borderImg.type         = Image.Type.Sliced;
+            borderImg.color        = new Color(0.08f, 0.04f, 0.18f); // dark navy
+            borderImg.raycastTarget = false;
+
+            // White fill.
+            var bgObj = new GameObject("Fill");
+            bgObj.transform.SetParent(obj.transform, false);
+            var bgRT = bgObj.AddComponent<RectTransform>();
+            bgRT.anchorMin      = Vector2.zero;
+            bgRT.anchorMax      = Vector2.one;
+            bgRT.sizeDelta      = Vector2.zero;
+            bgRT.anchoredPosition = Vector2.zero;
+            var bgImg = bgObj.AddComponent<Image>();
+            bgImg.sprite       = builtinSprite;
+            bgImg.type         = Image.Type.Sliced;
+            bgImg.color        = Color.white;
+            bgImg.raycastTarget = false;
+
+            // Subtitle text.
             var textObj = new GameObject("SubtitleText");
             textObj.transform.SetParent(obj.transform, false);
             var textRT = textObj.AddComponent<RectTransform>();
-            textRT.anchorMin = new Vector2(0f, 0f);
-            textRT.anchorMax = new Vector2(1f, 0.55f); // lower half of the bubble
-            textRT.offsetMin = new Vector2(12f, 8f);
-            textRT.offsetMax = new Vector2(-12f, 0f);
+            textRT.anchorMin      = new Vector2(0.05f, 0.05f);
+            textRT.anchorMax      = new Vector2(0.95f, 0.95f);
+            textRT.sizeDelta      = Vector2.zero;
+            textRT.anchoredPosition = Vector2.zero;
 
             var tmp = textObj.AddComponent<TextMeshProUGUI>();
-            tmp.text = "";
-            tmp.fontSize = 13f;
-            tmp.fontStyle = FontStyles.Bold;
-            tmp.color = new Color(0.1f, 0.05f, 0.2f); // dark purple
-            tmp.alignment = TextAlignmentOptions.Center;
+            tmp.text              = "";
+            tmp.fontSize          = 30f;
+            tmp.fontStyle         = FontStyles.Bold;
+            tmp.color             = new Color(0.08f, 0.04f, 0.18f);
+            tmp.alignment         = TextAlignmentOptions.Center;
             tmp.enableWordWrapping = true;
-            tmp.raycastTarget = false;
+            tmp.raycastTarget     = false;
 
+            obj.SetActive(false);
             return obj;
         }
 

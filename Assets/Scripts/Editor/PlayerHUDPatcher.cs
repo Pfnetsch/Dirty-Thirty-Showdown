@@ -65,7 +65,7 @@ namespace DirtyThirtyShowdown
             if (cdImg != null)
             {
                 cdImg.sprite        = knob;
-                cdImg.color         = new Color(0.3f, 0.9f, 0.4f, 0.9f);
+                cdImg.color         = new Color(0.0f, 1.0f, 0.2f, 1.0f);
                 cdImg.type          = Image.Type.Filled;
                 cdImg.fillMethod    = Image.FillMethod.Radial360;
                 cdImg.fillOrigin    = (int)Image.Origin360.Top;

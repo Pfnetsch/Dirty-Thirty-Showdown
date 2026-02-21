@@ -474,9 +474,7 @@ namespace DirtyThirtyShowdown
 
         private void SetAbilityReady(int playerNumber, int ability, bool ready)
         {
-            ref PlayerHUDRefs hud = ref (playerNumber == 1 ? ref p1HUD : ref p2HUD);
-            GameObject flash = ability == 1 ? hud.ability1ReadyFlash : hud.ability2ReadyFlash;
-            flash?.SetActive(ready);
+            // Full radial ring is sufficient ready indicator — no flash overlay needed
         }
 
         private void SetShieldIndicator(int playerNumber, bool active)
@@ -531,16 +529,17 @@ namespace DirtyThirtyShowdown
                     break;
                 case AbilityType.TrashTalk:
                 {
-                    // player is the user — pick a random subtitle from their character data
+                    // Speech bubble is a quote FROM the user, so it appears on the user's side.
+                    // player is the user here.
                     var userController = player == 1 ? player1Controller : player2Controller;
-                    var subtitleText   = player == 1 ? p2TrashTalkText   : p1TrashTalkText;
+                    var subtitleText   = player == 1 ? p1TrashTalkText   : p2TrashTalkText;
                     if (subtitleText != null && userController != null && userController.Character != null)
                     {
                         var lines = userController.Character.trashTalkSubtitles;
                         if (lines != null && lines.Length > 0)
                             subtitleText.text = lines[UnityEngine.Random.Range(0, lines.Length)];
                     }
-                    SetOverlay(player == 1 ? p2TrashTalkOverlay : p1TrashTalkOverlay, true);
+                    SetOverlay(player == 1 ? p1TrashTalkOverlay : p2TrashTalkOverlay, true);
                     break;
                 }
                 case AbilityType.Dance:
@@ -570,9 +569,10 @@ namespace DirtyThirtyShowdown
                     ShowInputDisabledEffect(player, false);
                     break;
                 case AbilityType.TrashTalk:
-                    SetOverlay(player == 1 ? p1TrashTalkOverlay : p2TrashTalkOverlay, false);
-                    if (player == 1 && p1TrashTalkText != null) p1TrashTalkText.text = "";
-                    if (player == 2 && p2TrashTalkText != null) p2TrashTalkText.text = "";
+                    // player is the TARGET here; user = (3 - player), so hide the user's overlay.
+                    SetOverlay(player == 1 ? p2TrashTalkOverlay : p1TrashTalkOverlay, false);
+                    if (player == 1 && p2TrashTalkText != null) p2TrashTalkText.text = "";
+                    if (player == 2 && p1TrashTalkText != null) p1TrashTalkText.text = "";
                     break;
                 case AbilityType.Dance:
                     SetOverlay(player == 1 ? p1DanceOverlay : p2DanceOverlay, false);
