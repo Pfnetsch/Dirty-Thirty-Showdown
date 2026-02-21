@@ -46,6 +46,12 @@ namespace DirtyThirtyShowdown
         public event Action<int, int> OnRoundEnd; // winner (1 or 2), round number
         public event Action<int> OnMatchEnd; // winner (1 or 2)
         public event Action<float> OnTimerUpdate;
+        public event Action<bool> OnEscConfirmChanged; // true = waiting for second ESC, false = cancelled/confirmed
+
+        // ESC cancel state
+        private bool _escConfirmPending;
+        private float _escConfirmTimer;
+        private const float EscConfirmTimeout = 3f;
 
         private void Awake()
         {
@@ -63,11 +69,49 @@ namespace DirtyThirtyShowdown
             if (CurrentState == GameState.Playing)
             {
                 UpdateRoundTimer();
+                HandleEscInput();
+            }
+            else if (CurrentState == GameState.PreRound)
+            {
+                HandleEscInput();
             }
             else if (CurrentState == GameState.MatchEnd)
             {
                 HandleMatchEndInput();
             }
+        }
+
+        private void HandleEscInput()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (_escConfirmPending)
+                {
+                    // Second press — cancel the match
+                    SetEscConfirmPending(false);
+                    ReturnToCharacterSelect();
+                }
+                else
+                {
+                    // First press — ask for confirmation
+                    SetEscConfirmPending(true);
+                    _escConfirmTimer = EscConfirmTimeout;
+                }
+                return;
+            }
+
+            if (_escConfirmPending)
+            {
+                _escConfirmTimer -= Time.deltaTime;
+                if (_escConfirmTimer <= 0f)
+                    SetEscConfirmPending(false);
+            }
+        }
+
+        private void SetEscConfirmPending(bool pending)
+        {
+            _escConfirmPending = pending;
+            OnEscConfirmChanged?.Invoke(pending);
         }
 
         private void HandleMatchEndInput()
@@ -200,9 +244,11 @@ namespace DirtyThirtyShowdown
 
         public void ReturnToCharacterSelect()
         {
-            ChangeState(GameState.CharacterSelect);
+            CancelInvoke();
+            SetEscConfirmPending(false);
             Player1Character = null;
             Player2Character = null;
+            ChangeState(GameState.CharacterSelect);
         }
 
         public void RestartMatch()

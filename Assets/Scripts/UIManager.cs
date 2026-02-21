@@ -48,6 +48,9 @@ namespace DirtyThirtyShowdown
         [SerializeField] private TextMeshProUGUI matchWinnerText;
         [SerializeField] private TextMeshProUGUI matchEndInstructionsText;
 
+        [Header("ESC Cancel")]
+        [SerializeField] private TextMeshProUGUI escCancelText;
+
         [Header("Victory Backgrounds")]
         [SerializeField] private Image victoryBackgroundImage;
         [SerializeField] private Sprite eliVictorySprite;
@@ -171,6 +174,11 @@ namespace DirtyThirtyShowdown
             if (roundStartPanel == null)      roundStartPanel      = GameObject.Find("RoundStartPanel");
             if (roundEndPanel == null)        roundEndPanel        = GameObject.Find("RoundEndPanel");
             if (matchEndPanel == null)        matchEndPanel        = GameObject.Find("MatchEndPanel");
+            if (escCancelText == null)
+            {
+                var go = GameObject.Find("EscCancelText");
+                if (go != null) escCancelText = go.GetComponent<TextMeshProUGUI>();
+            }
         }
 
         private void Start()
@@ -191,6 +199,7 @@ namespace DirtyThirtyShowdown
                 gameManager.OnRoundEnd += HandleRoundEnd;
                 gameManager.OnMatchEnd += HandleMatchEnd;
                 gameManager.OnTimerUpdate += UpdateTimer;
+                gameManager.OnEscConfirmChanged += HandleEscConfirmChanged;
             }
 
             if (armWrestleController != null)
@@ -303,6 +312,7 @@ namespace DirtyThirtyShowdown
 
         private void SetAllPanelsInactive()
         {
+            escCancelText?.gameObject.SetActive(false);
             if (splashScreenPanel != null) splashScreenPanel.SetActive(false);
             titleScreenPanel?.SetActive(false);
             characterSelectPanel?.SetActive(false);
@@ -426,6 +436,16 @@ namespace DirtyThirtyShowdown
 
             roundStartText.text = "GO!";
             // Panel stays visible for ~1 more second before Playing state hides it
+        }
+
+        #endregion
+
+        #region ESC Cancel
+
+        private void HandleEscConfirmChanged(bool pending)
+        {
+            if (escCancelText != null)
+                escCancelText.gameObject.SetActive(pending);
         }
 
         #endregion

@@ -206,6 +206,7 @@ namespace DirtyThirtyShowdown
             SetRef(uiExtraSO, "p2DanceOverlay",           p2Dance);
             SetRef(uiExtraSO, "p1CakeSplatOverlay",       p1Cake);
             SetRef(uiExtraSO, "p2CakeSplatOverlay",       p2Cake);
+            SetRef(uiExtraSO, "escCancelText",            gpTransform.Find("EscCancelText")?.GetComponent<TextMeshProUGUI>());
             uiExtraSO.ApplyModifiedProperties();
 
             // Wire CharacterSelectManager
@@ -666,6 +667,23 @@ namespace DirtyThirtyShowdown
             reversedText.color = Color.white;
             controlsReversedInd = reversedObj;
             reversedObj.SetActive(false);
+
+            // ESC Cancel confirmation text (centre of screen, hidden by default)
+            var escCancelObj = new GameObject("EscCancelText");
+            escCancelObj.transform.SetParent(panel.transform, false);
+            var escCancelRT = escCancelObj.AddComponent<RectTransform>();
+            escCancelRT.anchorMin = new Vector2(0.2f, 0.08f);
+            escCancelRT.anchorMax = new Vector2(0.8f, 0.18f);
+            escCancelRT.offsetMin = Vector2.zero;
+            escCancelRT.offsetMax = Vector2.zero;
+            var escCancelTmp = escCancelObj.AddComponent<TextMeshProUGUI>();
+            escCancelTmp.text = "Press ESC again to cancel match";
+            escCancelTmp.fontSize = 28;
+            escCancelTmp.fontStyle = FontStyles.Bold;
+            escCancelTmp.alignment = TextAlignmentOptions.Center;
+            escCancelTmp.color = new Color(1f, 0.9f, 0.2f, 1f); // bright yellow
+            if (displayFont != null) escCancelTmp.font = displayFont;
+            escCancelObj.SetActive(false);
 
             return panel;
         }
