@@ -131,7 +131,7 @@ namespace DirtyThirtyShowdown
                 // Snap to full white, then fade out over 0.5s
                 screenFlashOverlay.alpha = 1f;
                 float elapsed = 0f;
-                const float fadeDuration = 0.5f;
+                const float fadeDuration = 2f;
 
                 while (elapsed < fadeDuration)
                 {

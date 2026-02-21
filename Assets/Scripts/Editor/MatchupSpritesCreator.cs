@@ -188,7 +188,25 @@ namespace DirtyThirtyShowdown
                 sprites.TryGetValue($"{c2Name}_winning",    out asset.char2Winning);
 
                 if (sprites.TryGetValue("flashing", out var flashSprite))
-                    asset.char1FlashingSprite = flashSprite;
+                {
+                    bool char1HasFlash = char1Data.ability1Type == AbilityType.Flash || char1Data.ability2Type == AbilityType.Flash;
+                    if (char1HasFlash)
+                        asset.char1FlashingSprite = flashSprite;
+                    else
+                        asset.char2FlashingSprite = flashSprite;
+                }
+
+                if (sprites.TryGetValue("wink", out var winkSprite))
+                    asset.char1WinkSprite = winkSprite;
+
+                if (sprites.TryGetValue("cake", out var cakeSprite))
+                {
+                    bool char1HasCake = char1Data.ability1Type == AbilityType.CakeToss || char1Data.ability2Type == AbilityType.CakeToss;
+                    if (char1HasCake)
+                        asset.char1CakeSprite = cakeSprite;
+                    else
+                        asset.char2CakeSprite = cakeSprite;
+                }
 
                 if (isNew)
                 {

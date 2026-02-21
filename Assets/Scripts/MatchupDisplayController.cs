@@ -34,6 +34,10 @@ namespace DirtyThirtyShowdown
         private Sprite lastSprite;
         private bool flexActive;
         private bool flashingActive;
+        private bool flashUserIsChar1;
+        private bool winkActive;
+        private bool cakeActive;
+        private bool cakeUserIsChar1;
 
         private void Start()
         {
@@ -148,12 +152,32 @@ namespace DirtyThirtyShowdown
         {
             if (displayImage == null || currentMatchup == null) return;
 
-            // Flash ability override — show the flashing sprite for 1s before the white screen flash
-            if (flashingActive && currentMatchup.char1FlashingSprite != null)
+            // CakeToss ability override — show the cake sprite for 2s
+            Sprite cakeSprite = cakeUserIsChar1 ? currentMatchup.char1CakeSprite : currentMatchup.char2CakeSprite;
+            if (cakeActive && cakeSprite != null)
             {
-                if (currentMatchup.char1FlashingSprite == lastSprite) return;
-                displayImage.sprite = currentMatchup.char1FlashingSprite;
-                lastSprite = currentMatchup.char1FlashingSprite;
+                if (cakeSprite == lastSprite) return;
+                displayImage.sprite = cakeSprite;
+                lastSprite = cakeSprite;
+                return;
+            }
+
+            // WinkFlirt ability override — show the wink sprite for 2s
+            if (winkActive && currentMatchup.char1WinkSprite != null)
+            {
+                if (currentMatchup.char1WinkSprite == lastSprite) return;
+                displayImage.sprite = currentMatchup.char1WinkSprite;
+                lastSprite = currentMatchup.char1WinkSprite;
+                return;
+            }
+
+            // Flash ability override — show the flashing sprite for 1s before the white screen flash
+            Sprite flashSprite = flashUserIsChar1 ? currentMatchup.char1FlashingSprite : currentMatchup.char2FlashingSprite;
+            if (flashingActive && flashSprite != null)
+            {
+                if (flashSprite == lastSprite) return;
+                displayImage.sprite = flashSprite;
+                lastSprite = flashSprite;
                 return;
             }
 
@@ -195,6 +219,8 @@ namespace DirtyThirtyShowdown
             currentMatchup = null;
             flexActive = false;
             flashingActive = false;
+            winkActive = false;
+            cakeActive = false;
             StopAllCoroutines();
             if (displayImage != null)
                 displayImage.gameObject.SetActive(false);
@@ -209,14 +235,36 @@ namespace DirtyThirtyShowdown
             }
             else if (type == AbilityType.Flash && currentMatchup != null)
             {
-                // Show the flashing image only when the user is the char1 of the current asset
-                // (the flashing sprite is authored from char1's perspective)
                 bool userIsChar1 = (char1IsP1 && player == 1) || (!char1IsP1 && player == 2);
-                if (userIsChar1 && currentMatchup.char1FlashingSprite != null)
+                Sprite flashSprite = userIsChar1 ? currentMatchup.char1FlashingSprite : currentMatchup.char2FlashingSprite;
+                if (flashSprite != null)
                 {
+                    flashUserIsChar1 = userIsChar1;
                     flashingActive = true;
                     lastSprite = null;
                     StartCoroutine(ClearFlashingAfter(1f));
+                }
+            }
+            else if (type == AbilityType.WinkFlirt && currentMatchup != null)
+            {
+                bool userIsChar1 = (char1IsP1 && player == 1) || (!char1IsP1 && player == 2);
+                if (userIsChar1 && currentMatchup.char1WinkSprite != null)
+                {
+                    winkActive = true;
+                    lastSprite = null;
+                    StartCoroutine(ClearWinkAfter(2f));
+                }
+            }
+            else if (type == AbilityType.CakeToss && currentMatchup != null)
+            {
+                bool userIsChar1 = (char1IsP1 && player == 1) || (!char1IsP1 && player == 2);
+                Sprite cakeSprite = userIsChar1 ? currentMatchup.char1CakeSprite : currentMatchup.char2CakeSprite;
+                if (cakeSprite != null)
+                {
+                    cakeUserIsChar1 = userIsChar1;
+                    cakeActive = true;
+                    lastSprite = null;
+                    StartCoroutine(ClearCakeAfter(2f));
                 }
             }
         }
@@ -225,7 +273,21 @@ namespace DirtyThirtyShowdown
         {
             yield return new WaitForSeconds(delay);
             flashingActive = false;
-            lastSprite = null; // force return to bar-based sprite
+            lastSprite = null;
+        }
+
+        private IEnumerator ClearWinkAfter(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            winkActive = false;
+            lastSprite = null;
+        }
+
+        private IEnumerator ClearCakeAfter(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            cakeActive = false;
+            lastSprite = null;
         }
 
         private void OnAbilityEnded(AbilityType type, int player)

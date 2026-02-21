@@ -39,6 +39,18 @@ namespace DirtyThirtyShowdown
         [Tooltip("Shown for 1s when char1 uses their Flash ability (before the white screen flash). Assign for Eli matchups.")]
         public Sprite char1FlashingSprite;
 
+        [Tooltip("Shown for 1s when char2 uses their Flash ability. Assign for matchups where Eli is char2.")]
+        public Sprite char2FlashingSprite;
+
+        [Tooltip("Shown for 2s when char1 uses their WinkFlirt ability. Assign for Nati matchups.")]
+        public Sprite char1WinkSprite;
+
+        [Tooltip("Shown for 2s when char1 uses their CakeToss ability. Assign for Sabi matchups.")]
+        public Sprite char1CakeSprite;
+
+        [Tooltip("Shown for 2s when char2 uses their CakeToss ability. Assign for matchups where Sabi is char2.")]
+        public Sprite char2CakeSprite;
+
         /// <summary>Returns true if this asset covers the given pair (in either order).</summary>
         public bool Matches(CharacterData a, CharacterData b)
         {

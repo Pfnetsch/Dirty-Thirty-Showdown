@@ -21,3 +21,7 @@ MonoBehaviour:
   char2Dominating: {fileID: -4535929478411710987, guid: b06573f8b47ae7843b3ec408f398c106, type: 3}
   char1FlexingSprite: {fileID: 0}
   char1FlashingSprite: {fileID: 0}
+  char2FlashingSprite: {fileID: -9099701190097621763, guid: 96b0b9c9f40da3d49934c3a36d48334b, type: 3}
+  char1WinkSprite: {fileID: 0}
+  char1CakeSprite: {fileID: 0}
+  char2CakeSprite: {fileID: 0}

@@ -370,28 +370,42 @@ Maintain pixel-art purity with crisp, clean pixel edges. No smoothing, no painte
 ------------------------------------------------------------------------------------------------------
 
 Please edit the provided arm wrestling scene for my pixel art game.
-The left character needs a change.
+The right character needs a change.
 Preserve exact canvas size 1920x1080.
 Preserve exact composition. Preserve camera angle and perspective.
 Preserve background, lighting, table position, and all details.
 Do not shift, crop, zoom, reframe, redraw, or reinterpret the scene.
 
-Only modify the character on the left side.
+Only modify the character on the right side.
 The character should pull up her top a little bit so that the stomach can be seen.
 Maintain pixel-art purity with crisp, clean pixel edges.
 No smoothing, no painterly blending.
 
 ------------------------------------------------------------------------------------------------------
 
+Please edit the provided arm wrestling scene for my pixel art game. 
+The right character needs a change. 
+Preserve exact canvas size 1920x1080. 
+Preserve exact composition. Preserve camera angle and perspective. 
+Preserve background, lighting, table position, and all details. 
+Do not shift, crop, zoom, reframe, redraw, or reinterpret the scene. 
+
+Only modify the character on the right side. 
+The character holds a cake in her left hand (in front) and is about to throw it onto her oponent. 
+Do not change the right hand on the table. 
+Maintain pixel-art purity with crisp, clean pixel edges. No smoothing, no painterly blending.
+
+------------------------------------------------------------------------------------------------------
+
 Please edit the provided arm wrestling scene for my pixel art game.
-The left character needs a change.
+The right character needs a change.
 Preserve exact canvas size 1920x1080.
 Preserve exact composition. Preserve camera angle and perspective.
 Preserve background, lighting, table position, and all details.
 Do not shift, crop, zoom, reframe, redraw, or reinterpret the scene.
 
-Only modify the character on the left side.
-The character hold a cake in her other hand (back hand) and is about to throw it onto her oponent.
+Only modify the character on the right side.
+The character should flirt with her oponent. Send her a hand kiss and look seductive.
 Maintain pixel-art purity with crisp, clean pixel edges.
 No smoothing, no painterly blending.
 
