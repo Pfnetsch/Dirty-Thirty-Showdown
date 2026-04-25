@@ -9,6 +9,7 @@ namespace DirtyThirtyShowdown
     public class GameBootstrap : MonoBehaviour
     {
         [Header("Core Systems")]
+        [SerializeField] private GameConfig gameConfig;
         [SerializeField] private GameManager gameManager;
         [SerializeField] private ArmWrestleController armWrestleController;
         [SerializeField] private AbilitySystem abilitySystem;
@@ -32,6 +33,12 @@ namespace DirtyThirtyShowdown
 
         private void SetupMissingComponents()
         {
+            if (gameConfig == null)
+            {
+                GameObject cfgObj = new GameObject("GameConfig");
+                gameConfig = cfgObj.AddComponent<GameConfig>();
+            }
+
             if (gameManager == null)
             {
                 GameObject gmObj = new GameObject("GameManager");

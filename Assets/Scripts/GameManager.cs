@@ -64,6 +64,15 @@ namespace DirtyThirtyShowdown
             DontDestroyOnLoad(gameObject);
         }
 
+        private void Start()
+        {
+            if (GameConfig.Instance != null)
+            {
+                roundTimeLimit = GameConfig.Instance.RoundTimeLimit;
+                roundsToWin    = GameConfig.Instance.RoundsToWin;
+            }
+        }
+
         private void Update()
         {
             if (CurrentState == GameState.Playing)

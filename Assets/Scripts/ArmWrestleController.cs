@@ -41,6 +41,15 @@ namespace DirtyThirtyShowdown
         private void Start()
         {
             gameManager = GameManager.Instance;
+            ApplyConfig();
+        }
+
+        private void ApplyConfig()
+        {
+            if (GameConfig.Instance == null) return;
+            barSensitivity = GameConfig.Instance.BarSensitivity;
+            barDamping     = GameConfig.Instance.BarDamping;
+            momentumDecay  = GameConfig.Instance.MomentumDecay;
         }
 
         private void Update()
@@ -69,7 +78,8 @@ namespace DirtyThirtyShowdown
         private void UpdateBarPhysics()
         {
             // Calculate net force (P1 pushes negative, P2 pushes positive)
-            float netForce = (player2MashPower - player1MashPower) * barSensitivity;
+            float globalMultiplier = GameConfig.Instance != null ? GameConfig.Instance.BarMovementMultiplier : 1f;
+            float netForce = (player2MashPower - player1MashPower) * barSensitivity * globalMultiplier;
 
             // Apply force to velocity
             BarVelocity += netForce * Time.deltaTime;

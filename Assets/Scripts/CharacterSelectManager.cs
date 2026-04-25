@@ -110,6 +110,10 @@ namespace DirtyThirtyShowdown
             if (newState == GameState.CharacterSelect)
             {
                 ResetSelection();
+                // Re-apply Patz lock if already unlocked this session.
+                // OnPatzUnlocked only fires once, so we must re-check here.
+                if (CheatManager.Instance != null && CheatManager.Instance.PatzUnlocked)
+                    UnlockPatz();
             }
         }
 

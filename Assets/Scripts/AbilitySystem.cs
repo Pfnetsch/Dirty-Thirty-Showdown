@@ -230,8 +230,6 @@ namespace DirtyThirtyShowdown
 
             if (ScreenShake.Instance != null)
                 ScreenShake.Instance.Shake(0.5f, 0.3f);
-
-            OnAbilityActivated?.Invoke(AbilityType.DivineSmash, playerNumber);
         }
 
         private void ExecuteFlex(int playerNumber, float duration)

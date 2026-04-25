@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Dirty Thirty Showdown - Party Config
+  Edit this file with any text editor before launching the game.
+  Changes take effect on next game launch (no recompile needed).
+-->
+<GameConfig>
+
+  <!-- ===== BAR PHYSICS ===== -->
+
+  <!-- Overall multiplier on bar movement per mash input.
+       1.0 = default speed. 3.0 = 3x faster. Try 2.0-4.0 for parties. -->
+  <BarMovementMultiplier>3.0</BarMovementMultiplier>
+
+  <!-- Base sensitivity applied to mash power before the multiplier.
+       Default: 0.1. Lower = tighter, more precise. Higher = more chaotic. -->
+  <BarSensitivity>0.1</BarSensitivity>
+
+  <!-- Velocity damping per frame (frame-rate independent).
+       Range 0.0-1.0. Higher = more momentum retained. Default: 0.95 -->
+  <BarDamping>0.95</BarDamping>
+
+  <!-- Momentum decay rate (how fast mash power fades between frames).
+       Default: 2.0. Higher = faster decay (snappier). Lower = more float. -->
+  <MomentumDecay>2.0</MomentumDecay>
+
+
+  <!-- ===== MATCH SETTINGS ===== -->
+
+  <!-- Time per round in seconds. Default: 45 -->
+  <RoundTimeLimit>45</RoundTimeLimit>
+
+  <!-- Rounds needed to win the match (best-of: RoundsToWin*2 - 1).
+       Default: 2 (best of 3). Set to 3 for best of 5. -->
+  <RoundsToWin>2</RoundsToWin>
+
+</GameConfig>
