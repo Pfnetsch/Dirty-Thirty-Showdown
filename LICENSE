@@ -1,0 +1,67 @@
+Dirty Thirty Showdown
+Copyright (c) 2026 Patrick Seebacher
+
+This repository is licensed in two parts: the source code is MIT licensed, the
+art, audio and character content is not licensed for reuse. See both sections
+below.
+
+
+================================================================================
+PART 1 — SOURCE CODE: MIT License
+================================================================================
+
+Applies to the C# source code in Assets/Scripts/ and to the project
+configuration files (Packages/, ProjectSettings/, *.csproj, *.sln).
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+================================================================================
+PART 2 — ART, AUDIO AND CHARACTERS: All Rights Reserved
+================================================================================
+
+The MIT license above does NOT apply to any of the following:
+
+  Assets/Art/          Assets/Sprites/      Assets/UI/
+  Assets/Characters/   Assets/Audio/        Assets/Design/
+  docs/images/
+
+These are All Rights Reserved. They may not be copied, modified, redistributed
+or used in other projects without written permission.
+
+This includes the names, likenesses, personalities and voice recordings of the
+real people the characters are based on. Those depictions are used here with
+their consent for this project only, and that consent does not extend to
+anyone else.
+
+
+================================================================================
+THIRD-PARTY CONTENT
+================================================================================
+
+Some background artwork contains small depictions of Mario and Luigi, who are
+trademarks and copyrighted characters of Nintendo Co., Ltd. They appear as an
+incidental background gag in a non-commercial personal project. This project is
+not affiliated with, endorsed by, or sponsored by Nintendo. No claim of
+ownership is made over those characters, and they are expressly excluded from
+every grant of rights above.
+
+Unity, the Universal Render Pipeline and TextMesh Pro are covered by their own
+Unity Technologies licenses. Pixel art was generated with PixelLab and is
+subject to its terms of service.
